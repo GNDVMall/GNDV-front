@@ -1,15 +1,14 @@
+<script setup>
+  import Header from './Header.vue'
+</script>
+
 <template>
   <div id="layout" class="container mx-auto">
-    헤더
+    <Header />
     <slot />
   </div>
 </template>
 
-<script>
-  export default {
-    
-  }
-</script>
 
 <style lang="scss" scoped>
 
