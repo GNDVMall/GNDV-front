@@ -15,10 +15,7 @@ function openModal() {
   <div id="layout" class="container mx-auto">
     <Header />
     <slot />
-    <button @click="openModal">Open Modal</button> <!-- 모달을 열기 위한 버튼 -->
-    <!-- <CommonModal :isVisible="isModalVisible" @close="isModalVisible = false">
-      <p>Modal Content Here</p>
-    </CommonModal> -->
+    <button @click="openModal">Open Modal</button> 
     <Footer />
   </div>
 </template>
