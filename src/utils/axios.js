@@ -12,6 +12,11 @@ const instance = axios.create({
 export function useAxios(method, url, input, headers) {
   const data = ref(null)
   const error = ref(null)
+  headers = headers || {}
+  headers["X-Requested-With"] = "XMLHttpRequest"
+  headers["Content-Type"] = "application/json"
+
+  input = JSON.stringify(input)
 
   async function doAxios() {
     data.value = null
@@ -24,10 +29,18 @@ export function useAxios(method, url, input, headers) {
     try {
       // axios method mapping
       const methods = {
-        get: () => instance.get(urlValue, headers),
-        post: () => instance.post(urlValue, input, headers),
-        put: () => instance.put(urlValue, input, headers),
-        delete: () => instance.delete(urlValue, headers),
+        get: () => instance.get(urlValue, {
+          headers,
+        }),
+        post: () => instance.post(urlValue, input, {
+          headers
+        }),
+        put: () => instance.put(urlValue, input, {
+          headers
+        }),
+        delete: () => instance.delete(urlValue,{
+          headers
+        }),
       }
 
       const res = await (methods[method.toLowerCase()] || (() => { throw new Error(`Unsupported method: ${method}`) }))();
