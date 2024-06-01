@@ -2,7 +2,7 @@
 </script>
 
 <template>
-  <main class="container mx-auto">
-    테스트
+  <main>
+    메인페이지
   </main>
 </template>
