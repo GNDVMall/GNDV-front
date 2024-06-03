@@ -7,6 +7,7 @@ import ChatView from '../views/ChatView.vue'
 import LoginView from '../views/LoginView.vue'
 import NoticeView from '../views/NoticeView.vue'
 import WishView from '../views/WishView.vue'
+import ItemView from '../views/ItemView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -42,6 +43,11 @@ const router = createRouter({
       path: '/notice',
       name: 'notice',
       component: NoticeView
+    },
+    {
+      path:'/items/:id',
+      name:'item',
+      component: ItemView
     }
   ]
 })
