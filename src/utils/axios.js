@@ -3,7 +3,7 @@ import { ref, isRef, unref, watchEffect } from 'vue'
 
 // Axios Config
 const instance = axios.create({
-  baseURL: 'http://localhost:8080/api/', // 후에 URL 변경
+  baseURL: 'http://localhost:8080/api/v2/', // 후에 URL 변경
   timeout: 1000,
 });
 
@@ -15,6 +15,7 @@ export function useAxios(method, url, input, headers) {
   headers = headers || {}
   headers["X-Requested-With"] = "XMLHttpRequest"
   headers["Content-Type"] = "application/json"
+  headers["Authorization"] = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcyMTAwNTUwMiwiZW1haWwiOiIxMTExQG5hdmVyLmNvbSJ9.VrTUeSIizwLqiAfhKTOWb10mdAPgDoshSYgJYOd0wXF9Vig785ddRNvkICdBjKeAGj9Pjuysa31Z1K_OYmaFBQ"
 
   input = JSON.stringify(input)
 
@@ -44,7 +45,7 @@ export function useAxios(method, url, input, headers) {
       }
 
       const res = await (methods[method.toLowerCase()] || (() => { throw new Error(`Unsupported method: ${method}`) }))();
-      data.value = res.data;
+      data.value = res.data.data;
     } catch (e) {
       error.value = e
     }
