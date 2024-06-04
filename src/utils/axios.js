@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { store, error } from '../store/store.js'
 import { ref, isRef, unref, watchEffect } from 'vue'
 
 // Axios Config
@@ -11,7 +12,8 @@ const instance = axios.create({
 // useAxios
 export function useAxios(method, url, input, headers) {
   const data = ref(null)
-  const error = ref(null)
+  // const error = ref(null)
+
   headers = headers || {}
   headers["X-Requested-With"] = "XMLHttpRequest"
   headers["Content-Type"] = "application/json"
@@ -21,6 +23,7 @@ export function useAxios(method, url, input, headers) {
 
   async function doAxios() {
     data.value = null
+    // error.value = null
     error.value = null
 
     // watchEffect()에 의해 종속성으로 추적되도록
@@ -44,7 +47,9 @@ export function useAxios(method, url, input, headers) {
         }),
       }
 
-      const res = await (methods[method.toLowerCase()] || (() => { throw new Error(`Unsupported method: ${method}`) }))();
+      const res = 
+        await (methods[method.toLowerCase()] || (() => { throw new Error(`Unsupported method: ${method}`) }))();
+
       data.value = res.data.data;
     } catch (e) {
       error.value = e
