@@ -10,14 +10,14 @@
 
     <div class="grid grid-cols-4 items-center space-x-4 py-7">
       <div class="col-span-3 overflow-hidden">
-        <h2 class="text-xl font-semibold mb-2">ratty-master</h2>
-        <p class="text-sm text-ellipsis overflow-hidden break-words line-clamp-4">저는 쥐를 정말 좋아합니다.저는 쥐를 정말 좋아합니다저는 쥐를 정말 좋아합니다저는 합 정말 좋아합니다.저는 쥐를 정말 좋아합니다저는 쥐를 정말 좋아합니다저는 합 정말 좋아합니다.저는 쥐를 정말 좋아합니다저는 쥐를 정말 좋아합니다저는 합 정말 좋아합니다.저는 쥐를 정말 좋아합니다저는 쥐를 정말 좋아합니다저는 합 정말 좋아합니다.저는 쥐를 정말 좋아합니다저는 쥐를 정말 좋아합니다저는 합 정말 좋아합니다.저는 쥐를 정말 좋아합니다저는 쥐를 정말 좋아합니다저는 합 정말 좋아합니다.저는 쥐를 정말 좋아합니다저는 쥐를 정말 좋아합니다저는 합 정말 좋아합니다.저는 쥐를 정말 좋아합니다저는 쥐를 정말 좋아합니다저는 합 정말 좋아합니다.저는 쥐를 정말 좋아합니다저는 쥐를 정말 좋아합니다저는 합 정저는 쥐를 정말 좋아합니다저는 쥐를 정말 좋아합니다저는 합 정말 좋아합니다.저는 쥐를 정말 좋아합니다저는 쥐를 정말 좋아합니다저는 합 정말 좋아합니다.저는 쥐를 정말 좋아합니다저는 쥐를 정말 좋아합니다저는 합 저는 쥐를 정말 좋아합니다저는 쥐를 정말 좋아합니다저는 합 정말 좋아합니다.저는 쥐를 정말 좋아합니다저는 쥐를 정말 좋아합니다저는 합 정말 좋아합니다.저는 쥐를 정말 좋아합니다저는 쥐를 정말 좋아합니다저는 합 저는 쥐를 정말 좋아합니다저는 쥐를 정말 좋아합니다저는 합 정말 좋아합니다.저는 쥐를 정말 좋아합니다저는 쥐를 정말 좋아합니다저는 합 정말 </p>
+        <h2 class="text-xl font-semibold mb-2">{{ nickname }}</h2>
+        <p class="text-sm text-ellipsis overflow-hidden break-words line-clamp-4">{{ introduce }}</p>
       </div>
 
       <!-- 이미지와 별점 -->
       <ProfileWithStar 
-        :rating="4.5"
-        :url="'https://www.havahart.com/media/wysiwyg/hh/cms/lc/rats/hh-animals-rat-1.png'"
+        :rating="rating"
+        :url="url"
       />
     </div>
   </div>
@@ -27,7 +27,10 @@
 import ProfileWithStar from '@/components/common/ProfileWithStar/ProfileWithStar.vue'
 const props = defineProps({
   href: String,
-
+  nickname: String,
+  introduce: String,
+  rating: Number,
+  url: String
 })
 
 </script>
