@@ -1,14 +1,15 @@
 <script setup>
-import ItemCard from '@/components/items/ItemCard.vue';
+import ItemCard from '@/components/items/ItemDetailCard.vue'
+import ProductsList from '@/components/items/ProductsList.vue'
 
 </script>
 
 <template>
-    <main>
-        <h2>{{ $route.params.id }}</h2>
-        <!-- 상단 Item 정보 -->
-        <ItemCard />
-
-        <!-- 중고 판매 목록 -->
-    </main>
+  <main>
+    <!-- 상단 Item 정보 -->
+    <ItemCard />
+    
+    <!-- 중고 판매 목록 -->
+    <ProductsList />
+  </main>
 </template>
