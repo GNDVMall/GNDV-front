@@ -74,9 +74,8 @@
 
 <script setup>
 import Title from '@/components/common/Title/Title.vue'
-import ItemCard from '@/components/common/ItemCard/ItemCard.vue'
 import Button from '@/components/common/buttom/Buttom.vue';
-import ProductCard from '@/components/product/ProductCard.vue'
+import ProductCard from '@/components/common/ProductCard/ProductCard.vue'
 
 </script>
 
