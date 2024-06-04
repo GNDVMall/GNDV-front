@@ -24,7 +24,7 @@ const props = defineProps({
 })
 
 const buttonClasses = computed(() => {
-  const baseClasses = 'px-16 py-3 border rounded-lg text-lg max-w-72';
+  const baseClasses = 'w-full xl:px-16 px-5 py-3 border rounded-lg text-lg flex: 1 1 auto';
   const typeClasses = {
     default: 'border-gray-300 text-gray-700 bg-white',
     blue: 'border-blue-500 text-white bg-blue-500',
