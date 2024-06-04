@@ -38,9 +38,9 @@
 
 <script setup>
 import ItemTitle from './ItemTitle.vue';
-import Button from '../common/buttom/Buttom.vue'
 import ItemSubInfo from './ItemSubInfo.vue';
 import ItemImage from './ItemImage.vue'
+import Button from '../common/Button/Button.vue';
 
 </script>
 
