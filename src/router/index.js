@@ -7,7 +7,9 @@ import ChatView from '../views/ChatView.vue'
 import LoginView from '../views/LoginView.vue'
 import NoticeView from '../views/NoticeView.vue'
 import WishView from '../views/WishView.vue'
-
+import TestProductDetail from '../views/TestProductDetail.vue'
+import TestProductList from '../views/TestProductList.vue'
+import PurchaseList from '../views/PurchaseList.vue';
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
 
@@ -42,9 +44,24 @@ const router = createRouter({
       path: '/notice',
       name: 'notice',
       component: NoticeView
-    }
+    },
+    {
+      path: '/products',
+      name: 'product-list',
+      component: TestProductList,
+    },
+    {
+      path: '/product/:productId',
+      name: 'product-detail',
+      component: TestProductDetail,
+      props: true,
+    },
+    {
+      path: '/purchaseList',
+      name: 'PurchaseList',
+      component: PurchaseList,
+    },
   ]
 })
 
 export default router
-
