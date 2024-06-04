@@ -8,6 +8,7 @@ import LoginView from '../views/LoginView.vue'
 import NoticeView from '../views/NoticeView.vue'
 import WishView from '../views/WishView.vue'
 import ItemView from '../views/ItemView.vue'
+import ProductView from '../views/ProductView.vue'
 import TestView from '../views/TestView.vue'
 
 const router = createRouter({
@@ -49,6 +50,11 @@ const router = createRouter({
       path:'/items/:id',
       name:'item',
       component: ItemView
+    },
+    {
+      path:'/products/:id',
+      name:'product',
+      component: ProductView
     },
     {
       path:'/test',
