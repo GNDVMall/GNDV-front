@@ -1,11 +1,11 @@
 <template>
   <div>
     <div class="flex items-center justify-between pb-5 border-b border-gray-300">
-      <h2 class="text-xl font-bold">판매자 정보</h2>
-      <!-- 판매자 정보 페이지로 이동 -->
-      <a class="w-7 h-7 flex justify-center" :href="href">
+      <router-link class="w-full h-7 flex justify-between pr-5" :to="{path: href}">
+        <h2 class="text-xl font-bold">판매자 정보</h2>
+        <!-- 판매자 정보 페이지로 이동 -->
         <i class="fa-solid fa-angle-right text-xl"></i>
-      </a>
+      </router-link>
     </div>
 
     <div class="grid grid-cols-4 items-center space-x-4 py-7">

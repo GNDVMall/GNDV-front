@@ -1,25 +1,26 @@
 <template>
-  <article>
+  <div v-if="loading">ProductDetailCard 로딩</div>
+  <article v-if="data">
     <div class="flex md:flex-row gap-10 py-8 flex-col mx-auto">
       <!-- 이미지 -->
       <ItemImage
-        :alt="'반 고흐 레고'"
-        :url="'https://m.media-amazon.com/images/I/81QeXbJJ+aL._AC_UF894,1000_QL80_.jpg'"
+        :alt="data.title"
+        :url="data.images.length > 0 ? data.images[0]: ''"
       />
 
       <!-- 정보 -->
       <div class="flex flex-col md:border-l md:max-w-lg lg:max-w-2xl flex-auto md:pl-10 gap-5">
         <!-- Title -->
-        <ItemTitle :title="'Lego Vincent Van Gogh The Starry Night'" :subTitle="'아이디어'" />
+        <ItemTitle :title="data.title" :subTitle="'시리즈쿼리문수정'" />
         <div>
-          <p class="text-3xl font-bold">24,000원</p>
-          <div class="text-sm opacity-60"><span>1일전</span> | <span>조회 12</span></div>
+          <p class="text-3xl font-bold">{{ data.price }}</p>
+          <div class="text-sm opacity-60"><span>{{ getDaysAgo(data.created_at) }}일 전</span> | <span>조회 {{ data.view_count }}</span></div>
         </div>
         <div class="flex w-full gap-4 lg:justify-start flex-initial flex-wrap justify-start">
           <!-- 설명들 -->
-          <ItemSubInfo :text="'제품 상태'" :type="'right'" :subText="'새 상품'" />
-          <ItemSubInfo :text="'거래 방식'" :type="'right'" :subText="'직거래, 택배'" />
-          <ItemSubInfo :text="'안전 거래'" :subText="'미사용'" />
+          <ItemSubInfo :text="'제품 상태'" :type="'right'" :subText="data.product_status === 'NEW'? '새 상품':'중고'" />
+          <ItemSubInfo :text="'거래 방식'" :subText="getTradeOptionString(data.product_trade_opt1, data.product_trade_opt2)" />
+          <!-- <ItemSubInfo :text="'안전 거래'" :subText="'미사용'" /> -->
         </div>
 
         <div class="w-full flex gap-4 lg:flex-row flex-col mb-5">
@@ -34,10 +35,11 @@
 
         <!-- 사용자 정보 -->
         <UserInfo 
-          :rating="4.5"
-          :url="'https://www.havahart.com/media/wysiwyg/hh/cms/lc/rats/hh-animals-rat-1.png'"
-          :nickname="'Rat-Master'"
-          :introduce="'저는 쥐를 정말 좋아합니다.저는 쥐를 정말 좋아합니다. 네고 안해요 ㅎㅎ. 거래는 직거래 선호합니다. 택배 X'"
+          :href="`/users/${data.member_id}`"
+          :rating="data.rating"
+          :url="data.profile_url"
+          :nickname="data.nickname"
+          :introduce="data.introduction"
         />
       </div>
     </div>
@@ -45,8 +47,8 @@
     <div class="flex items-center justify-between pb-5 mt-6 border-b border-gray-300">
       <h2 class="text-xl font-bold">상품 정보</h2>
     </div>
-    <div class="min-h-60">
-        텍스트 에디터에 입력된 값을 가져와서 붙일 예정
+    <div class="min-h-60 pt-6">
+      {{data.content}}
     </div>
   </article>
 </template>
@@ -55,8 +57,38 @@
 import ItemTitle from '@/components/items/ItemTitle.vue'
 import ItemSubInfo from '@/components/items/ItemSubInfo.vue'
 import ItemImage from '@/components/items/ItemImage.vue'
-import Button from '@/components/common/Button/Button.vue';
+import Button from '@/components/common/Button/Button.vue'
 import UserInfo from '@/components/product/UserInfo.vue'
+import { onMounted, ref } from 'vue'
+import { instance } from '@/utils/axios'
+import { useRoute } from 'vue-router'
+import { getDaysAgo } from '@/utils/dateUtils'
+
+const route = useRoute()
+const data = ref(null)
+const loading = ref(null)
+
+const fetchData = async ()=>{
+  loading.value = true
+  try {
+    const res = await instance.get(`/products/${route.params.id}`)
+    data.value = res.data.data
+    console.log("data", res.data.data)
+  } catch (error) {
+    throw error
+  }finally{
+    loading.value = false
+  }
+}
+
+onMounted(fetchData);
+
+const getTradeOptionString = (opt1, opt2)=>{
+  let options = [];
+  if (opt1 === 'Y') options.push('중고')
+  if (opt2 === 'Y') options.push('새상품')
+  return options.join(',')
+}
 
 </script>
 

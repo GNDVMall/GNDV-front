@@ -1,6 +1,7 @@
 <script setup>
+import ProductsList from '@/components/items/ProductsList.vue';
 import ProductDetailCard from '@/components/product/ProductDetailCard.vue'
-import RecommendList from '@/components/product/RecommendList.vue'
+// import RecommendList from '@/components/product/RecommendList.vue'
 
 </script>
 
@@ -10,6 +11,6 @@ import RecommendList from '@/components/product/RecommendList.vue'
     <ProductDetailCard />
     
     <!-- 추천 상품 목록 -->
-    <RecommendList />
+    <ProductsList />
   </main>
 </template>
