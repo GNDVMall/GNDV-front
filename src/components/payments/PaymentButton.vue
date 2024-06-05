@@ -8,6 +8,7 @@
 import { useAxios } from '@/utils/axios.js';
 import { loadIamportScript } from '@/utils/importIamport';
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 export default {
   props: {
@@ -24,25 +25,27 @@ export default {
       required: true,
     },
   },
-  emits: ['orderCreated'],
   setup(props, { emit }) {
+    const router = useRouter();
+
     const createOrder = async () => {
-      const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcyMTA5MTIxNiwiZW1haWwiOiIxMTExQG5hdmVyLmNvbSJ9.DNaFUwa9i7fGgE3mVxvs3RHwz9M6QTKH45g6HN5TT5U90_YNG_3NCW-mWhvEftfuwlMtFFYk8ne5NvECOx2wjw'; // 여기에 포스트맨에서 받은 JWT 토큰을 하드코딩합니다.
+      const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcyMTE2NTk0MCwiZW1haWwiOiIxMTExQG5hdmVyLmNvbSJ9.t1lSMf7Nq3LkSsxG94vECYXLxVIME8DbkMsIZsFB4IBBbO322oCL1JFtG4EM-x3zOvS7oOIiK8FRr_ozK3woCw'; // JWT 토큰을 하드코딩합니다.
       const headers = {
         'X-Requested-With': 'XMLHttpRequest',
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
       };
 
-      const { data: orderData, error: orderError, retry } = useAxios('post', '/api/v2/order', {
+      const { data: orderData, error: orderError, retry } = 햣 ('post', '/order', {
         product_id: props.productId,
+        price: props.price,
+        item_name: props.itemName,
       }, headers);
 
       await retry();
 
       if (orderData.value && orderData.value.status === 'OK') {
-        emit('orderCreated', orderData.value.data);
-        return orderData.value.data; // 주문 생성 데이터 반환
+        return orderData.value.data;
       } else {
         console.error('Failed to create order', orderError.value);
         throw new Error('Order creation failed');
@@ -70,10 +73,13 @@ export default {
           buyer_postcode: '123-456',
         }, (rsp) => {
           if (rsp.success) {
-            // 결제 성공 시 로직
             console.log('Payment succeeded', rsp);
+            emit('paymentSuccess', {
+              order_uid: orderData.order_uid,
+              payment_uid: rsp.imp_uid,
+              status: rsp.status
+            });
           } else {
-            // 결제 실패 시 로직
             console.error('Payment failed', rsp);
           }
         });

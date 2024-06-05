@@ -8,7 +8,7 @@
         class="border p-4 rounded-lg hover:shadow-lg transition"
         @click="selectProduct(product.product_id)"
       >
-      <img 
+        <img 
           :src="product.images && product.images.length > 0 ? product.images[0] : 'default-image-url.jpg'" 
           alt="product image" 
           class="w-full h-48 object-cover mb-4 rounded" 
@@ -30,20 +30,19 @@ export default {
     const products = ref([]);
     const router = useRouter();
 
-    const { data, error, retry } = useAxios('get', '/api/v2/products', {});
+    const { data, error, retry } = useAxios('get', 'products', {});
 
-    onMounted(() => {
-      retry().then(() => {
-        if (data.value && data.value.status === 'OK') {
-          products.value = data.value.data.products;
-        } else {
-          console.error('Failed to fetch products', error.value);
-        }
-      });
+    onMounted(async () => {
+      await retry();
+      if (data.value && data.value.code === 200) {
+        products.value = data.value.data.products;
+      } else {
+        console.error('Failed to fetch products', error.value);
+      }
     });
 
     const selectProduct = (productId) => {
-      router.push(`/product/${productId}`);
+      router.push(`/testproduct/${productId}`);
     };
 
     return {

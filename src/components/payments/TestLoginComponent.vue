@@ -36,9 +36,10 @@
 </template>
 
 <script>
-import { useAxios } from '@/utils/axios';
+import { useAxios } from '@/utils/axios.js';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { store, setToken } from '@/store/store.js';
 
 export default {
   setup() {
@@ -49,14 +50,19 @@ export default {
 
     const login = async () => {
       try {
-        const { data, error, retry } = useAxios('post', '/api/v2/login', {
+        const { data, error: axiosError, retry } = useAxios('post', 'login', {
           email: email.value,
           password: password.value,
         });
         await retry();
-        // const token = data.value.data.token; // 서버에서 받은 토큰 사용
-        // localStorage.setItem('authToken', token); // 토큰을 로컬 스토리지에 저장
-        router.push('/'); // 로그인 성공 시 홈 페이지로 이동
+        if (data.value && data.value.code === 200) {
+          const token = data.value.data.token; // 서버에서 받은 토큰 사용
+          setToken(token); // 토큰을 store에 저장
+          localStorage.setItem('authToken', token); // 토큰을 로컬 스토리지에 저장
+          router.push('/'); // 로그인 성공 시 홈 페이지로 이동
+        } else {
+          throw new Error('Login failed');
+        }
       } catch (e) {
         error.value = 'Login failed: ' + (e.response?.data?.message || e.message);
       }
