@@ -20,23 +20,15 @@ onErrorCaptured((e) => {
     <template v-if="Component">
       <Transition mode="out-in">
         <KeepAlive>
-            <LayoutVue>
-            <div v-if="hasError">에러 발생 {{errorCode }}</div>
-            <Suspense v-else>
-              <!-- 로딩 상태 -->
-              <template #fallback>
-                로딩중...
-              </template>
-              <!-- 메인 컨텐츠 -->
-              <component :is="Component"></component>
-            </Suspense>
+          <LayoutVue>
+            <div v-if="hasError">에러 발생 {{ errorCode }}</div>
+            <!-- 메인 컨텐츠 -->
+            <component v-else :is="Component"></component>
           </LayoutVue>
-          </KeepAlive>
-        </Transition>
-      </template>
-    </RouterView>
+        </KeepAlive>
+      </Transition>
+    </template>
+  </RouterView>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
