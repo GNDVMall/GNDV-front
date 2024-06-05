@@ -1,6 +1,6 @@
 <template>
   <div class="lg:max-w-sm rounded overflow-hidden">
-    <a :href="href">
+    <router-link :to="{path: href}">
       <!-- img -->
       <div class="w-full max-h-md-sm md:max-w-64 md:max-h-64 aspect-square  place-content-center flex relative">
         <span v-if="isNew" class="px-2 py-1 text-xs bg-green-100 text-green-600 rounded-md absolute right-2 top-1">새 제품</span>
@@ -22,7 +22,7 @@
           <span class="text-xs opacity-60">판매가</span>
         </div>
       </div>
-  </a>
+  </router-link>
   </div>
 </template>
 
