@@ -7,9 +7,10 @@ import Footer from './Footer.vue'
 <template>
   <div id="layout" class="container max-w-screen-xl mx-auto">
     <Header />
-    <slot />
+      <slot />
     <Footer />
   </div>
+    
 </template>
 
 <style scoped>

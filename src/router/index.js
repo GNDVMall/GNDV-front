@@ -7,6 +7,10 @@ import ChatView from '../views/ChatView.vue'
 import LoginView from '../views/LoginView.vue'
 import NoticeView from '../views/NoticeView.vue'
 import WishView from '../views/WishView.vue'
+import ItemView from '../views/ItemView.vue'
+import ProductView from '../views/ProductView.vue'
+import TestView from '../views/TestView.vue'
+
 import TestProductDetail from '../views/TestProductDetail.vue'
 import TestProductList from '../views/TestProductList.vue'
 import PurchaseList from '../views/PurchaseList.vue';
@@ -67,6 +71,11 @@ const router = createRouter({
       path: '/order-test',
       name: 'OrderTest',
       component: OrderTest,
+    },
+    {
+      path:'/products/:id',
+      name:'product',
+      component: ProductView
     },
     {
       path: '/payment-test',
