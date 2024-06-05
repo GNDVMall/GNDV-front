@@ -99,7 +99,6 @@ export async function useAxios2(method, url, input, headers) {
       data.value = res.data.data;
     } catch (e) {
       error.value = e
-      throw new Error(`에러 던져봐: ${method}`)
     }
   }
 
