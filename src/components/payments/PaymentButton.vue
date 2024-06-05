@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { useAxios } from '@/utils/axios.js';
+import { instance } from '@/utils/axios.js';
 import { loadIamportScript } from '@/utils/importIamport';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -29,26 +29,21 @@ export default {
     const router = useRouter();
 
     const createOrder = async () => {
-      const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcyMTE2NTk0MCwiZW1haWwiOiIxMTExQG5hdmVyLmNvbSJ9.t1lSMf7Nq3LkSsxG94vECYXLxVIME8DbkMsIZsFB4IBBbO322oCL1JFtG4EM-x3zOvS7oOIiK8FRr_ozK3woCw'; // JWT 토큰을 하드코딩합니다.
-      const headers = {
-        'X-Requested-With': 'XMLHttpRequest',
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
-      };
-
-      const { data: orderData, error: orderError, retry } = 햣 ('post', '/order', {
-        product_id: props.productId,
-        price: props.price,
-        item_name: props.itemName,
-      }, headers);
-
-      await retry();
-
-      if (orderData.value && orderData.value.status === 'OK') {
-        return orderData.value.data;
-      } else {
-        console.error('Failed to create order', orderError.value);
-        throw new Error('Order creation failed');
+      try {
+        const res = await instance.post('/order', {
+          product_id: props.productId,
+          price: props.price,
+          item_name: props.itemName,
+        });
+        if (res.data.status === 'OK') {
+          return res.data.data;
+        } else {
+          console.error('Failed to create order', res.data);
+          throw new Error('Order creation failed');
+        }
+      } catch (error) {
+        console.error('Error creating order', error);
+        throw error;
       }
     };
 
@@ -66,18 +61,18 @@ export default {
           merchant_uid: orderData.order_uid, // 상점에서 생성한 고유 주문번호
           name: props.itemName, // 주문명
           amount: props.price, // 결제 금액
-          buyer_email: orderData.buyer_email,
-          buyer_name: orderData.buyer_name,
-          buyer_tel: orderData.buyer_tel,
-          buyer_addr: '서울특별시 강남구 삼성동',
-          buyer_postcode: '123-456',
+          buyer_email: 'user@example.com', // 예시 데이터
+          buyer_name: '구매자 이름', // 예시 데이터
+          buyer_tel: '010-1234-5678', // 예시 데이터
+          buyer_addr: '서울특별시 강남구 삼성동', // 예시 데이터
+          buyer_postcode: '123-456', // 예시 데이터
         }, (rsp) => {
           if (rsp.success) {
             console.log('Payment succeeded', rsp);
             emit('paymentSuccess', {
               order_uid: orderData.order_uid,
               payment_uid: rsp.imp_uid,
-              status: rsp.status
+              status: 'PAID' // 예시 상태
             });
           } else {
             console.error('Payment failed', rsp);

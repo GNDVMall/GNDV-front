@@ -14,12 +14,6 @@
       @paymentSuccess="handlePaymentSuccess"
     />
     <button 
-      @click="createOrder"
-      class="mt-4 inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
-    >
-      Order Test
-    </button>
-    <button 
       v-if="orderUid"
       @click="validatePayment"
       class="mt-4 inline-block bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700 transition"
@@ -40,7 +34,7 @@
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import PaymentButton from '../components/payments/PaymentButton.vue';
-import { useAxios } from '@/utils/axios.js';
+import { instance } from '@/utils/axios.js';
 
 export default {
   components: {
@@ -53,40 +47,25 @@ export default {
     const orderUid = ref('');
     const validationResponse = ref(null);
     const paymentData = ref({});
-    const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcyMTE2NTk0MCwiZW1haWwiOiIxMTExQG5hdmVyLmNvbSJ9.t1lSMf7Nq3LkSsxG94vECYXLxVIME8DbkMsIZsFB4IBBbO322oCL1JFtG4EM-x3zOvS7oOIiK8FRr_ozK3woCw'; // 실제 토큰으로 대체
+    const loading = ref(false);
 
-    const { data, error, retry } = useAxios('get', `products/${route.params.id}`, null, {}, token);
-
-    onMounted(async () => {
-      await retry();
-      if (data.value && data.value.code === 200) {
-        product.value = data.value.data;
-      } else {
-        console.error('Failed to fetch product', error.value);
-      }
-    });
-
-    const createOrder = async () => {
+    const fetchData = async () => {
+      loading.value = true;
       try {
-        const orderDataPayload = {
-          product_id: product.value.product_id,
-          price: product.value.price,
-          item_name: product.value.title,
-        };
-
-        const { data: orderResponseData, error: orderResponseError, retry: orderRetry } = useAxios('post', 'order', orderDataPayload, {}, token);
-        await orderRetry();
-
-        if (orderResponseData.value && orderResponseData.value.status === 'OK') {
-          orderUid.value = orderResponseData.value.data.order_uid;
-          console.log('Order Created:', orderUid.value);
+        const res = await instance.get(`/products/${route.params.id}`);
+        if (res.data.code === 200) {
+          product.value = res.data.data;
         } else {
-          console.error('Failed to create order', orderResponseError.value);
+          console.error('Failed to fetch product', res.data);
         }
       } catch (error) {
-        console.error('Error creating order', error);
+        console.error('Error fetching product', error);
+      } finally {
+        loading.value = false;
       }
     };
+
+    onMounted(fetchData);
 
     const handlePaymentSuccess = (paymentResult) => {
       paymentData.value = paymentResult;
@@ -96,7 +75,10 @@ export default {
 
     const validatePayment = async () => {
       try {
-        const { order_uid, payment_uid, imp_uid, status } = paymentData.value;
+        const { order_uid, payment_uid, status } = paymentData.value;
+        if (!payment_uid) {
+          throw new Error("imp_uid is required");
+        }
         const validationPayload = {
           order_uid,
           item_id: product.value.product_id,
@@ -104,17 +86,16 @@ export default {
           payment_price: product.value.price,
           payment_uid,
           status,
-          imp_uid // imp_uid 값을 설정
+          imp_uid: payment_uid
         };
         console.log('Validation Payload:', validationPayload);
 
-        const { data: validationData, error: validationError, retry: validationRetry } = useAxios('post', 'payment/validate', validationPayload, {}, token);
-        await validationRetry();
-        if (validationData.value && validationData.value.status === 'OK') {
-          validationResponse.value = validationData.value.data;
+        const res = await instance.post('payment/validate', validationPayload);
+        if (res.data.status === 'OK') {
+          validationResponse.value = res.data.data;
           console.log('Validation Response:', validationResponse.value);
         } else {
-          console.error('Failed to validate payment', validationError.value);
+          console.error('Failed to validate payment', res.data);
         }
       } catch (error) {
         console.error('Error during payment validation', error);
@@ -124,10 +105,10 @@ export default {
     return {
       product,
       orderUid,
-      createOrder,
       validatePayment,
       validationResponse,
-      handlePaymentSuccess
+      handlePaymentSuccess,
+      loading
     };
   },
 };

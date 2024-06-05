@@ -21,25 +21,33 @@
 </template>
 
 <script>
-import { useAxios } from '@/utils/axios.js';
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import { instance } from '@/utils/axios.js';
 
 export default {
   setup() {
     const products = ref([]);
     const router = useRouter();
+    const loading = ref(false);
 
-    const { data, error, retry } = useAxios('get', 'products', {});
-
-    onMounted(async () => {
-      await retry();
-      if (data.value && data.value.code === 200) {
-        products.value = data.value.data.products;
-      } else {
-        console.error('Failed to fetch products', error.value);
+    const fetchData = async () => {
+      loading.value = true;
+      try {
+        const res = await instance.get('products');
+        if (res.data.code === 200) {
+          products.value = res.data.data.products;
+        } else {
+          console.error('Failed to fetch products', res.data);
+        }
+      } catch (error) {
+        console.error('Error fetching products', error);
+      } finally {
+        loading.value = false;
       }
-    });
+    };
+
+    onMounted(fetchData);
 
     const selectProduct = (productId) => {
       router.push(`/testproduct/${productId}`);
@@ -48,6 +56,7 @@ export default {
     return {
       products,
       selectProduct,
+      loading
     };
   },
 };
