@@ -1,82 +1,71 @@
 <template>
-  <section class="mt-10" >
+  <section v-if="data" class="mt-10" >
     <Title 
-      :title="'45 Items Found'"
+      :title="`${data.total} Items Found`"
       :sub-title="'현재 판매중인 상품 목록'"
     />
   </section>
-
+  <div v-if="loading">ProductList 로딩</div>
   <!-- 카드 리스트 -->
-  <div class="grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-8 md:gap-4">
-    <ProductCard 
-      :series="'클래식'"
-      :href="'/products/10'"
-      :title="'귀여운 파티 커플 2024 클래식 에디션 귀여운 파티 커플 2024 클래식 에디션 귀여운 파티 커플 2024 클래식 에디션 귀여운 파티 커플 2024 클래식 에디션'"
-      :image-url="'https://m.media-amazon.com/images/I/81QeXbJJ+aL._AC_UF894,1000_QL80_.jpg'"
-      :original-price="'15,000원'"
-      :price="'20,000원'"
-      :is-new="false"
+  <div v-if="data" class="grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-8 md:gap-4">
+    <ProductCard v-for="product in data.list"
+      :key="product.product_id"
+      :href="`/products/${product.product_id}`"
+      :title="product.title"
+      :image-url="product.images && product.images[0] || 'https://picsum.photos/550'"
+      :price="`${product.price}원`"
+      :is-new="product.product_status === 'NEW' ? true : false"
+      :created-at="product.created_at"
     />    
-    <ProductCard 
-      :series="'클래식'"
-      :href="'/products/10'"
-      :title="'귀여운 파티 커플 2024 클래식 에디션'"
-      :image-url="'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlqyykcldJFnMyVv5tr1GTppcQ0Z1zpbkXeA&s'"
-      :original-price="'15,000원'"
-      :price="'20,000원'"
-      :is-new="true"
-    />
-    <ProductCard 
-      :series="'클래식'"
-      :href="'/products/10'"
-      :title="'귀여운 파티 커플 2024 클래식 에디션'"
-      :image-url="'https://www.lightailing.com/cdn/shop/products/vincent-van-gogh-starry-night-21333-lights_800x.jpg?v=1655451199'"
-      :original-price="'15,000원'"
-      :price="'20,000원'"
-      :is-new="true"
-    />    
-    <ProductCard 
-      :series="'클래식'"
-      :href="'/products/10'"
-      :title="'귀여운 파티 커플 2024 클래식 에디션'"
-      :image-url="'https://www.lightailing.com/cdn/shop/products/vincent-van-gogh-starry-night-21333-lights_800x.jpg?v=1655451199'"
-      :original-price="'15,000원'"
-      :price="'20,000원'"
-      :is-new="true"
-    /> 
-    <ProductCard 
-      :series="'클래식'"
-      :href="'/products/10'"
-      :title="'귀여운 파티 커플 2024 클래식 에디션'"
-      :image-url="'https://www.lightailing.com/cdn/shop/products/vincent-van-gogh-starry-night-21333-lights_800x.jpg?v=1655451199'"
-      :original-price="'15,000원'"
-      :price="'20,000원'"
-      :is-new="true"
-    />   
-    <ProductCard 
-      :series="'클래식'"
-      :href="'/products/10'"
-      :title="'귀여운 파티 커플 2024 클래식 에디션'"
-      :image-url="'https://www.lightailing.com/cdn/shop/products/vincent-van-gogh-starry-night-21333-lights_800x.jpg?v=1655451199'"
-      :original-price="'15,000원'"
-      :price="'20,000원'"
-      :is-new="true"
-    /> 
   </div>
 
-  <!-- 더보기 버튼 -->
-  <div class="mt-7 mb-10 max-w-72 mx-auto">
-    <Button 
-      :text="'더보기'" 
-      :clickHandler="onClickHandelr" />
-  </div>
+  <!-- 페이지네이션 -->
+  <Pagination v-if="data"
+    :totalPages="data.end" 
+    :currentPage="currentPage" 
+    :startPage="data.start"
+    :endPage="data.end"
+    :is-prev="data.prev"
+    :is-next="data.next"
+    @page-changed="handlePageChange" />
 </template>
 
 <script setup>
 import Title from '@/components/common/Title/Title.vue'
 import ProductCard from '@/components/common/ProductCard/ProductCard.vue'
-import Button from '../common/Button/Button.vue';
+import Pagination from '@/components/common/Pagination/Pagination.vue'
+import { useRoute } from 'vue-router';
+import { onMounted, ref } from 'vue';
+import router from '@/router';
+import { instance } from '@/utils/axios';
 
+const route = useRoute()
+
+// const totalPages = ref(10);
+const currentPage = ref(Number(route.query.pageNo) || 1)
+const size = ref(route.query.size || 10)
+const data = ref(null)
+const loading = ref(null)
+
+const fetchData = async () => {
+  loading.value = true
+  try {
+    const res = await instance.get(`products?item_id=${route.params.id}&size=${size.value}&pageNo=${currentPage.value}`); // 원하는 엔드포인트를 입력합니다.
+    data.value = res.data.data;
+  } catch (error) {
+    throw error
+  }finally{
+    loading.value = false
+  }
+};
+
+const handlePageChange = async (page) => {
+  currentPage.value = page;
+  router.push({ path: '', query: { size: size.value, pageNo: currentPage.value }})
+  fetchData()
+};
+
+onMounted(fetchData);
 </script>
 
 <style scoped>

@@ -8,7 +8,6 @@ import RecommendList from '@/components/product/RecommendList.vue'
   <main>
     <!-- 상단 Product 정보 -->
     <ProductDetailCard />
-
     
     <!-- 추천 상품 목록 -->
     <RecommendList />
