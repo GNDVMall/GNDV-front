@@ -14,7 +14,7 @@ export function useAxios(method, url, input, headers) {
   headers = headers || {};
   headers['X-Requested-With'] = 'XMLHttpRequest';
   headers['Content-Type'] = 'application/json';
-  headers['Authorization'] = 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcyMTA2ODQxMiwiZW1haWwiOiIxMTExQG5hdmVyLmNvbSJ9.R0GysD-ISeKktJZhzXnPMwrGbm8dRROO1QBiGGgZHTvYeNUcahbMorMRM-3GhKYeASdzFlu0Cuf2Biim3F0qFw';
+  headers['Authorization'] = 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcyMTA5MTIxNiwiZW1haWwiOiIxMTExQG5hdmVyLmNvbSJ9.DNaFUwa9i7fGgE3mVxvs3RHwz9M6QTKH45g6HN5TT5U90_YNG_3NCW-mWhvEftfuwlMtFFYk8ne5NvECOx2wjw';
   // 인증 토큰 추가 (로컬 스토리지에서 토큰을 가져오는 방법 사용)
   const token = localStorage.getItem('authToken'); // 또는 다른 방식으로 토큰을 가져옵니다.
   if (token) {

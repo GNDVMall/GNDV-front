@@ -27,7 +27,7 @@ export default {
   emits: ['orderCreated'],
   setup(props, { emit }) {
     const createOrder = async () => {
-      const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcyMTA3MDA4MiwiZW1haWwiOiJzYWRhc2Rhc2RAbmF2ZXIuY29tIn0._fVdG63zym1iRb_ZXJeFEAjwReRz8ZYL6plSvw61A6LVkX3ukn2TLDZmQlFxL9eWWAbi_FNcQFXn2GnVNUmt-QeyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcyMTA2ODQxMiwiZW1haWwiOiIxMTExQG5hdmVyLmNvbSJ9.R0GysD-ISeKktJZhzXnPMwrGbm8dRROO1QBiGGgZHTvYeNUcahbMorMRM-3GhKYeASdzFlu0Cuf2Biim3F0qFw'; // 여기에 포스트맨에서 받은 JWT 토큰을 하드코딩합니다.
+      const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcyMTA5MTIxNiwiZW1haWwiOiIxMTExQG5hdmVyLmNvbSJ9.DNaFUwa9i7fGgE3mVxvs3RHwz9M6QTKH45g6HN5TT5U90_YNG_3NCW-mWhvEftfuwlMtFFYk8ne5NvECOx2wjw'; // 여기에 포스트맨에서 받은 JWT 토큰을 하드코딩합니다.
       const headers = {
         'X-Requested-With': 'XMLHttpRequest',
         'Content-Type': 'application/json',

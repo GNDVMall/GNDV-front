@@ -10,6 +10,8 @@ import WishView from '../views/WishView.vue'
 import TestProductDetail from '../views/TestProductDetail.vue'
 import TestProductList from '../views/TestProductList.vue'
 import PurchaseList from '../views/PurchaseList.vue';
+import OrderTest from '../views/OrderTest.vue';
+import PaymentTest from '../views/PaymentTest.vue';
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
 
@@ -60,6 +62,16 @@ const router = createRouter({
       path: '/purchaseList',
       name: 'PurchaseList',
       component: PurchaseList,
+    },
+    {
+      path: '/order-test',
+      name: 'OrderTest',
+      component: OrderTest,
+    },
+    {
+      path: '/payment-test',
+      name: 'PaymentTest',
+      component: PaymentTest,
     },
   ]
 })

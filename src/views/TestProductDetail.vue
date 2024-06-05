@@ -12,6 +12,26 @@
       :price="product.price"
       :itemName="product.title"
     />
+    <router-link 
+      :to="{
+        name: 'OrderTest',
+        query: {
+          productId: product.product_id,
+          price: product.price,
+          itemName: product.title
+        }
+      }" 
+      class="mt-4 inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+    >
+      Order Test
+    </router-link>
+    <button 
+      v-if="orderUid"
+      @click="navigateToPaymentTest"
+      class="mt-4 inline-block bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700 transition"
+    >
+      페이먼트 테스트 하기
+    </button>
   </div>
   <div v-else class="container mx-auto p-4">
     <p>상품을 불러오는 중입니다...</p>
@@ -20,7 +40,7 @@
 
 <script>
 import { ref, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import PaymentButton from '../components/payments/PaymentButton.vue';
 import { useAxios } from '@/utils/axios.js';
 
@@ -30,7 +50,9 @@ export default {
   },
   setup() {
     const route = useRoute();
+    const router = useRouter();
     const product = ref(null);
+    const orderUid = ref('');
 
     const { data, error, retry } = useAxios('get', `/api/v2/products?product_id=${route.params.productId}`, null);
 
@@ -44,8 +66,22 @@ export default {
       }
     });
 
+    const navigateToPaymentTest = () => {
+      router.push({
+        name: 'PaymentTest',
+        query: {
+          orderUid: orderUid.value,
+          productId: product.value.product_id,
+          price: product.value.price,
+          itemName: product.value.title
+        }
+      });
+    };
+
     return {
       product,
+      orderUid,
+      navigateToPaymentTest,
     };
   },
 };
