@@ -13,7 +13,7 @@
         <!-- Title -->
         <ItemTitle :title="data.title" :subTitle="'시리즈쿼리문수정'" />
         <div>
-          <p class="text-3xl font-bold">{{ data.price }}</p>
+          <p class="text-3xl font-bold">{{ formatKoreanCurrency(data.price) }}원</p>
           <div class="text-sm opacity-60"><span>{{ getDaysAgo(data.created_at) }}일 전</span> | <span>조회 {{ data.view_count }}</span></div>
         </div>
         <div class="flex w-full gap-4 lg:justify-start flex-initial flex-wrap justify-start">
@@ -63,6 +63,7 @@ import { onMounted, ref } from 'vue'
 import { instance } from '@/utils/axios'
 import { useRoute } from 'vue-router'
 import { getDaysAgo } from '@/utils/dateUtils'
+import { formatKoreanCurrency } from '@/utils/currency'
 
 const route = useRoute()
 const data = ref(null)
