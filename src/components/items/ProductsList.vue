@@ -12,7 +12,7 @@
       :key="product.product_id"
       :href="`/products/${product.product_id}`"
       :title="product.title"
-      :image-url="product.images && product.images[0] || 'https://picsum.photos/550'"
+      :image-url="product.images && product.images[0] || 'https://kr.object.ncloudstorage.com/gndv/placeholder/300x300.svg'"
       :price="`${product.price}원`"
       :is-new="product.product_status === 'NEW' ? true : false"
       :created-at="product.created_at"

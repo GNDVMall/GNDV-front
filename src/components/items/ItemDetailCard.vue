@@ -10,7 +10,7 @@
     <!-- 정보 -->
     <div class="flex flex-col md:border-l flex-auto md:pl-10 gap-5">
       <!-- Title -->
-      <ItemTitle :title="data.item_name" :subTitle="'아이디어'" />
+      <ItemTitle :title="data.item_name" :subTitle="data.theme_name" />
       
       <div class="flex w-full gap-4 lg:justify-between flex-initial flex-wrap justify-start">
         <!-- 설명들 -->
