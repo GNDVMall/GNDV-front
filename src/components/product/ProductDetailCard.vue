@@ -5,7 +5,7 @@
       <!-- 이미지 -->
       <ItemImage
         :alt="data.title"
-        :url="data.images.length > 0 ? data.images[0]: ''"
+        :url="data.images?.length > 0 ? data.images[0]: 'https://placehold.co/500x500'"
       />
 
       <!-- 정보 -->
