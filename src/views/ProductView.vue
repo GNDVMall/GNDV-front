@@ -9,8 +9,5 @@ import ProductDetailCard from '@/components/product/ProductDetailCard.vue'
   <main>
     <!-- 상단 Product 정보 -->
     <ProductDetailCard />
-    
-    <!-- 추천 상품 목록 -->
-    <ProductsList />
   </main>
 </template>
