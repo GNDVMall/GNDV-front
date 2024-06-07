@@ -1,18 +1,21 @@
 <script setup>
-import { RouterView } from 'vue-router'
-import LayoutVue from './components/common/Layout.vue'
+import { RouterView } from 'vue-router';
+import LayoutVue from './components/common/Layout.vue';
+import { onErrorCaptured, ref } from 'vue';
 
-import { onErrorCaptured, ref } from 'vue'
-const hasError = ref(false)
-const errorCode = ref(null)
+const hasError = ref(false);
+const errorCode = ref(null);
 
 onErrorCaptured((e) => {
-  console.error(e)
-  hasError.value = true
-  errorCode.value = e.response.data || 403;
-  return false
-})
-
+  console.error(e);
+  hasError.value = true;
+  if (e.response && e.response.data) {
+    errorCode.value = e.response.data;
+  } else {
+    errorCode.value = 403; // 기본 에러 코드 설정
+  }
+  return false;
+});
 </script>
 
 <template>

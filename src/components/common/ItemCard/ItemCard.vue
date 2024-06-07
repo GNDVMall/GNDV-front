@@ -2,7 +2,7 @@
   <div class="lg:max-w-sm rounded overflow-hidden">
     <a :href="href">
       <!-- img -->
-      <div class="w-full max-h-md-sm md:max-w-64 md:max-h-64 aspect-square  place-content-center flex">
+      <div class="w-full max-h-md-sm md:max-w-64 md:max-h-64 aspect-square place-content-center flex">
         <img class="w-full object-cover" :src="imageUrl" :alt="title">
       </div>
       <!-- title -->
@@ -12,7 +12,6 @@
           :title="title" 
           class="text-gray-700 text-sm text-ellipsis overflow-hidden break-words line-clamp-2">{{ title }}</p>
       </div>
-
       <!-- price -->
       <div class="px-1 pb-3">
         <div class="flex flex-col">
@@ -24,25 +23,30 @@
           <span class="text-xs opacity-60">정가</span>
         </div>
         <div class="flex flex-col mt-1">
-          <span class="text-xs opacity-60"><i class="fa-regular fa-bookmark mr-2"></i>{{ bookmark }}</span>
+          <span class="text-xs opacity-60">
+            <i class="fa-regular fa-bookmark mr-2"></i>{{ bookmark }}
+          </span>
         </div>
       </div>
-  </a>
+    </a>
+    <WishListButton :productId="productId" />
   </div>
 </template>
 
 <script setup>
+import WishListButton from './WishListButton.vue';
+
 const props = defineProps({
-  href:String,
+  href: String,
   title: String,
   series: String,
   bookmark: String,
   description: String,
   originalPrice: String,
   avgPrice: String,
-  imageUrl: String
+  imageUrl: String,
+  productId: Number
 })
-
 </script>
 
 <style scoped></style>
