@@ -1,27 +1,30 @@
 <template>
-  <div class="md:grid md:grid-cols-10 min-h-screen mt-7">
+  <div class="md:grid md:grid-cols-10 min-h-[calc(100vh-90px)]">
+    <!-- SIDEBAR -->
     <button 
       @click="toggleSidebar"
-      class="hover:text-white hover:bg-blue-300 md:hidden w-10 h-10 text-blue-300 p-1 ml-2 border border-gray-300 rounded-xl">
-      <i class="text-xl fa-solid fa-comments"></i>
+      class="group hover:text-white hover:bg-blue-300 md:hidden w-full h-10 text-blue-300 p-1 border border-gray-300">
+      <i class="text-xl fa-solid fa-comments mr-2"></i><span class="text-gray-500 group-hover:text-white">채팅방 목록</span>
     </button>
     <div 
-      :class="['md:col-span-3 bg-gray-200 p-4', {'fixed inset-0 z-10 flex justify-center items-center bg-gray-200': isSidebarOpen, 'hidden md:grid': !isSidebarOpen}]">
-      <!-- 사이드바 -->
-      사이드바
+      :class="['md:col-span-3 bg-white', {'fixed inset-0 z-10 flex justify-center': isSidebarOpen, 'hidden md:grid': !isSidebarOpen}]">
+      <ChatSide />
       <button @click="toggleSidebar" class="absolute top-4 right-4 w-10 h-10 md:hidden">
         <i class="fa-solid fa-times"></i>
       </button>
     </div>
-    <div class="md:col-span-7 bg-white p-4">
-      <!-- 메인 콘텐츠 -->
-      메인 콘텐츠
+
+    <!-- MAIN -->
+    <div class="md:col-span-7 relative bg-white">
+      <ChatMain />
     </div>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
+import ChatSide from '@/components/chat/ChatSide.vue'
+import ChatMain from '@/components/chat/ChatMain.vue'
 
 const isSidebarOpen = ref(false);
 
