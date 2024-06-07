@@ -7,9 +7,9 @@
       <i class="text-xl fa-solid fa-comments mr-2"></i><span class="text-gray-500 group-hover:text-white">채팅방 목록</span>
     </button>
     <div 
-      :class="['md:col-span-3 bg-white', {'fixed inset-0 z-10 flex justify-center': isSidebarOpen, 'hidden md:grid': !isSidebarOpen}]">
+      :class="['md:col-span-3 bg-white', {'fixed inset-0 z-50 flex justify-center': isSidebarOpen, 'hidden md:grid': !isSidebarOpen}]">
       <ChatSide />
-      <button @click="toggleSidebar" class="absolute top-4 right-4 w-10 h-10 md:hidden">
+      <button @click="toggleSidebar" class="absolute top-4 right-4 w-10 h-10 md:hidden z-50">
         <i class="fa-solid fa-times"></i>
       </button>
     </div>

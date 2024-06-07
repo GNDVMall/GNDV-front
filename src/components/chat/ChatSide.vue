@@ -1,5 +1,5 @@
 <template>
-  <aside class="border-r border-gray-300">
+  <aside class="border-r border-gray-300 z-50">
     <header class="h-16 w-full text-base font-bold pt-5 border-b border-gray-300">
       내 닉네임
     </header>
@@ -95,7 +95,13 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
 import ChatRoomSideItem from '@/components/chat/ChatRoomSideItem.vue'
+const isSidebarOpen = ref(false)
+
+const toggleSidebar = () => {
+  isSidebarOpen.value = !isSidebarOpen.value;
+};
 
 </script>
 

@@ -5,7 +5,7 @@
       <span v-if="props.type === 'sent'" class="text-sm text-gray-500 mt-2">
         오후 3:44
       </span>
-      <div :class="['p-3 rounded-lg max-w-96', bubbleClass]">
+      <div :class="['p-3 rounded-lg max-w-60', bubbleClass]">
         <p class="text-gray-800">
           오 제가 꼭 구매하고싶어요! 직거래 하시나요??
           오 제가 꼭 구매하고싶어요! 직거래 하시나요??
