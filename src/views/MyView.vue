@@ -1,19 +1,16 @@
 <template>
-  <main>
-    <div>
-      <div>
-        <router-link to="/my/purchase">구매 내역</router-link>
-      </div>
-      <div>
-        <router-link to="/my/sales">판매 내역</router-link>
-      </div>
-
-    <!-- 다른 링크들... -->
-    <router-view></router-view>
+  <div class="flex min-h-screen">
+    <Sidebar />
+    <div class="flex-1 p-8">
+      <router-view />
+    </div>
   </div>
-  </main>
 </template>
 
 <script setup>
-
+import Sidebar from '@/components/common/Sidebar.vue';
 </script>
+
+<style scoped>
+/* Custom styles can be added here if needed */
+</style>
