@@ -20,7 +20,6 @@
           <!-- 설명들 -->
           <ItemSubInfo :text="'제품 상태'" :type="'right'" :subText="data.productStatus === 'NEW' ? '새 상품' : '중고'" />
           <ItemSubInfo :text="'거래 방식'" :subText="getTradeOptionString(data.productTradeOpt1, data.productTradeOpt2)" />
-          <!-- <ItemSubInfo :text="'안전 거래'" :subText="'미사용'" /> -->
         </div>
 
         <div class="w-full flex gap-4 lg:flex-row flex-col mb-5">
@@ -28,20 +27,21 @@
           <Button :text="'채팅 하기'" :clickHandler="onClickHandler">
             <i class="fa-solid fa-comments"></i>
           </Button>
+          <!-- 데이터가 있을 때만 PaymentButton 렌더링 -->
           <PaymentButton
-            :productId="data.productId"
+            v-if="data.product_id && data.price && data.title"
+            :productId="data.product_id"
             :price="data.price"
             :itemName="data.title"
             @paymentSuccess="handlePaymentSuccess"
           />
-          <WishListButton :itemId="data.productId" />
         </div>
 
         <!-- 사용자 정보 -->
         <UserInfo 
-          :href="`/users/${data.memberId}`"
+          :href="`/users/${data.member_id}`"
           :rating="data.rating"
-          :url="data.profileUrl"
+          :url="data.profile_url"
           :nickname="data.nickname"
           :introduce="data.introduction"
         />
@@ -81,9 +81,9 @@ const fetchData = async () => {
   try {
     const res = await instance.get(`/products/${route.params.id}`)
     data.value = res.data.data
-    console.log("data", res.data.data)
+    console.log("Product Data:", res.data.data)
   } catch (error) {
-    throw error
+    console.error('Error fetching product detail:', error)
   } finally {
     loading.value = false
   }
@@ -101,6 +101,11 @@ const getTradeOptionString = (opt1, opt2) => {
 const handlePaymentSuccess = (paymentResult) => {
   paymentData.value = paymentResult
   console.log('Payment Data:', paymentData.value)
+}
+
+const onClickHandler = () => {
+  // 채팅하기 버튼 클릭 핸들러
+  console.log('채팅하기 버튼 클릭됨')
 }
 </script>
 
