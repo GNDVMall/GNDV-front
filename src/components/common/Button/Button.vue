@@ -29,11 +29,10 @@ const buttonClasses = computed(() => {
     default: 'border-gray-300 text-gray-700 bg-white',
     blue: 'border-blue-500 text-white bg-blue-500',
     gray: 'border-gray-500 text-white bg-gray-500',
-    green:'border-green-500 text-white bg-green-500'
+    green: 'border-green-500 text-white bg-green-500'
   };
   return `${baseClasses} ${typeClasses[props.type] || typeClasses.default}`;
 });
-
 </script>
 
 <style scoped></style>
