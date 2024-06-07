@@ -8,15 +8,14 @@ import LoginView from '../views/LoginView.vue'
 import NoticeView from '../views/NoticeView.vue'
 import WishView from '../views/WishView.vue'
 import ItemView from '../views/ItemView.vue'
-import ProductView from '../views/ProductView.vue'
 import TestView from '../views/TestView.vue'
 import PaymentTest from '@/views/PaymentTest.vue'
 import TestProductDetail from '@/views/TestProductDetail.vue'
 import TestProductList from '@/views/TestProductList.vue'
-import TestLoginComponent from '@/components/payments/TestLoginComponent.vue'
 import OrderTest from '@/views/OrderTest.vue' // OrderTest 뷰 추가
 import OrderHistory from '@/components/order/OrderHistory.vue'
-
+import ProductDetailCard from '@/components/product/ProductDetailCard.vue'
+import SalesHistory from '@/components/order/SalesHistory.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
 
@@ -36,6 +35,11 @@ const router = createRouter({
           path: 'purchase',
           name: 'purchase',
           component: OrderHistory
+        }
+        ,{
+          path:'sales',
+          name:'sales',
+          component: SalesHistory
         }
       ]
     },
@@ -67,7 +71,7 @@ const router = createRouter({
     {
       path:'/products/:id',
       name:'product',
-      component: ProductView
+      component: ProductDetailCard
     },
     {
       path:'/test',
