@@ -10,6 +10,11 @@ import WishView from '../views/WishView.vue'
 import ItemView from '../views/ItemView.vue'
 import ProductView from '../views/ProductView.vue'
 import TestView from '../views/TestView.vue'
+import PaymentTest from '@/views/PaymentTest.vue'
+import TestProductDetail from '@/views/TestProductDetail.vue'
+import TestProductList from '@/views/TestProductList.vue'
+import TestLoginComponent from '@/components/payments/TestLoginComponent.vue'
+import OrderTest from '@/views/OrderTest.vue' // OrderTest 뷰 추가
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -60,9 +65,33 @@ const router = createRouter({
       path:'/test',
       name:'test',
       component: TestView
+    },
+    {
+      path:'/payment',
+      name:'payment',
+      component: PaymentTest
+    },
+    {
+      path:'/testproduct/:id',
+      name:'testproduct',
+      component: TestProductDetail
+    },
+    {
+      path:'/testproductlist',
+      name:'testproductlist',
+      component: TestProductList
+    },
+    {
+      path: '/order-test',
+      name: 'OrderTest',
+      component: OrderTest
+    },
+    {
+      path: '/payment-test',
+      name: 'PaymentTest',
+      component: PaymentTest
     }
   ]
 })
 
 export default router
-
