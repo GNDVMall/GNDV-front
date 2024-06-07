@@ -7,7 +7,7 @@ export const instance = axios.create({
   headers:{
     "X-Requested-With":"XMLHttpRequest",
     "Content-Type":"application/json",
-    "Authorization":"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcyMTI3NDYxOSwiZW1haWwiOiIxMTExQG5hdmVyLmNvbSJ9.CoSNgOTIhqdWKNhhJEN-namMiRpM4mHO5AQlbDl_bWPmypULpKPgS74MxYZO6JtBU8hYkmoCEEwYw150wo1ZCg"
+    "Authorization":`Bearer ${localStorage.getItem('authToken')}`
   }
 });
 
