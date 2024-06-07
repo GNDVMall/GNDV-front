@@ -25,7 +25,7 @@
 
         <div class="w-full flex gap-4 lg:flex-row flex-col mb-5">
           <!-- 버튼들 -->
-          <Button :text="'채팅 하기'" :clickHandler="onClickHandelr">
+          <Button :text="'채팅 하기'" :clickHandler="handleChat">
             <i class="fa-solid fa-comments"></i>
           </Button>
           <PaymentButton
@@ -69,6 +69,7 @@ import { instance } from '@/utils/axios'
 import { useRoute } from 'vue-router'
 import { getDaysAgo } from '@/utils/dateUtils'
 import { formatKoreanCurrency } from '@/utils/currency'
+import router from '@/router'
 
 const route = useRoute()
 const data = ref(null)
@@ -100,6 +101,23 @@ const getTradeOptionString = (opt1, opt2) => {
 const handlePaymentSuccess = (paymentResult) => {
   paymentData.value = paymentResult
   console.log('Payment Data:', paymentData.value)
+}
+
+const handleChat = async () => {
+  // 채팅방 존재 여부 미리 체크
+  const { data: chatroomid } = await instance.get(`/chat/check?product_id=${data.value.product_id
+}`);
+
+  if(!chatroomid.data){
+    // 채팅방 생성 후 이동
+    const { data: createdChatRoom } = await instance.post(`/chat`,{
+      product_id: data.value.product_id,
+    })
+    router.push(`/chat/${createdChatRoom.data.chatRoomId}`)
+  }else{
+    // 바로 이동
+    router.push(`/chat/${chatroomid.data}`)
+  }
 }
 </script>
 
