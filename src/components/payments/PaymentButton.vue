@@ -1,7 +1,7 @@
 <template>
-  <button @click="handlePayment" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
-    안전거래
-  </button>
+  <Button :text="'안전 거래'" :type="'green'" :clickHandler="handlePayment">
+    <i class="fa-solid fa-money-check-dollar"></i>
+  </Button>
 </template>
 
 <script>
@@ -9,6 +9,7 @@ import { instance } from '@/utils/axios.js';
 import { loadIamportScript } from '@/utils/importIamport';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import Button from '@/components/common/Button/Button.vue';
 
 export default {
   props: {
@@ -24,6 +25,9 @@ export default {
       type: String,
       required: true,
     },
+  },
+  components: {
+    Button
   },
   setup(props, { emit }) {
     const router = useRouter();
