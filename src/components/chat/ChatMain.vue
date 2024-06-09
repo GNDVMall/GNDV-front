@@ -29,14 +29,56 @@ import ChatHeader from '@/components/chat/ChatHeader.vue'
 import ChatItemCard from '@/components/chat/ChatItemCard.vue'
 import ChatMessage from '@/components/chat/ChatMessage.vue'
 import ChatInput from '@/components/chat/ChatInput.vue'
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, onUnmounted, ref, watch } from 'vue';
 import instance from '@/utils/axios';
 import { useRoute } from 'vue-router';
+import { Client } from '@stomp/stompjs'
 
 const route = useRoute()
 const headerData = ref(null)
 const messages = ref(null)
 const loading = ref(false)
+
+const stompClient = new Client({
+  brokerURL: 'ws://localhost:8080/api/v2/gndv-websocket',
+})
+
+stompClient.onConnect = (frame) => {
+  console.log('Connected: ', frame)
+
+  stompClient.subscribe(`/topic/${route.params.id}`, (message) => {
+    console.log("받은 메시지", message)
+    // 받은 메시지
+  })
+}
+
+stompClient.onWebSocketError = (error) => {
+  console.error('Error with websocket', error)
+}
+
+stompClient.onStompError = (frame) => {
+  console.error('Broker reported error: ' + frame.headers['message'])
+  console.error('Additional details: ' + frame.body)
+}
+
+const connect = () => {
+  stompClient.activate()
+}
+
+const disconnect = () => {
+  stompClient.deactivate()
+  console.log('Disconnected')
+}
+
+const send = () => {
+  stompClient.publish({
+    destination: `/api/v2/chat/send/${route.params.id}`,
+    body: JSON.stringify({
+      content: message.value,
+      email: '1111@naver.com',
+    }),
+  })
+}
 
 const fetchData = async () => {
   loading.value = true
@@ -45,7 +87,6 @@ const fetchData = async () => {
     const res2 = await instance.get(`/chat/${route.params.id}/messages`)
     headerData.value = res.data.data
     messages.value = res2.data.data
-    console.log("res222", res2.data.data)
   } catch (error) {
     throw error
   } finally {
@@ -53,10 +94,18 @@ const fetchData = async () => {
   }
 }
 
-onMounted(fetchData)
+
+
+onMounted(()=>{
+  fetchData()
+  connect()
+})
+
+onUnmounted(disconnect)
 
 watch(() => route.params.id, () => {
-  fetchData();
+  fetchData()
+  // connect()
 });
 
 </script>
