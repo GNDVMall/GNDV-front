@@ -1,15 +1,15 @@
 <template>
-  <header
+  <header v-if="!props.loading && props"
     class=" h-16 w-full text-base font-bold px-5 py-1 flex items-center justify-between border-b border-gray-300">
     <!-- 상대방 정보 -->
     <div class="flex items-center">
-      <img v-if="profile_url" :src="profile_url" class="rounded-full object-cover" alt="프로필" />
+      <img v-if="props.profile_url" :src="props.profile_url" class="w-10 h-10 rounded-full object-cover" alt="프로필" />
       <div v-else class="w-10 h-10 rounded-full bg-gray-300"></div>
-      <div class="ml-3">상대방 닉네임</div>
+      <div class="ml-3">{{props.nickname}}</div>
     </div>
 
     <!-- 메뉴바 - 자신이 판매자인 경우에만 나와야함 -->
-    <div class="z-30">
+    <div class="z-30" v-if="props.chat_user_type !== 'SELLER'">
       <button @click="toggleMenu" class="w-7 h-7 text-xl">
         <i class="fa-solid fa-bars"></i>
       </button>
@@ -33,6 +33,13 @@
 
 <script setup>
 import { ref } from 'vue';
+
+const props = defineProps({
+  nickname: String,
+  userType:String,
+  profileUrl: String
+})
+
 
 const isMenuOpen = ref(false);
 const toggleMenu = ()=>{

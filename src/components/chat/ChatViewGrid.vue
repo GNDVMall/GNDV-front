@@ -31,6 +31,7 @@ const isSidebarOpen = ref(false);
 const toggleSidebar = () => {
   isSidebarOpen.value = !isSidebarOpen.value;
 };
+
 </script>
 
 <style>

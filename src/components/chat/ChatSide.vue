@@ -3,91 +3,15 @@
     <header class="h-16 w-full text-base font-bold pt-5 border-b border-gray-300">
       내 닉네임
     </header>
-    <ul class="overflow-y-auto max-h-[calc(100vh-160px)] custom-scrollbar">
-      <li>
+    <ul v-if="!loading && data" class="overflow-y-auto max-h-[calc(100vh-160px)] custom-scrollbar">
+      <li v-for="item in data.list">
         <ChatRoomSideItem 
-          :message="'저는 쥐를 사랑해요'"
-          :nickname="'쥐사랑단'"
-          :profile_url="'https://labanimal.co.kr/wp-content/uploads/2022/03/Donryu-1.jpg'"
-          :timestamp="'2024-03-01'"
-          :unread_count="4"
-        />
-        <ChatRoomSideItem 
-          :message="'저는 쥐를 사랑해요'"
-          :nickname="'쥐사랑단'"
-          :profile_url="'https://labanimal.co.kr/wp-content/uploads/2022/03/Donryu-1.jpg'"
-          :timestamp="'2024-03-01'"
-          :unread_count="4"
-        />
-        <ChatRoomSideItem 
-          :message="'저는 쥐를 사랑해요'"
-          :nickname="'쥐사랑단'"
-          :profile_url="'https://labanimal.co.kr/wp-content/uploads/2022/03/Donryu-1.jpg'"
-          :timestamp="'2024-03-01'"
-          :unread_count="4"
-        />
-        <ChatRoomSideItem 
-          :message="'저는 쥐를 사랑해요'"
-          :nickname="'쥐사랑단'"
-          :profile_url="'https://labanimal.co.kr/wp-content/uploads/2022/03/Donryu-1.jpg'"
-          :timestamp="'2024-03-01'"
-          :unread_count="4"
-        />
-        <ChatRoomSideItem 
-          :message="'저는 쥐를 사랑해요'"
-          :nickname="'쥐사랑단'"
-          :profile_url="'https://labanimal.co.kr/wp-content/uploads/2022/03/Donryu-1.jpg'"
-          :timestamp="'2024-03-01'"
-          :unread_count="4"
-        />
-        <ChatRoomSideItem 
-          :message="'저는 쥐를 사랑해요'"
-          :nickname="'쥐사랑단'"
-          :profile_url="'https://labanimal.co.kr/wp-content/uploads/2022/03/Donryu-1.jpg'"
-          :timestamp="'2024-03-01'"
-          :unread_count="4"
-        />
-        <ChatRoomSideItem 
-          :message="'저는 쥐를 사랑해요'"
-          :nickname="'쥐사랑단'"
-          :profile_url="'https://labanimal.co.kr/wp-content/uploads/2022/03/Donryu-1.jpg'"
-          :timestamp="'2024-03-01'"
-          :unread_count="4"
-        />
-        <ChatRoomSideItem 
-          :message="'저는 쥐를 사랑해요'"
-          :nickname="'쥐사랑단'"
-          :profile_url="'https://labanimal.co.kr/wp-content/uploads/2022/03/Donryu-1.jpg'"
-          :timestamp="'2024-03-01'"
-          :unread_count="4"
-        />
-        <ChatRoomSideItem 
-          :message="'저는 쥐를 사랑해요'"
-          :nickname="'쥐사랑단'"
-          :profile_url="'https://labanimal.co.kr/wp-content/uploads/2022/03/Donryu-1.jpg'"
-          :timestamp="'2024-03-01'"
-          :unread_count="4"
-        />
-        <ChatRoomSideItem 
-          :message="'저는 쥐를 사랑해요'"
-          :nickname="'쥐사랑단'"
-          :profile_url="'https://labanimal.co.kr/wp-content/uploads/2022/03/Donryu-1.jpg'"
-          :timestamp="'2024-03-01'"
-          :unread_count="4"
-        />
-        <ChatRoomSideItem 
-          :message="'저는 쥐를 사랑해요'"
-          :nickname="'쥐사랑단'"
-          :profile_url="'https://labanimal.co.kr/wp-content/uploads/2022/03/Donryu-1.jpg'"
-          :timestamp="'2024-03-01'"
-          :unread_count="4"
-        />
-        <ChatRoomSideItem 
-          :message="'저는 쥐를 사랑해요'"
-          :nickname="'쥐사랑단'"
-          :profile_url="'https://labanimal.co.kr/wp-content/uploads/2022/03/Donryu-1.jpg'"
-          :timestamp="'2024-03-01'"
-          :unread_count="4"
+          :key="item.chatroom_id"
+          :message="item.chat_content || '아직 메시지가 없습니다.'"
+          :nickname="item.nickname"
+          :profile_url="item.profile_url"
+          :timestamp="formatDateWithTime(item.updated_at || new Date())"
+          :unread_count="0"
         />
       </li>
     </ul>
@@ -95,13 +19,30 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
+import { useRoute } from 'vue-router';
 import ChatRoomSideItem from '@/components/chat/ChatRoomSideItem.vue'
-const isSidebarOpen = ref(false)
+import instance from '@/utils/axios';
+import { formatDateWithTime } from '@/utils/dateUtils';
 
-const toggleSidebar = () => {
-  isSidebarOpen.value = !isSidebarOpen.value;
-};
+const route = useRoute()
+const data = ref(null)
+const loading = ref(false)
+
+const fetchData = async () => {
+  loading.value = true
+  try {
+    const res = await instance.get(`/chat`)
+    data.value = res.data.data
+    console.log("data", res.data.data)
+  } catch (error) {
+    throw error
+  } finally {
+    loading.value = false
+  }
+}
+
+onMounted(fetchData)
 
 </script>
 

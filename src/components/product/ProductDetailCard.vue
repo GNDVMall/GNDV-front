@@ -34,7 +34,6 @@
             :itemName="data.title"
             @paymentSuccess="handlePaymentSuccess"
           />
-          <WishListButton :itemId="data.productId" />
         </div>
 
         <!-- 사용자 정보 -->
@@ -64,7 +63,6 @@ import ItemImage from '@/components/items/ItemImage.vue'
 import Button from '@/components/common/Button/Button.vue'
 import UserInfo from '@/components/product/UserInfo.vue'
 import PaymentButton from '@/components/payments/PaymentButton.vue'
-import WishListButton from '@/components/common/ItemCard/WishListButton.vue'
 import { onMounted, ref } from 'vue'
 import { instance } from '@/utils/axios'
 import { useRoute } from 'vue-router'
