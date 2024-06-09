@@ -35,6 +35,7 @@ import { onMounted, onUnmounted, ref, watch } from 'vue';
 import instance from '@/utils/axios';
 import { useRoute } from 'vue-router';
 import { Client } from '@stomp/stompjs'
+import { store } from '@/store/store';
 
 const route = useRoute()
 const headerData = ref(null)
@@ -49,10 +50,20 @@ const stompClient = new Client({
 stompClient.onConnect = (frame) => {
   console.log('Connected: ', frame)
 
+
   stompClient.subscribe(`/topic/${route.params.id}`, (message) => {
     // 받은 메시지
     const messageBody = JSON.parse(message.body)
     console.log("받은 메시지", messageBody)
+    console.log("store.user.email", messageBody.email === localStorage.getItem('email'))
+
+    messages.value.list.push({
+      message_id: messageBody.message_id,
+      chat_content: messageBody.content,
+      sent_at: new Date(),
+      // 임시로 로컬스토리지 사용
+      message_type: messageBody.email === localStorage.getItem('email')? "SENT" : "RECEIVE"
+    })
 
   })
 }
@@ -108,10 +119,14 @@ onMounted(()=>{
   connect()
 })
 
-onUnmounted(disconnect)
+onUnmounted(()=>{
+  disconnect()
+})
 
 watch(() => route.params.id, () => {
+  disconnect()
   fetchData()
+  connect()
 });
 
 </script>
