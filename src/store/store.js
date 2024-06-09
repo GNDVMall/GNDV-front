@@ -3,7 +3,7 @@ import { reactive } from 'vue';
 export const store = reactive({
   user: {
     memberId: null,
-    // other user info
+    email: null
   },
   token: null
 });
