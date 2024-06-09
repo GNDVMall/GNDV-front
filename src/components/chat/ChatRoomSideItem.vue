@@ -1,5 +1,5 @@
 <template>
-  <button class="w-full">
+  <button @click="changeRoom" class="w-full">
     <div class="flex items-center p-4 border-b shadow-sm">
       <img v-if="profile_url" :src="profile_url" class="w-12 h-12 rounded-full object-cover" alt="프로필" />
       <div v-else class="w-10 h-10 rounded-full bg-gray-300"></div>
@@ -21,8 +21,15 @@ const props = defineProps({
   timestamp: String,
   message: String,
   unread_count: Number,
-  profile_url: String
+  profile_url: String,
+  roomId: Number
 })
+
+const emit = defineEmits(['changeRoom'])
+
+const changeRoom = ()=>{
+  emit('changeRoom', props.roomId)
+}
 </script>
 
 <style>

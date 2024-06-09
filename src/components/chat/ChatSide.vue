@@ -1,11 +1,12 @@
 <template>
   <aside class="border-r border-gray-300 z-50">
     <header class="h-16 w-full text-base font-bold pt-5 border-b border-gray-300">
-      내 닉네임
     </header>
     <ul v-if="!loading && data" class="overflow-y-auto max-h-[calc(100vh-160px)] custom-scrollbar">
       <li v-for="item in data.list">
         <ChatRoomSideItem 
+          @changeRoom="changeRoom"
+          :roomId="item.chatroom_id"
           :key="item.chatroom_id"
           :message="item.chat_content || '아직 메시지가 없습니다.'"
           :nickname="item.nickname"
@@ -20,12 +21,12 @@
 
 <script setup>
 import { onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
 import ChatRoomSideItem from '@/components/chat/ChatRoomSideItem.vue'
 import instance from '@/utils/axios';
 import { formatDateWithTime } from '@/utils/dateUtils';
 
-const route = useRoute()
+const router = useRouter();
 const data = ref(null)
 const loading = ref(false)
 
@@ -34,12 +35,15 @@ const fetchData = async () => {
   try {
     const res = await instance.get(`/chat`)
     data.value = res.data.data
-    console.log("data", res.data.data)
   } catch (error) {
     throw error
   } finally {
     loading.value = false
   }
+}
+
+const changeRoom = (roomId)=>{
+  router.push({path:`/chat/${roomId}`})
 }
 
 onMounted(fetchData)

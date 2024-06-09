@@ -29,7 +29,7 @@ import ChatHeader from '@/components/chat/ChatHeader.vue'
 import ChatItemCard from '@/components/chat/ChatItemCard.vue'
 import ChatMessage from '@/components/chat/ChatMessage.vue'
 import ChatInput from '@/components/chat/ChatInput.vue'
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import instance from '@/utils/axios';
 import { useRoute } from 'vue-router';
 
@@ -54,6 +54,10 @@ const fetchData = async () => {
 }
 
 onMounted(fetchData)
+
+watch(() => route.params.id, () => {
+  fetchData();
+});
 
 </script>
 
