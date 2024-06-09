@@ -8,15 +8,19 @@ import { onMounted, ref } from 'vue';
 import Editor from '@toast-ui/editor';
 import '@toast-ui/editor/dist/toastui-editor.css';
 
+
 onMounted(()=>{
   const editor = new Editor({
   el: document.querySelector('#editor'),
   height: '200px',
   initialEditType: 'wysiwyg',
-  previewStyle: 'vertical'
+  previewStyle: 'vertical',
+  toolbarItems: [
+          ['image']
+        ]
 });
 
-editor.getMarkdown();
+  editor.getMarkdown();
 })
 </script>
 
