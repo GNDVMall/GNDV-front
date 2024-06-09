@@ -6,7 +6,7 @@
       <nav class="p-4 space-y-2">
         <router-link to="/my/purchase" class="block text-gray-700 hover:text-blue-500">구매 내역</router-link>
         <router-link to="/my/sales" class="block text-gray-700 hover:text-blue-500">판매 내역</router-link>
-        <router-link to="#" class="block text-gray-700 hover:text-blue-500">관심</router-link>
+        <router-link to="/wish" class="block text-gray-700 hover:text-blue-500">관심</router-link>
       </nav>
       <div class="p-4  ">
         <h3 class="text-md font-semibold">내 정보</h3>
