@@ -19,7 +19,9 @@
           />
       </ol>
       <!-- 입력창 -->
-      <ChatInput />
+      <ChatInput 
+        @enter-pressed="send"
+      />
     </div>
   </div>
 </template>
@@ -40,15 +42,18 @@ const messages = ref(null)
 const loading = ref(false)
 
 const stompClient = new Client({
-  brokerURL: 'ws://localhost:8080/api/v2/gndv-websocket',
+  // brokerURL: 'ws://localhost:8080/api/v2/gndv-websocket',
+  brokerURL: `ws://localhost:8080/gndv-websocket?token=${localStorage.getItem('authToken')}`
 })
 
 stompClient.onConnect = (frame) => {
   console.log('Connected: ', frame)
 
   stompClient.subscribe(`/topic/${route.params.id}`, (message) => {
-    console.log("받은 메시지", message)
     // 받은 메시지
+    const messageBody = JSON.parse(message.body)
+    console.log("받은 메시지", messageBody)
+
   })
 }
 
@@ -70,14 +75,17 @@ const disconnect = () => {
   console.log('Disconnected')
 }
 
-const send = () => {
+// 엔터 이벤트 발생 시, 메시지 전송
+const send = (editor) => {
+  console.log("content", editor.getMarkdown())
   stompClient.publish({
     destination: `/api/v2/chat/send/${route.params.id}`,
     body: JSON.stringify({
-      content: message.value,
-      email: '1111@naver.com',
+      content: editor.getMarkdown(),
+      chatroom_id: route.params.id
     }),
   })
+  editor.setMarkdown('');
 }
 
 const fetchData = async () => {
@@ -95,7 +103,6 @@ const fetchData = async () => {
 }
 
 
-
 onMounted(()=>{
   fetchData()
   connect()
@@ -105,7 +112,6 @@ onUnmounted(disconnect)
 
 watch(() => route.params.id, () => {
   fetchData()
-  // connect()
 });
 
 </script>
