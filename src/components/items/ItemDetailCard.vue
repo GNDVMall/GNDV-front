@@ -23,12 +23,10 @@
 
       <div class="w-full flex gap-4 lg:flex-row flex-col">
         <!-- 버튼들 -->
-        <Button :text="`관심 상품 ${data.wish_count}`" :clickHandler="onClickHandelr">
-          <i class="fa-solid fa-bookmark"></i>
-        </Button>
         <Button :text="'판매 등록'" :type="'green'">
           <i class="fa-solid fa-plus"></i>
         </Button>
+        <WishListButton :item-id="data.item_id" :wish-count="data.wish_count" />
       </div>
 
       <!-- 차트 -->
@@ -42,6 +40,7 @@ import ItemTitle from './ItemTitle.vue';
 import ItemSubInfo from './ItemSubInfo.vue';
 import ItemImage from './ItemImage.vue'
 import Button from '../common/Button/Button.vue';
+import WishListButton from '../wish/WishListButton.vue';
 import { useRoute } from 'vue-router';
 import { formatDate } from '@/utils/dateUtils';
 import { onMounted, ref } from 'vue';
@@ -51,28 +50,19 @@ const route = useRoute()
 const data = ref(null)
 const loading = ref(null)
 
-const fetchData = async ()=>{
+const fetchData = async () => {
   loading.value = true
   try {
     const res = await instance.get(`/items/${route.params.id}`)
     data.value = res.data.data
   } catch (error) {
     throw error
-  }finally{
+  } finally {
     loading.value = false
   }
 }
 
-onMounted(fetchData);
-
-const onClickHandelr = async ()=>{
-  try {
-    await instance.delete("/products/145")
-  } catch (error) {
-    throw error
-  }
-}
-
+onMounted(fetchData)
 </script>
 
 <style scoped></style>
