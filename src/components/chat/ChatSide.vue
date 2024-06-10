@@ -2,7 +2,7 @@
   <aside class="border-r border-gray-300 z-50">
     <header class="h-16 w-full text-base font-bold pt-5 border-b border-gray-300">
     </header>
-    <ul v-if="!loading && data" class="overflow-y-auto max-h-[calc(100vh-160px)] custom-scrollbar">
+    <ul v-if="data" class="overflow-y-auto max-h-[calc(100vh-160px)] custom-scrollbar">
       <li v-for="item in data.list">
         <ChatRoomSideItem 
           @changeRoom="changeRoom"
@@ -20,15 +20,21 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { onMounted, ref, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import ChatRoomSideItem from '@/components/chat/ChatRoomSideItem.vue'
 import instance from '@/utils/axios';
 import { formatDateWithTime } from '@/utils/dateUtils';
 
+const route = useRoute()
 const router = useRouter();
 const data = ref(null)
 const loading = ref(false)
+
+const props = defineProps({
+  rerenderSideBar: Boolean
+})
+
 
 const fetchData = async () => {
   loading.value = true
@@ -46,7 +52,19 @@ const changeRoom = (roomId)=>{
   router.push({path:`/chat/${roomId}`})
 }
 
-onMounted(fetchData)
+onMounted(()=>{
+  fetchData()
+})
+
+
+watch(() => route.params.id, () => {
+  
+  fetchData()
+});
+
+watch(() => props.rerenderSideBar, () => {
+  fetchData();
+});
 
 </script>
 

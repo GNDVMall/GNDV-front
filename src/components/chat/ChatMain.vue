@@ -8,7 +8,9 @@
       @change-product-status="handleChangeProductStatus"
     />
     <!-- 채팅방 -->
-    <div class="w-full max-h-[calc(100vh-90px)] relative overflow-y-auto custom-scrollbar">
+    <div
+      ref="scrollDiv" 
+      class="w-full max-h-[calc(100vh-90px)] relative overflow-y-auto custom-scrollbar">
       <!-- 판매 상품 정보 -->
       <ChatItemCard
         v-if="product"
@@ -42,27 +44,20 @@ import ChatInput from '@/components/chat/ChatInput.vue'
 import { onMounted, onUnmounted, ref, watch } from 'vue';
 import instance from '@/utils/axios';
 import { useRoute } from 'vue-router';
-import { Client } from '@stomp/stompjs'
+import stompClient, { connect, disconnect } from '@/websocket/websocket'
 
+const emit = defineEmits(["upated-room-list"])
 const route = useRoute()
 const product = ref(null)
 const messages = ref(null)
 const loading = ref(false)
+const scrollDiv = ref(null)
 
-const stompClient = new Client({
-  // brokerURL: 'ws://localhost:8080/api/v2/gndv-websocket',
-  brokerURL: `ws://localhost:8080/gndv-websocket?token=${localStorage.getItem('authToken')}`
-})
-
-stompClient.onConnect = (frame) => {
-  console.log('Connected: ', frame)
-
-
+stompClient.onConnect = () => {
   stompClient.subscribe(`/topic/${route.params.id}`, (message) => {
     // 받은 메시지
     const messageBody = JSON.parse(message.body)
     console.log("받은 메시지", messageBody)
-    console.log("store.user.email", messageBody.email === localStorage.getItem('email'))
 
     messages.value.list.push({
       message_id: messageBody.message_id,
@@ -71,27 +66,17 @@ stompClient.onConnect = (frame) => {
       // 임시로 로컬스토리지 사용
       message_type: messageBody.email === localStorage.getItem('email')? "SENT" : "RECEIVE"
     })
+    scrollToBottom()
+  })
 
+  stompClient.subscribe(`/topic/${localStorage.getItem('email')}`, (message) => {
+    // 받은 메시지
+    const messageBody = JSON.parse(message.body)
+    console.log("이메일로 온 메시지", messageBody)
+    emit("upated-room-list")
   })
 }
 
-stompClient.onWebSocketError = (error) => {
-  console.error('Error with websocket', error)
-}
-
-stompClient.onStompError = (frame) => {
-  console.error('Broker reported error: ' + frame.headers['message'])
-  console.error('Additional details: ' + frame.body)
-}
-
-const connect = () => {
-  stompClient.activate()
-}
-
-const disconnect = () => {
-  stompClient.deactivate()
-  console.log('Disconnected')
-}
 
 // 엔터 이벤트 발생 시, 메시지 전송
 const send = (editor) => {
@@ -100,17 +85,28 @@ const send = (editor) => {
     destination: `/api/v2/chat/send/${route.params.id}`,
     body: JSON.stringify({
       content: editor.getMarkdown(),
-      chatroom_id: route.params.id
+      chatroom_id: route.params.id,
+      receiver: product.value.email
     }),
   })
   editor.setMarkdown('')
 }
 
+// 상품 거래 상태 변경
 const handleChangeProductStatus = async (type) => {
   await instance.put(`/products/${product.value.product_id}`,{
     product_sales_status : type,
     email: localStorage.getItem("email")
   })
+}
+
+// 새 메시지가 도착하면 스크롤을 가장 아래로 내림
+const scrollToBottom = () => {
+  if (scrollDiv.value) {
+    setTimeout(() => {
+      scrollDiv.value.scrollTop = scrollDiv.value.scrollHeight
+    }, 10)
+  }
 }
 
 const fetchData = async () => {
