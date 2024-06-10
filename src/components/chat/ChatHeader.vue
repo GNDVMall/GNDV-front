@@ -9,18 +9,18 @@
     </div>
 
     <!-- 메뉴바 - 자신이 판매자인 경우에만 나와야함 -->
-    <div class="z-30" v-if="props.chat_user_type !== 'SELLER'">
+    <div class="z-30" v-if="props.userType !== 'SELLER'">
       <button @click="toggleMenu" class="w-7 h-7 text-xl">
         <i class="fa-solid fa-bars"></i>
       </button>
       <div v-if="isMenuOpen"
         class="bg-gray-200 font-normal p-4 mt-2 rounded-md w-40 text-center absolute top-10 right-0 z-10">
         <div class="text-sm bg-white p-4 rounded-md shadow-md flex flex-col">
-          <button>
-            <div class="border-b border-gray-300 py-2">판매중</div>
+          <button @click="handleChangeProductStatus" :data-type="'SALE'">
+            <div class="border-b border-gray-300 py-2" :data-type="'SALE'">판매중</div>
           </button>
-          <button>
-            <div class="border-b border-gray-300 py-2">거래완료</div>
+          <button @click="handleChangeProductStatus" :data-type="'SOLDOUT'">
+            <div class="border-b border-gray-300 py-2" :data-type="'SOLDOUT'">거래완료</div>
           </button>
           <button>
             <div class="py-2" @click="toggleMenu">닫기</div>
@@ -33,6 +33,7 @@
 
 <script setup>
 import { ref } from 'vue';
+import { defineProps } from 'vue';
 
 const props = defineProps({
   nickname: String,
@@ -40,10 +41,16 @@ const props = defineProps({
   profileUrl: String
 })
 
+const emit = defineEmits(['change-product-status'])
+
 
 const isMenuOpen = ref(false);
 const toggleMenu = ()=>{
   isMenuOpen.value = !isMenuOpen.value;
+}
+
+const handleChangeProductStatus = (e) => {
+  emit('change-product-status', e.target.dataset.type)
 }
 </script>
 

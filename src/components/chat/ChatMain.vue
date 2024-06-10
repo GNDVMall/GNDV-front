@@ -1,15 +1,23 @@
 <template>
   <div class="w-full">
-    <ChatHeader v-if="headerData"
-      :nickname="headerData.nickname"
+    <ChatHeader v-if="product"
+      :nickname="product.nickname"
       :loading="loading"
-      :user-type="headerData.chat_user_type"
-      :profile-url="headerData.profile_url"
+      :user-type="product.chat_user_type"
+      :profile-url="product.profile_url"
+      @change-product-status="handleChangeProductStatus"
     />
     <!-- 채팅방 -->
     <div class="w-full max-h-[calc(100vh-90px)] relative overflow-y-auto custom-scrollbar">
       <!-- 판매 상품 정보 -->
-      <ChatItemCard />
+      <ChatItemCard
+        v-if="product"
+        :title="product.title"
+        :images="product.images"
+        :price="product.price"
+        :product-id="product.product_id"
+        :product-status="product.product_sales_status"
+      />
       <!-- 채팅 내용 -->
       <ol v-if="messages" class="p-10 space-y-6">
         <ChatMessage v-for="message in messages.list" 
@@ -35,10 +43,9 @@ import { onMounted, onUnmounted, ref, watch } from 'vue';
 import instance from '@/utils/axios';
 import { useRoute } from 'vue-router';
 import { Client } from '@stomp/stompjs'
-import { store } from '@/store/store';
 
 const route = useRoute()
-const headerData = ref(null)
+const product = ref(null)
 const messages = ref(null)
 const loading = ref(false)
 
@@ -96,7 +103,14 @@ const send = (editor) => {
       chatroom_id: route.params.id
     }),
   })
-  editor.setMarkdown('');
+  editor.setMarkdown('')
+}
+
+const handleChangeProductStatus = async (type) => {
+  await instance.put(`/products/${product.value.product_id}`,{
+    product_sales_status : type,
+    email: localStorage.getItem("email")
+  })
 }
 
 const fetchData = async () => {
@@ -104,7 +118,7 @@ const fetchData = async () => {
   try {
     const res = await instance.get(`/chat/${route.params.id}`)
     const res2 = await instance.get(`/chat/${route.params.id}/messages`)
-    headerData.value = res.data.data
+    product.value = res.data.data
     messages.value = res2.data.data
   } catch (error) {
     throw error
