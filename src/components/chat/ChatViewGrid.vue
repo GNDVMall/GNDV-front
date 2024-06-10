@@ -38,7 +38,6 @@ const toggleSidebar = () => {
 };
 
 const handleUpdatedChatRoomList = () => {
-  console.log("업데이트")
   rerenderSideBar.value = !rerenderSideBar.value
 }
 

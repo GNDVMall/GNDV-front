@@ -9,7 +9,7 @@
         <div class="text-gray-700 mt-1 text-ellipsis break-words line-clamp-1">{{ message }}</div>
       </div>
       <div class="ml-4 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center">
-        {{ unread_count }}
+        {{ selected? 0 :unread_count || 0 }}
       </div>
     </div>
   </button>
@@ -25,8 +25,6 @@ const props = defineProps({
   roomId: Number,
   selected: Boolean
 })
-
-console.log("selected", props.selected)
 
 const emit = defineEmits(['changeRoom'])
 

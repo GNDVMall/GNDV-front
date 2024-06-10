@@ -69,6 +69,7 @@ stompClient.onConnect = () => {
       message_type: isSender ? "SENT" : "RECEIVE"
     })
     scrollToBottom()
+    emit("upated-room-list")
 
     // 메시지 읽음 처리
     if(!isSender){

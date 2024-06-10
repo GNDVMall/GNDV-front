@@ -12,8 +12,8 @@
           :nickname="item.nickname"
           :profile_url="item.profile_url"
           :timestamp="formatDateWithTime(item.updated_at || new Date())"
-          :unread_count="0"
-          :selected="route.params.id == item.chatroom_id"
+          :unread_count="item.unread_count"
+          :selected="Number(route.params.id) === item.chatroom_id"
         />
       </li>
     </ul>
@@ -31,6 +31,7 @@ const route = useRoute()
 const router = useRouter();
 const data = ref(null)
 const loading = ref(false)
+const emit = defineEmits(["upated-room-list"])
 
 const props = defineProps({
   rerenderSideBar: Boolean
@@ -51,6 +52,7 @@ const fetchData = async () => {
 
 const changeRoom = (roomId)=>{
   router.push({path:`/chat/${roomId}`})
+  emit("upated-room-list")
 }
 
 onMounted(()=>{
@@ -59,7 +61,6 @@ onMounted(()=>{
 
 
 watch(() => route.params.id, () => {
-  
   fetchData()
 });
 
