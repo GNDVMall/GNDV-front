@@ -29,9 +29,10 @@ onMounted(()=>{
 const emit = defineEmits(['enter-pressed'])
 
 const handleEnterPressed = (event)=>{
-  if(event.shiftKey) return;
+  if(event.shiftKey) return
   if(event.key === 'Enter') {
     emit('enter-pressed', editor)
+    return
   }
 }
 </script>

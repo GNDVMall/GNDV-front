@@ -26,11 +26,14 @@
           :type="message.message_type"
           :content="message.chat_content"
           :date="message.sent_at"
-          />
+          :key="message.message_id"
+        />
       </ol>
       <!-- 입력창 -->
       <ChatInput 
         @enter-pressed="send"
+        @compositionstart="onCompositionStart"
+        @compositionend="onCompositionEnd"
       />
     </div>
   </div>
@@ -52,13 +55,13 @@ const product = ref(null)
 const messages = ref(null)
 const loading = ref(false)
 const scrollDiv = ref(null)
+const isComposing = ref(false)
 
 stompClient.onConnect = () => {
   stompClient.subscribe(`/topic/${route.params.id}`, async (message) => {
 
     // 받은 메시지
     const messageBody = JSON.parse(message.body)
-    console.log("받은 메시지", messageBody)
     const isSender = messageBody.email === localStorage.getItem('email');
 
     messages.value.list.push({
@@ -80,14 +83,14 @@ stompClient.onConnect = () => {
   stompClient.subscribe(`/topic/${localStorage.getItem('email')}`, (message) => {
     // 받은 메시지
     const messageBody = JSON.parse(message.body)
-    console.log("이메일로 온 메시지", messageBody)
     emit("upated-room-list")
   })
 }
 
-
 // 엔터 이벤트 발생 시, 메시지 전송
 const send = (editor) => {
+  if (isComposing.value) return;
+
   console.log("content", editor.getMarkdown())
   stompClient.publish({
     destination: `/api/v2/chat/send/${route.params.id}`,
@@ -97,7 +100,7 @@ const send = (editor) => {
       receiver: product.value.email
     }),
   })
-  editor.setMarkdown('')
+  editor.reset();
 }
 
 // 상품 거래 상태 변경
@@ -131,6 +134,14 @@ const fetchData = async () => {
   }
 }
 
+// Handling composition events
+const onCompositionStart = () => {
+  isComposing.value = true;
+}
+
+const onCompositionEnd = () => {
+  isComposing.value = false;
+}
 
 onMounted(()=>{
   fetchData()
@@ -146,7 +157,6 @@ watch(() => route.params.id, () => {
   fetchData()
   connect()
 });
-
 </script>
 
 <style scoped>

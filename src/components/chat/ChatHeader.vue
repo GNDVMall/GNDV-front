@@ -46,7 +46,6 @@ const props = defineProps({
 
 const emit = defineEmits(['change-product-status'])
 
-
 const isMenuOpen = ref(false);
 const toggleMenu = ()=>{
   isMenuOpen.value = !isMenuOpen.value;
