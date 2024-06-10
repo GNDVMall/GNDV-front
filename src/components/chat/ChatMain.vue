@@ -54,19 +54,26 @@ const loading = ref(false)
 const scrollDiv = ref(null)
 
 stompClient.onConnect = () => {
-  stompClient.subscribe(`/topic/${route.params.id}`, (message) => {
+  stompClient.subscribe(`/topic/${route.params.id}`, async (message) => {
+
     // 받은 메시지
     const messageBody = JSON.parse(message.body)
     console.log("받은 메시지", messageBody)
+    const isSender = messageBody.email === localStorage.getItem('email');
 
     messages.value.list.push({
       message_id: messageBody.message_id,
       chat_content: messageBody.content,
       sent_at: new Date(),
       // 임시로 로컬스토리지 사용
-      message_type: messageBody.email === localStorage.getItem('email')? "SENT" : "RECEIVE"
+      message_type: isSender ? "SENT" : "RECEIVE"
     })
     scrollToBottom()
+
+    // 메시지 읽음 처리
+    if(!isSender){
+      await instance.put(`/chat/messages/${messageBody.message_id}`)
+    }
   })
 
   stompClient.subscribe(`/topic/${localStorage.getItem('email')}`, (message) => {
