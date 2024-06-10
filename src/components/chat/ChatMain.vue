@@ -5,6 +5,7 @@
       :loading="loading"
       :user-type="product.chat_user_type"
       :profile-url="product.profile_url"
+      :handlerLeaveChatRoom="handlerLeaveChatRoom"
       @change-product-status="handleChangeProductStatus"
     />
     <!-- 채팅방 -->
@@ -48,6 +49,7 @@ import { onMounted, onUnmounted, ref, watch } from 'vue';
 import instance from '@/utils/axios';
 import { useRoute } from 'vue-router';
 import stompClient, { connect, disconnect } from '@/websocket/websocket'
+import router from '@/router';
 
 const emit = defineEmits(["upated-room-list"])
 const route = useRoute()
@@ -82,7 +84,6 @@ stompClient.onConnect = () => {
 
   stompClient.subscribe(`/topic/${localStorage.getItem('email')}`, (message) => {
     // 받은 메시지
-    const messageBody = JSON.parse(message.body)
     emit("upated-room-list")
   })
 }
@@ -91,7 +92,6 @@ stompClient.onConnect = () => {
 const send = (editor) => {
   if (isComposing.value) return;
 
-  console.log("content", editor.getMarkdown())
   stompClient.publish({
     destination: `/api/v2/chat/send/${route.params.id}`,
     body: JSON.stringify({
@@ -132,6 +132,14 @@ const fetchData = async () => {
   } finally {
     loading.value = false
   }
+}
+
+// 방 떠나는 기능 메서드
+const handlerLeaveChatRoom = () => {
+  // 임시 모달
+  if(!confirm("방을 떠나시겠습니까?")) return;
+  instance.delete(`/chat/${route.params.id}`)
+  router.push("/chat")
 }
 
 // Handling composition events
