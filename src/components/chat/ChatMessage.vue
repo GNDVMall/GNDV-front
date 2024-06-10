@@ -2,7 +2,7 @@
   <li :class="['flex', messageClass]">
     <img v-if="type !== 'SENT'" src="https://cdn.mos.cms.futurecdn.net/7auVjCELrhFKTPfudXRTgc.jpg" alt="Avatar" class="w-10 h-10 rounded-full object-cover mr-3">
     <div class="gap-2" :class="[type === 'SENT' ? 'order-1' : '', 'flex items-start']">
-      <span v-if="props.type === 'sent'" class="text-sm text-gray-500 mt-2">
+      <span v-if="props.type === 'SENT'" class="text-sm text-gray-500 mt-2">
         {{ formatTime(props.date) }}
       </span>
       <div :class="['p-3 rounded-lg max-w-60', bubbleClass]">
@@ -10,7 +10,7 @@
           {{ props.content }}
         </p>
       </div>
-      <span v-if="props.type !== 'sent'" class="text-sm text-gray-500 mt-2">
+      <span v-if="props.type !== 'SENT'" class="text-sm text-gray-500 mt-2">
         {{ formatTime(props.date) }}
       </span>
     </div>
