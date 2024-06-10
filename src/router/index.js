@@ -32,7 +32,7 @@ const router = createRouter({
       component: MyView
     },
     {
-      path: '/chat',
+      path: '/chat/:id',
       name: 'chat',
       component: ChatView
     },
