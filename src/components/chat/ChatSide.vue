@@ -13,6 +13,7 @@
           :profile_url="item.profile_url"
           :timestamp="formatDateWithTime(item.updated_at || new Date())"
           :unread_count="0"
+          :selected="route.params.id == item.chatroom_id"
         />
       </li>
     </ul>
