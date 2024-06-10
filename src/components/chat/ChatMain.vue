@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full">
+  <div class="w-full" v-if="route.params.id">
     <ChatHeader v-if="product"
       :nickname="product.nickname"
       :loading="loading"
@@ -37,6 +37,9 @@
         @compositionend="onCompositionEnd"
       />
     </div>
+  </div>
+  <div v-else class="w-full h-full p-5 flex justify-center items-center">
+    <i class="fa-regular fa-comments icon-size text-blue-200"></i>
   </div>
 </template>
 
@@ -121,11 +124,12 @@ const scrollToBottom = () => {
 }
 
 const fetchData = async () => {
+  if(!route.params.id) return;
   loading.value = true
   try {
     const res = await instance.get(`/chat/${route.params.id}`)
-    const res2 = await instance.get(`/chat/${route.params.id}/messages`)
     product.value = res.data.data
+    const res2 = await instance.get(`/chat/${route.params.id}/messages`)
     messages.value = res2.data.data
   } catch (error) {
     throw error
@@ -179,5 +183,9 @@ watch(() => route.params.id, () => {
 
   .custom-scrollbar::-webkit-scrollbar-track {
     background-color: #f1f1f1;
+  }
+
+  .icon-size{
+    font-size: 10rem;
   }
 </style>
