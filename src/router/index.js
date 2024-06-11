@@ -16,6 +16,7 @@ import OrderTest from '@/views/OrderTest.vue' // OrderTest 뷰 추가
 import OrderHistory from '@/components/order/OrderHistory.vue'
 import ProductDetailCard from '@/components/product/ProductDetailCard.vue'
 import SalesHistory from '@/components/order/SalesHistory.vue'
+import ModalContainer from '@/components/common/ModalContainer.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
 
@@ -44,7 +45,7 @@ const router = createRouter({
       ]
     },
     {
-      path: '/chat',
+      path: '/chat/:id',
       name: 'chat',
       component: ChatView
     },
@@ -103,6 +104,11 @@ const router = createRouter({
       name: 'PaymentTest',
       component: PaymentTest
     }
+    ,
+    { path: '/review',
+     name: 'Review',
+      component: ModalContainer
+     }
   ]
 })
 

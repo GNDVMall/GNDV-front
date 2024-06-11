@@ -27,7 +27,7 @@
 import { instance } from '@/utils/axios.js';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { store, setToken } from '@/store/store.js';
+import { store, setToken, setUser } from '@/store/store.js';
 
 export default {
   setup() {
@@ -49,6 +49,10 @@ export default {
         // const token = response.data.data.token; // 서버에서 받은 토큰 사용
         const token = response.headers['authorization'] || response.headers['Authorization'];
         setToken(token); // 토큰을 store에 저장
+        setUser({
+          email: response.data.email
+        })
+        localStorage.setItem('email', response.data.email)
         localStorage.setItem('authToken', token); // 토큰을 로컬 스토리지에 저장
         router.push('/'); // 로그인 성공 시 홈 페이지로 이동
         // } else {

@@ -1,0 +1,27 @@
+import { Client } from '@stomp/stompjs'
+
+export const stompClient = new Client({
+  // brokerURL: 'ws://localhost:8080/api/v2/gndv-websocket',
+  brokerURL: `ws://localhost:8080/gndv-websocket?token=${localStorage.getItem('authToken')}`
+})
+
+stompClient.onWebSocketError = (error) => {
+  console.error('Error with websocket', error)
+}
+
+stompClient.onStompError = (frame) => {
+  console.error('Broker reported error: ' + frame.headers['message'])
+  console.error('Additional details: ' + frame.body)
+}
+
+export const connect = () => {
+  console.log("connect")
+  stompClient.activate()
+}
+
+export const disconnect = () => {
+  stompClient.deactivate()
+  console.log('Disconnected')
+}
+
+export default stompClient;
