@@ -34,14 +34,15 @@ import Button from '@/components/common/Button/Button.vue';
 import ProductStatus from '@/components/product/ProductStatus.vue'
 import ProductTradeOptions from '@/components/product/ProductTradeOptions.vue'
 import ProductImages from '@/components/product/ProductImages.vue'
-import { onMounted, ref } from 'vue';
 import instance from '@/utils/axios';
+import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import router from '@/router';
 
 const props = defineProps({
   type: String,
 })
+
 const route = useRoute()
 
 const formData = ref({
@@ -74,7 +75,6 @@ const fetchData = async () => {
   if (res.data.data.product_trade_opt2 === 'Y') tradeOpts.push('product_trade_opt2')
 
   formData.value.tradeOpt = tradeOpts
-
 }
 
 const productOptions = [{ label: '중고', value: 'OLD' }, { label: '새상품', value: 'NEW' }];
@@ -104,14 +104,16 @@ const handleFormButton = async () => {
       product_status:formData.value.status,
       product_trade_opt1: formData.value.tradeOpt.includes('product_trade_opt1') ? 'Y' : 'N',
       product_trade_opt2: formData.value.tradeOpt.includes('product_trade_opt2') ? 'Y' : 'N',
-      email: localStorage.getItem('email')
+      email: localStorage.getItem('email'),
+      item_id: route.params.id
   }
 
   if(props.type === 'EDIT'){
     await instance.put(`/products/${route.params.pid}`, request)
     fetchData()
   }else{
-    await instance.post('/products', request)
+    const res = await instance.post('/products', request)
+    router.push(`/products/${res.data.data}`)
   }
 }
 

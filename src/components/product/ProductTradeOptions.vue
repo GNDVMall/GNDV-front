@@ -33,8 +33,6 @@ const props = defineProps({
 const emit = defineEmits(['update:trade-option'])
 const checkedValues = ref([...props.modelValue])
 
-console.log("엥???", props.modelValue)
-
 const handleChange = () => {
   emit('update:trade-option', checkedValues.value)
 }
