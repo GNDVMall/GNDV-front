@@ -11,25 +11,27 @@
       <!-- 정보 -->
       <div class="flex flex-col md:border-l md:max-w-lg lg:max-w-2xl flex-auto md:pl-10 gap-5">
         <!-- Title -->
-        <ItemTitle :title="data.title" :subTitle="'시리즈쿼리문수정'" />
+        <ItemTitle :title="data.title" :subTitle="data.theme_name" />
         <div>
           <p class="text-3xl font-bold">{{ formatKoreanCurrency(data.price) }}원</p>
-          <div class="text-sm opacity-60"><span>{{ getDaysAgo(data.createdAt) }}일 전</span> | <span>조회 {{ data.viewCount }}</span></div>
+          <div class="text-sm opacity-60"><span>{{ getDaysAgo(data.created_at) }}일 전</span> | <span>조회 {{ data.view_count }}</span></div>
         </div>
         <div class="flex w-full gap-4 lg:justify-start flex-initial flex-wrap justify-start">
           <!-- 설명들 -->
-          <ItemSubInfo :text="'제품 상태'" :type="'right'" :subText="data.productStatus === 'NEW' ? '새 상품' : '중고'" />
-          <ItemSubInfo :text="'거래 방식'" :subText="getTradeOptionString(data.productTradeOpt1, data.productTradeOpt2)" />
+          <ItemSubInfo :text="'제품 상태'" :type="'right'" :subText="data.product_status === 'NEW' ? '새 상품' : '중고'" />
+          <ItemSubInfo :text="'거래 방식'" :subText="getTradeOptionString(data.product_trade_opt1, data.product_trade_opt2)" />
+          <!-- <ItemSubInfo :text="'안전 거래'" :subText="'미사용'" /> -->
         </div>
 
         <div class="w-full flex gap-4 lg:flex-row flex-col mb-5">
           <!-- 버튼들 -->
-          <Button :text="'채팅 하기'" :clickHandler="handleChat">
+          <Button v-if="data.email !== email" :text="'채팅 하기'" :clickHandler="handleChat">
             <i class="fa-solid fa-comments"></i>
           </Button>
-          <!-- 데이터가 있을 때만 PaymentButton 렌더링 -->
+          <Button v-else :text="'수정 하기'" :click-handler="handleProductEdit">
+            <i class="fa-regular fa-pen-to-square"></i>
+          </Button>
           <PaymentButton
-            v-if="data.product_id && data.price && data.title"
             :productId="data.product_id"
             :price="data.price"
             :itemName="data.title"
@@ -75,6 +77,7 @@ const route = useRoute()
 const data = ref(null)
 const loading = ref(false)
 const paymentData = ref({})
+const email = localStorage.getItem('email');
 
 const fetchData = async () => {
   loading.value = true
@@ -118,6 +121,10 @@ const handleChat = async () => {
     // 바로 이동
     router.push(`/chat/${chatroomid.data}`)
   }
+}
+
+const handleProductEdit = () => {
+  router.push(`/products/edit/${data.value.product_id}`)
 }
 </script>
 

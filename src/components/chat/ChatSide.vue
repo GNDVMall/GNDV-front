@@ -1,8 +1,8 @@
 <template>
-  <aside class="border-r border-gray-300 z-50">
+  <aside class="border-r border-gray-300 z-50 w-full">
     <header class="h-16 w-full text-base font-bold pt-5 border-b border-gray-300">
     </header>
-    <ul v-if="data" class="overflow-y-auto max-h-[calc(100vh-160px)] custom-scrollbar">
+    <ul v-if="data && data.list.length > 0" class="overflow-y-auto max-h-[calc(100vh-160px)] custom-scrollbar">
       <li v-for="item in data.list">
         <ChatRoomSideItem 
           @changeRoom="changeRoom"
@@ -17,6 +17,10 @@
         />
       </li>
     </ul>
+    <div v-else class="p-5 flex flex-col items-center gap-10">
+      <div>채팅방이 존재하지 않습니다.</div>
+      <i class="fa-solid fa-bomb icon-size text-gray-100"></i>
+    </div>
   </aside>
 </template>
 
@@ -82,5 +86,9 @@ watch(() => props.rerenderSideBar, () => {
 
   .custom-scrollbar::-webkit-scrollbar-track {
     background-color: #f1f1f1;
+  }
+
+  .icon-size{
+    font-size: 8rem;
   }
 </style>

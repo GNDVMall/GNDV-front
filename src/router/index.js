@@ -45,7 +45,7 @@ const router = createRouter({
       ]
     },
     {
-      path: '/chat/:id',
+      path: '/chat/:id?',
       name: 'chat',
       component: ChatView
     },

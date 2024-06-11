@@ -1,10 +1,11 @@
 <template>
-  <div class="w-full">
+  <div class="w-full" v-if="route.params.id">
     <ChatHeader v-if="product"
       :nickname="product.nickname"
       :loading="loading"
       :user-type="product.chat_user_type"
       :profile-url="product.profile_url"
+      :handlerLeaveChatRoom="handlerLeaveChatRoom"
       @change-product-status="handleChangeProductStatus"
     />
     <!-- 채팅방 -->
@@ -27,6 +28,7 @@
           :content="message.chat_content"
           :date="message.sent_at"
           :key="message.message_id"
+          :userType="message.message_user_type"
         />
       </ol>
       <!-- 입력창 -->
@@ -36,6 +38,9 @@
         @compositionend="onCompositionEnd"
       />
     </div>
+  </div>
+  <div v-else class="w-full h-full p-5 flex justify-center items-center">
+    <i class="fa-regular fa-comments icon-size text-blue-200"></i>
   </div>
 </template>
 
@@ -48,9 +53,6 @@ import { onMounted, onUnmounted, ref, watch } from 'vue';
 import instance from '@/utils/axios';
 import { useRoute } from 'vue-router';
 import stompClient, { connect, disconnect } from '@/websocket/websocket'
-import { provideStore } from '@/store/store';
-
-provideStore();
 
 const emit = defineEmits(["upated-room-list"])
 const route = useRoute()
@@ -63,13 +65,13 @@ const isComposing = ref(false)
 stompClient.onConnect = () => {
   stompClient.subscribe(`/topic/${route.params.id}`, async (message) => {
     const messageBody = JSON.parse(message.body)
-    console.log("받은 메시지", messageBody)
     const isSender = messageBody.email === localStorage.getItem('email');
 
     messages.value.list.push({
       message_id: messageBody.message_id,
       chat_content: messageBody.content,
       sent_at: new Date(),
+      // 임시로 로컬스토리지 사용
       message_type: isSender ? "SENT" : "RECEIVE"
     })
     scrollToBottom()
@@ -81,25 +83,39 @@ stompClient.onConnect = () => {
   })
 
   stompClient.subscribe(`/topic/${localStorage.getItem('email')}`, (message) => {
+    // 받은 메시지
     const messageBody = JSON.parse(message.body)
     console.log("이메일로 온 메시지", messageBody)
     emit("upated-room-list")
   })
 }
 
-const send = (editor) => {
-  if (isComposing.value) return;
 
+// 엔터 이벤트 발생 시, 메시지 전송
+const send = (editor) => {
   console.log("content", editor.getMarkdown())
   stompClient.publish({
     destination: `/api/v2/chat/send/${route.params.id}`,
     body: JSON.stringify({
       content: editor.getMarkdown(),
       chatroom_id: route.params.id,
-      receiver: product.value.email
+      receiver: product.value.email,
+      message_user_type:'USER'
     }),
   })
-  editor.reset();
+  editor && editor.reset();
+}
+
+const sendSystemMessage = () => {
+  stompClient.publish({
+    destination: `/api/v2/chat/send/${route.params.id}`,
+    body: JSON.stringify({
+      chatroom_id: route.params.id,
+      receiver: product.value.email,
+      message_user_type:'SYSTEM'
+    }),
+  })
+  editor.setMarkdown('')
 }
 
 const handleChangeProductStatus = async (type) => {
@@ -118,11 +134,12 @@ const scrollToBottom = () => {
 }
 
 const fetchData = async () => {
+  if(!route.params.id) return;
   loading.value = true
   try {
     const res = await instance.get(`/chat/${route.params.id}`)
-    const res2 = await instance.get(`/chat/${route.params.id}/messages`)
     product.value = res.data.data
+    const res2 = await instance.get(`/chat/${route.params.id}/messages`)
     messages.value = res2.data.data
   } catch (error) {
     throw error
@@ -131,13 +148,6 @@ const fetchData = async () => {
   }
 }
 
-const onCompositionStart = () => {
-  isComposing.value = true;
-}
-
-const onCompositionEnd = () => {
-  isComposing.value = false;
-}
 
 onMounted(()=>{
   fetchData()
@@ -167,5 +177,9 @@ watch(() => route.params.id, () => {
 
   .custom-scrollbar::-webkit-scrollbar-track {
     background-color: #f1f1f1;
+  }
+
+  .icon-size{
+    font-size: 10rem;
   }
 </style>

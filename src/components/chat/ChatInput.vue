@@ -6,7 +6,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted } from 'vue';
 import Editor from '@toast-ui/editor';
 import '@toast-ui/editor/dist/toastui-editor.css';
 
@@ -29,9 +29,10 @@ onMounted(()=>{
 const emit = defineEmits(['enter-pressed'])
 
 const handleEnterPressed = (event)=>{
-  if(event.shiftKey) return;
+  if(event.shiftKey) return
   if(event.key === 'Enter') {
     emit('enter-pressed', editor)
+    return
   }
 }
 </script>

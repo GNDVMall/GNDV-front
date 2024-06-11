@@ -48,8 +48,9 @@ import { store } from '@/store/store';
 
 const props = defineProps({
   nickname: String,
-  userType: String,
+  userType:String,
   profileUrl: String,
+  handlerLeaveChatRoom: Function
 })
 console.log('props:', props, 'store:', store);
 const emit = defineEmits(['change-product-status'])
