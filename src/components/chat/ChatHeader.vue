@@ -33,7 +33,7 @@
     </div>
 
     <CommonModal :isVisible="isReviewModalOpen" @close="closeReviewModal">
-      <ReviewForm @submit="submitReview" :reviewType="'PRODUCT'" :email="store.user.email" :productId="productId"/>
+      <ReviewForm @submit="submitReview" :reviewType="'PRODUCT'" :email="store.user.email" :productId="props.productId"/>
     </CommonModal>
   </header>
 </template>
@@ -48,39 +48,39 @@ import { store } from '@/store/store';
 
 const props = defineProps({
   nickname: String,
-  userType:String,
+  userType: String,
   profileUrl: String,
+  productId: Number,
   handlerLeaveChatRoom: Function
-})
-console.log('props:', props, 'store:', store);
-const emit = defineEmits(['change-product-status'])
+});
+const emit = defineEmits(['change-product-status']);
 
 const isMenuOpen = ref(false);
 const isReviewModalOpen = ref(false);
 
 const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value;
-}
+};
 
 const handleChangeProductStatus = (e) => {
-  emit('change-product-status', e.target.dataset.type)
-}
+  emit('change-product-status', e.target.dataset.type);
+};
 
 const openReviewModal = () => {
   isReviewModalOpen.value = true;
-}
+};
 
 const closeReviewModal = () => {
   isReviewModalOpen.value = false;
-}
+};
 
 const submitReview = async (review) => {
   try {
-    const response = await instance.post('/review', review);
+    const response = await instance.post('/reviews', review);
     console.log('Review submitted successfully:', response.data);
     closeReviewModal();
   } catch (error) {
     console.error('Failed to submit review:', error);
   }
-}
+};
 </script>

@@ -5,6 +5,7 @@
       :loading="loading"
       :user-type="product.chat_user_type"
       :profile-url="product.profile_url"
+      :product-id="product.product_id"
       :handlerLeaveChatRoom="handlerLeaveChatRoom"
       @change-product-status="handleChangeProductStatus"
     />
@@ -53,6 +54,7 @@ import { onMounted, onUnmounted, ref, watch } from 'vue';
 import instance from '@/utils/axios';
 import { useRoute } from 'vue-router';
 import stompClient, { connect, disconnect } from '@/websocket/websocket'
+import router from '@/router';
 
 const emit = defineEmits(["upated-room-list"])
 const route = useRoute()
@@ -64,6 +66,8 @@ const isComposing = ref(false)
 
 stompClient.onConnect = () => {
   stompClient.subscribe(`/topic/${route.params.id}`, async (message) => {
+
+    // 받은 메시지
     const messageBody = JSON.parse(message.body)
     const isSender = messageBody.email === localStorage.getItem('email');
 
@@ -72,28 +76,28 @@ stompClient.onConnect = () => {
       chat_content: messageBody.content,
       sent_at: new Date(),
       // 임시로 로컬스토리지 사용
-      message_type: isSender ? "SENT" : "RECEIVE"
+      message_type: isSender ? "SENT" : "RECEIVE",
+      message_user_type: messageBody.message_user_type
     })
     scrollToBottom()
     emit("upated-room-list")
 
+    // 메시지 읽음 처리
     if(!isSender){
       await instance.put(`/chat/messages/${messageBody.message_id}`)
     }
   })
 
-  stompClient.subscribe(`/topic/${localStorage.getItem('email')}`, (message) => {
+  stompClient.subscribe(`/topic/${localStorage.getItem('email')}`, () => {
     // 받은 메시지
-    const messageBody = JSON.parse(message.body)
-    console.log("이메일로 온 메시지", messageBody)
     emit("upated-room-list")
   })
 }
 
-
 // 엔터 이벤트 발생 시, 메시지 전송
 const send = (editor) => {
-  console.log("content", editor.getMarkdown())
+  if (isComposing.value) return;
+
   stompClient.publish({
     destination: `/api/v2/chat/send/${route.params.id}`,
     body: JSON.stringify({
@@ -115,9 +119,9 @@ const sendSystemMessage = () => {
       message_user_type:'SYSTEM'
     }),
   })
-  editor.setMarkdown('')
 }
 
+// 상품 거래 상태 변경
 const handleChangeProductStatus = async (type) => {
   await instance.put(`/products/${product.value.product_id}`,{
     product_sales_status : type,
@@ -125,6 +129,7 @@ const handleChangeProductStatus = async (type) => {
   })
 }
 
+// 새 메시지가 도착하면 스크롤을 가장 아래로 내림
 const scrollToBottom = () => {
   if (scrollDiv.value) {
     setTimeout(() => {
@@ -148,6 +153,24 @@ const fetchData = async () => {
   }
 }
 
+// 방 떠나는 기능 메서드
+const handlerLeaveChatRoom = () => {
+  // 임시 모달
+  if(!confirm("방을 떠나시겠습니까?")) return;
+  instance.delete(`/chat/${route.params.id}`)
+  router.push("/chat")
+  sendSystemMessage()
+  emit("upated-room-list")
+}
+
+// Handling composition events
+const onCompositionStart = () => {
+  isComposing.value = true;
+}
+
+const onCompositionEnd = () => {
+  isComposing.value = false;
+}
 
 onMounted(()=>{
   fetchData()
