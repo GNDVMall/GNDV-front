@@ -23,7 +23,7 @@
             <div class="border-b border-gray-300 py-2" :data-type="'SOLDOUT'">거래완료</div>
           </button>
           <button >
-            <div class="border-b border-gray-300 py-2">채팅방 나가기</div>
+            <div class="border-b border-gray-300 py-2" @click="handlerLeaveChatRoom">채팅방 나가기</div>
           </button>
           <button>
             <div class="py-2" @click="toggleMenu">닫기</div>
@@ -41,11 +41,11 @@ import { defineProps } from 'vue';
 const props = defineProps({
   nickname: String,
   userType:String,
-  profileUrl: String
+  profileUrl: String,
+  handlerLeaveChatRoom: Function
 })
 
 const emit = defineEmits(['change-product-status'])
-
 
 const isMenuOpen = ref(false);
 const toggleMenu = ()=>{
