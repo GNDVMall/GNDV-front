@@ -25,8 +25,11 @@
 
         <div class="w-full flex gap-4 lg:flex-row flex-col mb-5">
           <!-- 버튼들 -->
-          <Button :text="'채팅 하기'" :clickHandler="handleChat">
+          <Button v-if="data.email !== email" :text="'채팅 하기'" :clickHandler="handleChat">
             <i class="fa-solid fa-comments"></i>
+          </Button>
+          <Button v-else :text="'수정 하기'" :click-handler="handleProductEdit">
+            <i class="fa-regular fa-pen-to-square"></i>
           </Button>
           <PaymentButton
             :productId="data.product_id"
@@ -74,6 +77,7 @@ const route = useRoute()
 const data = ref(null)
 const loading = ref(false)
 const paymentData = ref({})
+const email = localStorage.getItem('email');
 
 const fetchData = async () => {
   loading.value = true
@@ -117,6 +121,10 @@ const handleChat = async () => {
     // 바로 이동
     router.push(`/chat/${chatroomid.data}`)
   }
+}
+
+const handleProductEdit = () => {
+  router.push(`/products/edit/${data.value.product_id}`)
 }
 </script>
 
