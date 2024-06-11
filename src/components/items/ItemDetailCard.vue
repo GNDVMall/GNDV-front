@@ -21,7 +21,7 @@
         <ItemSubInfo :text="'조각 개수'" :subText="data.pieces" />
       </div>
 
-      <div class="w-full flex gap-4 lg:flex-row flex-col">
+      <div v-if="!type" class="w-full flex gap-4 lg:flex-row flex-col">
         <!-- 버튼들 -->
         <Button :text="'판매 등록'" :type="'green'">
           <i class="fa-solid fa-plus"></i>
@@ -49,6 +49,10 @@ import { instance } from '@/utils/axios';
 const route = useRoute()
 const data = ref(null)
 const loading = ref(null)
+
+const props = defineProps({
+  type: String
+})
 
 const fetchData = async () => {
   loading.value = true

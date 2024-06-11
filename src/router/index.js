@@ -15,6 +15,7 @@ import TestProductDetail from '@/views/TestProductDetail.vue'
 import TestProductList from '@/views/TestProductList.vue'
 import TestLoginComponent from '@/components/payments/TestLoginComponent.vue'
 import OrderTest from '@/views/OrderTest.vue' // OrderTest 뷰 추가
+import ItemEditView from '@/views/ItemEditView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -60,6 +61,11 @@ const router = createRouter({
       path:'/products/:id',
       name:'product',
       component: ProductView
+    },
+    {
+      path:'/items/:id/new',
+      name:'product',
+      component: ItemEditView
     },
     {
       path:'/test',
