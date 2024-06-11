@@ -28,6 +28,7 @@
           :content="message.chat_content"
           :date="message.sent_at"
           :key="message.message_id"
+          :userType="message.message_user_type"
         />
       </ol>
       <!-- 입력창 -->
@@ -67,6 +68,7 @@ stompClient.onConnect = () => {
 
     // 받은 메시지
     const messageBody = JSON.parse(message.body)
+    console.log("메시지", messageBody)
     const isSender = messageBody.email === localStorage.getItem('email');
 
     messages.value.list.push({
@@ -74,7 +76,8 @@ stompClient.onConnect = () => {
       chat_content: messageBody.content,
       sent_at: new Date(),
       // 임시로 로컬스토리지 사용
-      message_type: isSender ? "SENT" : "RECEIVE"
+      message_type: isSender ? "SENT" : "RECEIVE",
+      message_user_type: messageBody.message_user_type
     })
     scrollToBottom()
     emit("upated-room-list")
@@ -85,7 +88,7 @@ stompClient.onConnect = () => {
     }
   })
 
-  stompClient.subscribe(`/topic/${localStorage.getItem('email')}`, (message) => {
+  stompClient.subscribe(`/topic/${localStorage.getItem('email')}`, () => {
     // 받은 메시지
     emit("upated-room-list")
   })
@@ -100,10 +103,22 @@ const send = (editor) => {
     body: JSON.stringify({
       content: editor.getMarkdown(),
       chatroom_id: route.params.id,
-      receiver: product.value.email
+      receiver: product.value.email,
+      message_user_type:'USER'
     }),
   })
-  editor.reset();
+  editor && editor.reset();
+}
+
+const sendSystemMessage = () => {
+  stompClient.publish({
+    destination: `/api/v2/chat/send/${route.params.id}`,
+    body: JSON.stringify({
+      chatroom_id: route.params.id,
+      receiver: product.value.email,
+      message_user_type:'SYSTEM'
+    }),
+  })
 }
 
 // 상품 거래 상태 변경
@@ -144,6 +159,8 @@ const handlerLeaveChatRoom = () => {
   if(!confirm("방을 떠나시겠습니까?")) return;
   instance.delete(`/chat/${route.params.id}`)
   router.push("/chat")
+  sendSystemMessage()
+  emit("upated-room-list")
 }
 
 // Handling composition events

@@ -1,5 +1,5 @@
 <template>
-  <li :class="['flex', messageClass]">
+  <li v-if="userType !== 'SYSTEM'" :class="['flex', messageClass]">
     <img v-if="type !== 'SENT'" src="https://cdn.mos.cms.futurecdn.net/7auVjCELrhFKTPfudXRTgc.jpg" alt="Avatar" class="w-10 h-10 rounded-full object-cover mr-3">
     <div class="gap-2" :class="[type === 'SENT' ? 'order-1' : '', 'flex items-start']">
       <span v-if="props.type === 'SENT'" class="text-sm text-gray-500 mt-2">
@@ -15,6 +15,9 @@
       </span>
     </div>
   </li>
+  <li v-else>
+    <div class="text-center p-2">상대방이 채팅방을 떠났습니다.</div>
+  </li>
 </template>
 
 <script setup>
@@ -29,7 +32,8 @@ const props = defineProps({
     validator: value => ['SENT', 'RECEIVE'].includes(value)
   },
   content:String,
-  date: String
+  date: String,
+  userType: String
 });
 
 const messageClass = computed(() => props.type === 'SENT' ? 'justify-end' : 'justify-start');
