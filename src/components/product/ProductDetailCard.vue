@@ -11,15 +11,15 @@
       <!-- 정보 -->
       <div class="flex flex-col md:border-l md:max-w-lg lg:max-w-2xl flex-auto md:pl-10 gap-5">
         <!-- Title -->
-        <ItemTitle :title="data.title" :subTitle="'시리즈쿼리문수정'" />
+        <ItemTitle :title="data.title" :subTitle="data.theme_name" />
         <div>
           <p class="text-3xl font-bold">{{ formatKoreanCurrency(data.price) }}원</p>
-          <div class="text-sm opacity-60"><span>{{ getDaysAgo(data.createdAt) }}일 전</span> | <span>조회 {{ data.viewCount }}</span></div>
+          <div class="text-sm opacity-60"><span>{{ getDaysAgo(data.created_at) }}일 전</span> | <span>조회 {{ data.view_count }}</span></div>
         </div>
         <div class="flex w-full gap-4 lg:justify-start flex-initial flex-wrap justify-start">
           <!-- 설명들 -->
-          <ItemSubInfo :text="'제품 상태'" :type="'right'" :subText="data.productStatus === 'NEW' ? '새 상품' : '중고'" />
-          <ItemSubInfo :text="'거래 방식'" :subText="getTradeOptionString(data.productTradeOpt1, data.productTradeOpt2)" />
+          <ItemSubInfo :text="'제품 상태'" :type="'right'" :subText="data.product_status === 'NEW' ? '새 상품' : '중고'" />
+          <ItemSubInfo :text="'거래 방식'" :subText="getTradeOptionString(data.product_trade_opt1, data.product_trade_opt2)" />
           <!-- <ItemSubInfo :text="'안전 거래'" :subText="'미사용'" /> -->
         </div>
 
@@ -29,7 +29,7 @@
             <i class="fa-solid fa-comments"></i>
           </Button>
           <PaymentButton
-            :productId="data.productId"
+            :productId="data.product_id"
             :price="data.price"
             :itemName="data.title"
             @paymentSuccess="handlePaymentSuccess"
@@ -38,9 +38,9 @@
 
         <!-- 사용자 정보 -->
         <UserInfo 
-          :href="`/users/${data.memberId}`"
+          :href="`/users/${data.member_id}`"
           :rating="data.rating"
-          :url="data.profileUrl"
+          :url="data.profile_url"
           :nickname="data.nickname"
           :introduce="data.introduction"
         />
