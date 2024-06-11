@@ -3,7 +3,7 @@
     <textarea
       :value="modelValue"
       @input="$emit('update:modelValue', $event.target.value)"
-      class="w-full h-48 px-4 py-2 border border-gray-300 rounded-sm focus:outline-none focus:ring-2 focus:ring-green-200"
+      class="w-full h-48 px-4 py-2 border border-gray-300 rounded-sm focus:outline-none focus:ring-2 focus:ring-green-200 mb-5"
       :placeholder="placeholder"
       maxlength="1000"
     ></textarea>

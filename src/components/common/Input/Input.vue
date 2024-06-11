@@ -12,6 +12,7 @@
 <script setup>
 import { defineProps, defineEmits } from 'vue'
 
+
 const props = defineProps({
   modelValue: {
     type: String,
@@ -19,6 +20,7 @@ const props = defineProps({
   },
   placeholder: String
 })
+
 
 const emit = defineEmits(['update:modelValue'])
 </script>

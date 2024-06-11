@@ -1,6 +1,6 @@
 <script setup>
 import ItemDetailCard from '@/components/items/ItemDetailCard.vue'
-import Input from '@/components/common/Input/Input.vue'
+import ProductForm from '@/components/product/ProductForm.vue'
 
 </script>
 
@@ -10,6 +10,7 @@ import Input from '@/components/common/Input/Input.vue'
     <ItemDetailCard
       :type="'EDIT'"
     />
-    <Input />
+    <!-- FORM -->
+    <ProductForm :type="'EDIT'"/>
   </main>
 </template>

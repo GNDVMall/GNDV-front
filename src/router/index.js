@@ -8,14 +8,15 @@ import LoginView from '../views/LoginView.vue'
 import NoticeView from '../views/NoticeView.vue'
 import WishView from '../views/WishView.vue'
 import ItemView from '../views/ItemView.vue'
-import ProductView from '../views/ProductView.vue'
+import ProductView from '@/views/ProductView.vue'
 import TestView from '../views/TestView.vue'
 import PaymentTest from '@/views/PaymentTest.vue'
 import TestProductDetail from '@/views/TestProductDetail.vue'
 import TestProductList from '@/views/TestProductList.vue'
 import TestLoginComponent from '@/components/payments/TestLoginComponent.vue'
 import OrderTest from '@/views/OrderTest.vue' // OrderTest 뷰 추가
-import ItemEditView from '@/views/ItemEditView.vue'
+import ProductInsertView from '@/views/ProductInsertView.vue'
+import ProductEditView from '@/views/ProductEditView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -63,9 +64,14 @@ const router = createRouter({
       component: ProductView
     },
     {
+      path:'/items/:id/:pid',
+      name:'editProduct',
+      component: ProductEditView
+    },
+    {
       path:'/items/:id/new',
-      name:'product',
-      component: ItemEditView
+      name:'insertProduct',
+      component: ProductInsertView
     },
     {
       path:'/test',
