@@ -68,7 +68,6 @@ stompClient.onConnect = () => {
 
     // 받은 메시지
     const messageBody = JSON.parse(message.body)
-    console.log("메시지", messageBody)
     const isSender = messageBody.email === localStorage.getItem('email');
 
     messages.value.list.push({
