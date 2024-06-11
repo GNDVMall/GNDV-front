@@ -2,7 +2,7 @@
   <!-- 입력창 -->
   <div 
     @keydown="handleEnterPressed"
-    id="editor"class="w-full sticky bottom-0 z-10 bg-white shadow-md overflow-hidden"></div>
+    id="editor" class="w-full sticky bottom-0 z-10 bg-white shadow-md overflow-hidden"></div>
 </template>
 
 <script setup>

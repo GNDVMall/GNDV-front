@@ -84,9 +84,9 @@ const fetchData = async () => {
   try {
     const res = await instance.get(`/products/${route.params.id}`)
     data.value = res.data.data
-    console.log("data", res.data.data)
+    console.log("Product Data:", res.data.data)
   } catch (error) {
-    throw error
+    console.error('Error fetching product detail:', error)
   } finally {
     loading.value = false
   }
