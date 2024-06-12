@@ -19,22 +19,22 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-import instance from '@/utils/axios.js';
+import instance from '@/utils/axios.js'; // axios 인스턴스 import
 import ProfileWithStar from '@/components/common/ProfileWithStar/Star.vue';
 
 const review_content = ref('');
 const review_rating = ref(0);
 const route = useRoute();
-const email = localStorage.getItem('email');
 const reviewExists = ref(false);
 const props = defineProps({
   productId: Number
 });
+const email = localStorage.getItem('email');
 
 const checkReviewExists = async () => {
   try {
     const response = await instance.get(`/reviews/check`, {
-      params: { productId: props.productId, email }
+      params: { productId: props.productId, email: email.value }
     });
     reviewExists.value = response.data.data;
   } catch (error) {
@@ -43,7 +43,7 @@ const checkReviewExists = async () => {
 };
 
 const submitForm = async () => {
-  if (!email) {
+  if (!email.value) {
     alert('Email is not available.');
     return;
   }
@@ -52,7 +52,7 @@ const submitForm = async () => {
     review_content: review_content.value,
     review_rating: review_rating.value,
     review_type: "PRODUCT",
-    email: email,
+    email: email.value,
     product_id: props.productId
   };
 
@@ -60,7 +60,6 @@ const submitForm = async () => {
     const response = await instance.post('/reviews', review);
     console.log("Review submitted successfully", response.data);
     // Add any additional logic after a successful submission
-    emit('review-submitted');
   } catch (error) {
     console.error("Error submitting review", error);
   }
@@ -71,6 +70,8 @@ const setRating = (newRating) => {
 };
 
 onMounted(() => {
+  email.value = localStorage.getItem('email');
+  console.log("Loaded email from local storage:", email.value); // 로드된 이메일 확인
   checkReviewExists();
 });
 </script>

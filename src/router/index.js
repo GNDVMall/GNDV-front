@@ -15,7 +15,7 @@ import TestProductList from '@/views/TestProductList.vue'
 import OrderTest from '@/views/OrderTest.vue' // OrderTest 뷰 추가
 import OrderHistory from '@/components/order/OrderHistory.vue'
 import SalesHistory from '@/components/order/SalesHistory.vue'
-import ModalContainer from '@/components/common/ModalContainer.vue'
+import ModalContainer from '@/components/modal/ModalContainer.vue'
 import ProductView from '@/views/ProductView.vue'
 import ReviewForm from '@/views/ReviewForm.vue'
 const router = createRouter({
