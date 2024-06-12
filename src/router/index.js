@@ -17,6 +17,7 @@ import OrderHistory from '@/components/order/OrderHistory.vue'
 import SalesHistory from '@/components/order/SalesHistory.vue'
 import ModalContainer from '@/components/common/ModalContainer.vue'
 import ProductView from '@/views/ProductView.vue'
+import ReviewForm from '@/views/ReviewForm.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
 
@@ -108,7 +109,13 @@ const router = createRouter({
     { path: '/review',
      name: 'Review',
       component: ModalContainer
-     }
+     },
+     {
+      path: '/review-create/:id',
+      name: 'ReviewCreate',
+      component: ReviewForm,
+      props: true
+    }
   ]
 })
 
