@@ -1,4 +1,4 @@
-import { reactive } from 'vue';
+import { reactive, provide, inject } from 'vue';
 
 export const store = reactive({
   user: {
@@ -14,4 +14,12 @@ export const setUser = (user) => {
 
 export const setToken = (token) => {
   store.token = token;
+};
+
+export const provideStore = () => {
+  provide('store', store);
+};
+
+export const useStore = () => {
+  return inject('store');
 };

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div >
     <CommonHeader title="Wishlist" />
     <div class="space-y-4">
       <WishItem v-for="item in items" :key="item.item_id" :item="item" @wish-removed="removeWishFromList" />

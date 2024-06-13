@@ -7,8 +7,6 @@
 <script>
 import { instance } from '@/utils/axios.js';
 import { loadIamportScript } from '@/utils/importIamport';
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
 import Button from '@/components/common/Button/Button.vue';
 
 export default {
@@ -30,10 +28,12 @@ export default {
     Button
   },
   setup(props, { emit }) {
-    const router = useRouter();
-
     const createOrder = async () => {
       try {
+        console.log('Product ID:', props.productId); // 디버깅용 로그
+        console.log('Price:', props.price); // 디버깅용 로그
+        console.log('Item Name:', props.itemName); // 디버깅용 로그
+
         const res = await instance.post('/order', {
           product_id: props.productId,
           price: props.price,

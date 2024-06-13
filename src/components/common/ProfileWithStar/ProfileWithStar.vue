@@ -3,7 +3,7 @@
     <div class="flex flex-col pr-1 items-center border-r">
       <h3 class="text-2xl">{{ rating }}</h3>
       <div class="star-size mt-1">
-        <i v-for="n in Math.floor(rating)" class="fa-solid fa-star text-yellow-400"></i>
+        <i v-for="n in Math.floor(rating)" class="fa-solid fa-star text-yellow-400" ></i>
         <i v-for="n in 5 - Math.floor(rating)" class="fa-solid fa-star text-gray-200"></i>
       </div>
     </div>
