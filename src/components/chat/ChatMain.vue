@@ -95,19 +95,18 @@ stompClient.onConnect = () => {
 }
 
 // 엔터 이벤트 발생 시, 메시지 전송
-const send = (editor) => {
+const send = (value) => {
   if (isComposing.value) return;
 
   stompClient.publish({
     destination: `/api/v2/chat/send/${route.params.id}`,
     body: JSON.stringify({
-      content: editor.getMarkdown(),
+      content: value,
       chatroom_id: route.params.id,
       receiver: product.value.email,
       message_user_type:'USER'
     }),
   })
-  editor && editor.reset();
 }
 
 const sendSystemMessage = () => {
