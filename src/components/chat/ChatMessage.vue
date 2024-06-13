@@ -7,7 +7,7 @@
       </span>
       <div :class="['p-3 rounded-lg max-w-60', bubbleClass]">
         <div v-if="contentType === 'IMAGE'">
-          <img :src="content" alt="이미지"  @click="closeModal"/>
+          <img :src="content" alt="이미지"  @click="toggleImage"/>
         </div>
         <p v-else class="text-gray-800">
           {{ content }}
@@ -21,11 +21,15 @@
   <li v-else>
     <div class="text-center p-2">상대방이 채팅방을 떠났습니다.</div>
   </li>
+  <div v-if="toggle" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-50" @click="toggleImage">
+    악
+    <img :src="content" alt="이미지" class="max-w-90 max-h-90">
+  </div>
 </template>
 
 <script setup>
 import { formatTime } from '@/utils/dateUtils';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { defineProps } from 'vue';
 
 const props = defineProps({
@@ -42,9 +46,10 @@ const props = defineProps({
 
 const messageClass = computed(() => props.type === 'SENT' ? 'justify-end' : 'justify-start');
 const bubbleClass = computed(() => props.type === 'SENT' ? 'bg-blue-100 rounded-tr-none' : 'bg-gray-100 rounded-tl-none');
+const toggle = ref(false)
 
-const closeModal = ()=>{
-  console.log("안녕!")
+const toggleImage = ()=>{
+  toggle.value = !toggle.value
 }
 
 </script>
