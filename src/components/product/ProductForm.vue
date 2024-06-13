@@ -1,7 +1,11 @@
 <template>
   <form class="my-10">
     <div class="mb-5">
-      <ProductImages :initialImages="formData.images" @update:images="handleImages" />
+      <ProductImages 
+        :initialImages="formData.images" 
+        @update:images="handleImages"
+        :type="props.type"
+        />
     </div>
     <div class="space-y-5">
       <Input :model-value="formData.title" :placeholder="'제목을 입력해주세요.'" v-model="formData.title" />
@@ -34,7 +38,7 @@ import Button from '@/components/common/Button/Button.vue';
 import ProductStatus from '@/components/product/ProductStatus.vue'
 import ProductTradeOptions from '@/components/product/ProductTradeOptions.vue'
 import ProductImages from '@/components/product/ProductImages.vue'
-import instance from '@/utils/axios';
+import instance, { instanceMultipart } from '@/utils/axios';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import router from '@/router';
@@ -54,6 +58,9 @@ const formData = ref({
   content: ''
 })
 
+// 이미지 수정을 위한 오리진 url
+const prevImages = ref([])
+
 onMounted(() => {
   if (props.type === 'EDIT') {
     fetchData()
@@ -69,6 +76,7 @@ const fetchData = async () => {
   formData.value.status = res.data.data.product_status
   formData.value.images = res.data.data.images || []
   formData.value.content = res.data.data.content
+  prevImages.value = res.data.data.images;
 
   let tradeOpts = []
   if (res.data.data.product_trade_opt1 === 'Y') tradeOpts.push('product_trade_opt1')
@@ -96,23 +104,41 @@ const handleTradeOption = (value) => {
   formData.value.tradeOpt = value
 }
 
-const handleFormButton = async () => {
-  const request = {
-      title:formData.value.title,
-      price:formData.value.price,
-      content:formData.value.content,
-      product_status:formData.value.status,
-      product_trade_opt1: formData.value.tradeOpt.includes('product_trade_opt1') ? 'Y' : 'N',
-      product_trade_opt2: formData.value.tradeOpt.includes('product_trade_opt2') ? 'Y' : 'N',
-      email: localStorage.getItem('email'),
-      item_id: route.params.id
-  }
+const handleFormButton = async (e) => {
+  e.preventDefault()
+  const request = new FormData()
+  request.append('title', formData.value.title)
+  request.append('price', formData.value.price)
+  request.append('content', formData.value.content)
+  request.append('product_status', formData.value.status)
+  request.append('product_trade_opt1', formData.value.tradeOpt.includes('product_trade_opt1') ? 'Y' : 'N')
+  request.append('product_trade_opt2', formData.value.tradeOpt.includes('product_trade_opt2') ? 'Y' : 'N')
+  request.append('email', localStorage.getItem('email'))
+  request.append('item_id', route.params.id)
 
   if(props.type === 'EDIT'){
-    await instance.put(`/products/${route.params.pid}`, request)
+    const imageUrls = []
+    formData.value.images.forEach((image)=>{
+      // 이미지가 File인 경우
+      if(image instanceof File){
+        request.append('images', image)
+      }else{
+        imageUrls.push(image)
+      }
+    })
+
+    // imageUrls에 없는 url은 삭제해야하는 이미지들이다.
+    const deleted = prevImages.value.filter((image)=> !imageUrls.includes(image))
+    request.append('delete_images', deleted)
+    await instanceMultipart.put(`/products/${route.params.pid}`, request)
+    router.push(`/products/${route.params.pid}`)
     fetchData()
   }else{
-    const res = await instance.post('/products', request)
+    formData.value.images.forEach(image => {
+    request.append('images', image)
+  });
+
+    const res = await instanceMultipart.post('/products', request)
     router.push(`/products/${res.data.data}`)
   }
 }

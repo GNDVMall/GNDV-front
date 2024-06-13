@@ -1,5 +1,6 @@
 <template>
   <div class="flex items-center space-x-2">
+    <!-- 이미지 추가 Input -->
     <div class="w-20 h-20 flex items-center justify-center border border-gray-300 cursor-pointer rounded-md bg-gray-100" @click="triggerFileInput">
       <input type="file" ref="fileInput" class="hidden" @change="addImage" accept="image/*">
       <div class="flex flex-col items-center">
@@ -7,7 +8,9 @@
         <span class="text-gray-400 text-sm">{{ images.length }}/10</span>
       </div>
     </div>
-    <div v-for="(image, index) in images" :key="index" class="relative w-20 h-20 border border-gray-300 group">
+
+    <!-- 추가 이미지 -->
+    <div v-for="(image, index) in urlImages" :key="index" class="relative w-20 h-20 border border-gray-300 group">
       <img :src="image" alt="Uploaded image" class="w-full h-full object-cover cursor-pointer">
       <button @click="removeImage(index)" type="button"
         class="absolute absolute-center top-1/2 right-1/2 bg-red-600 text-white text-xs w-full h-full flex items-center justify-center 
@@ -25,12 +28,22 @@ const props = defineProps({
   initialImages: {
     type: Array,
     default: () => []
-  }
+  },
+  type: String
 });
 
 const emit = defineEmits(['update:images']);
 
+// 이미지를 url화 시켜서 화면에 출력
+const createURLs = (files) => {
+  return files.map(file => {
+    if(file instanceof File) return window.URL.createObjectURL(file)
+    return file
+  });
+};
+
 const images = ref([...props.initialImages]);
+const urlImages = ref([]);
 
 const fileInput = ref(null);
 
@@ -42,24 +55,25 @@ const addImage = (event) => {
   if (images.value.length >= 10) return;
 
   const file = event.target.files[0];
+
   if (file) {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      images.value.push(e.target.result);
-      emit('update:images', images.value);
-    };
-    reader.readAsDataURL(file);
+    images.value.push(file);
+    urlImages.value.push(window.URL.createObjectURL(file))
+    emit('update:images', images.value);
   }
 };
 
 const removeImage = (index) => {
   images.value.splice(index, 1);
+  urlImages.value.splice(index, 1);
   emit('update:images', images.value);
 };
 
 watch(() => props.initialImages, (newVal) => {
   images.value = [...newVal];
+  urlImages.value = createURLs(props.initialImages);
 });
+
 </script>
 
 <style scoped>
