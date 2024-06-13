@@ -55,16 +55,14 @@
           <div v-if="items.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             <ItemCard
               v-for="item in items"
-              :key="item.item_id"
-              :href="`/products/${item.item_id}`"
+              :key="item.id"
+              :href="`/products/${item.itme_id}`"
               :title="item.item_name"
               :series="item.series"
               :bookmark="item.bookmark"
               :description="item.description"
-              :originalPrice="item.regular_price"
-              :avgPrice="item.recent_price"
+              :regular_price="item.regular_price"
               :imageUrl="item.image_url"
-              :productId="item.item_id"
             />
           </div>
           <div v-else>
@@ -72,19 +70,6 @@
           </div>
         </div>
       </div>
-      <footer class="mt-16">
-        <div class="border-t pt-4">
-          <div class="flex justify-between text-sm text-gray-600">
-            <div>
-              <p><a href="#">이용약관</a></p>
-              <p><a href="#">개인정보처리방침</a></p>
-            </div>
-            <div>
-              <p>© GNDB</p>
-            </div>
-          </div>
-        </div>
-      </footer>
     </div>
   </template>
   
@@ -112,7 +97,7 @@
   }
   
   const clearSearch = () => {
-    router.push({ name: 'Home' }) // 검색어를 지우면 홈으로 리디렉션
+    router.push({ name: 'home' }) // 검색어를 지우면 홈으로 리디렉션
   }
   
   onMounted(() => {

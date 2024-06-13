@@ -14,12 +14,8 @@
       </div>
       <!-- price -->
       <div class="px-1 pb-3">
-        <div class="flex flex-col">
-          <span class="text-sm font-bold">{{ avgPrice }}</span>
-          <span class="text-xs opacity-60">평균가</span>
-        </div>
         <div class="flex flex-col mt-1">
-          <span class="text-sm font-bold">{{ originalPrice }}</span>
+          <span class="text-sm font-bold">{{ regular_price }}</span>
           <span class="text-xs opacity-60">정가</span>
         </div>
         <div class="flex flex-col mt-1">
@@ -29,12 +25,10 @@
         </div>
       </div>
     </a>
-    <WishListButton :productId="productId" />
   </div>
 </template>
 
 <script setup>
-import WishListButton from './WishListButton.vue';
 
 const props = defineProps({
   href: String,
@@ -42,10 +36,8 @@ const props = defineProps({
   series: String,
   bookmark: String,
   description: String,
-  originalPrice: String,
-  avgPrice: String,
+  regular_price: String,
   imageUrl: String,
-  productId: Number
 })
 </script>
 
