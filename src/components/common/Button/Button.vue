@@ -1,5 +1,5 @@
 <template>
-  <button :class="buttonClasses" @click="clickHandler">
+  <button type="button" :class="buttonClasses" @click="clickHandler">
     <div class="flex items-center gap-x-3 justify-center">
       <div><slot/></div>
       <p>{{ text }}</p>
