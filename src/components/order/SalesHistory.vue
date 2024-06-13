@@ -5,14 +5,15 @@
       <!-- Your SaleItem component here, passing sale as prop -->
       <SaleItem :sale="sale" @openReviewModal="openReviewModal" />
     </div>
-    <SellerReviewModal v-if="showModal" :showModal="showModal" :closeModal="closeReviewModal" :sale="selectedSale" />
+    <SellerReviewModal v-if="showModal" :productId="selectedSale.product_id" @close="closeReviewModal" />
   </div>
 </template>
+
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import instance from '@/utils/axios';
 import SaleItem from '@/components/order/SalesItem.vue';
-import SellerReviewModal from '@/components/modal/SellerReviewModal.vue';
+import SellerReviewModal from '@/views/ReviewForm.vue';
 import CommonHeader from '@/components/common/CommonHeader.vue';
 
 const sales = ref([]);
@@ -48,8 +49,6 @@ onMounted(async () => {
 });
 </script>
 
-
 <style scoped>
 /* Custom styles can be added here if needed. */
 </style>
-ㄴ
