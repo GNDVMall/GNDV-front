@@ -1,9 +1,9 @@
 <template>
   <main>
-    채팅 페이지
+    <ChatViewGrid />
   </main>
 </template>
 
 <script setup>
-
+import ChatViewGrid from '@/components/chat/ChatViewGrid.vue'
 </script>
