@@ -5,7 +5,6 @@
       <!-- 이미지 -->
       <ItemImage
         :alt="data.title"
-        :url="data.images?.length > 0 ? data.images[0] : 'https://kr.object.ncloudstorage.com/gndv/placeholder/500x500.svg'"
         :images="data.images?.length > 0 ? data.images : ['https://kr.object.ncloudstorage.com/gndv/placeholder/500x500.svg']"
       />
 

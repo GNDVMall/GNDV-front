@@ -1,5 +1,5 @@
 <template>
-  <div class="carousel w-full md:max-w-lg xl:max-w-xl aspect-square object-cover place-content-center flex bg-gray-200 border rounded-lg border-gray-200 overflow-hidden">
+  <div v-if="images" class="carousel w-full md:max-w-lg xl:max-w-xl aspect-square object-cover place-content-center flex bg-gray-200 border rounded-lg border-gray-200 overflow-hidden">
     <div class="relative w-full h-full">
       <div class="carousel-inner relative w-full h-full overflow-hidden">
         <div 
@@ -19,6 +19,10 @@
       <button @click="next" class="absolute top-1/2 right-0 transform -translate-y-1/2 bg-gray-500 bg-opacity-50 text-white px-2 py-1 rounded-l-lg"><i class="fa-solid fa-chevron-right"></i></button>
     </div>
   </div>
+  <div v-if="url"
+    class="w-full md:max-w-lg xl:max-w-xl aspect-square object-cover  place-content-center flex bg-gray-200 border rounded-lg border-gray-200 overflow-hidden">
+    <img class="w-full object-contain" :src="url" :alt="alt">
+  </div>
 </template>
 
 <script setup>
@@ -27,7 +31,6 @@ import { ref } from 'vue';
 const props = defineProps({
     url: {
         type:String,
-        required: true
     },
     alt:{
         type:String,
@@ -35,7 +38,6 @@ const props = defineProps({
     },
     images:{
       type: Array,
-      required: true
     }
 })
 
