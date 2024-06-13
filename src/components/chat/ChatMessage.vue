@@ -1,17 +1,20 @@
 <template>
   <li v-if="userType !== 'SYSTEM'" :class="['flex', messageClass]">
-    <img v-if="type !== 'SENT'" src="https://cdn.mos.cms.futurecdn.net/7auVjCELrhFKTPfudXRTgc.jpg" alt="Avatar" class="w-10 h-10 rounded-full object-cover mr-3">
+    <img v-if="type !== 'SENT'" src="https://cdn.mos.cms.futurecdn.net/7auVjCELrhFKTPfudXRTgc.jpg" alt="프로필" class="w-10 h-10 rounded-full object-cover mr-3">
     <div class="gap-2" :class="[type === 'SENT' ? 'order-1' : '', 'flex items-start']">
-      <span v-if="props.type === 'SENT'" class="text-sm text-gray-500 mt-2">
-        {{ formatTime(props.date) }}
+      <span v-if="type === 'SENT'" class="text-sm text-gray-500 mt-2">
+        {{ formatTime(date) }}
       </span>
       <div :class="['p-3 rounded-lg max-w-60', bubbleClass]">
-        <p class="text-gray-800">
-          {{ props.content }}
+        <div v-if="contentType === 'IMAGE'">
+          <img :src="content" alt="이미지"  @click="closeModal"/>
+        </div>
+        <p v-else class="text-gray-800">
+          {{ content }}
         </p>
       </div>
-      <span v-if="props.type !== 'SENT'" class="text-sm text-gray-500 mt-2">
-        {{ formatTime(props.date) }}
+      <span v-if="type !== 'SENT'" class="text-sm text-gray-500 mt-2">
+        {{ formatTime(date) }}
       </span>
     </div>
   </li>
@@ -31,13 +34,19 @@ const props = defineProps({
     required: true,
     validator: value => ['SENT', 'RECEIVE'].includes(value)
   },
-  content:String,
+  content: String,
   date: String,
-  userType: String
+  userType: String,
+  contentType: String
 });
 
 const messageClass = computed(() => props.type === 'SENT' ? 'justify-end' : 'justify-start');
 const bubbleClass = computed(() => props.type === 'SENT' ? 'bg-blue-100 rounded-tr-none' : 'bg-gray-100 rounded-tl-none');
+
+const closeModal = ()=>{
+  console.log("안녕!")
+}
+
 </script>
 
 <style scoped>

@@ -30,6 +30,7 @@
           :date="message.sent_at"
           :key="message.message_id"
           :userType="message.message_user_type"
+          :contentType="message.content_type"
         />
       </ol>
       <!-- 입력창 -->
@@ -74,7 +75,8 @@ stompClient.onConnect = () => {
       sent_at: new Date(),
       // 임시로 로컬스토리지 사용
       message_type: isSender ? "SENT" : "RECEIVE",
-      message_user_type: messageBody.message_user_type
+      message_user_type: messageBody.message_user_type,
+      content_type: messageBody.content_type
     })
     scrollToBottom()
     emit("upated-room-list")
@@ -92,14 +94,15 @@ stompClient.onConnect = () => {
 }
 
 // 엔터 이벤트 발생 시, 메시지 전송
-const send = (value) => {
+const send = (value, type) => {
   stompClient.publish({
     destination: `/api/v2/chat/send/${route.params.id}`,
     body: JSON.stringify({
       content: value,
       chatroom_id: route.params.id,
       receiver: product.value.email,
-      message_user_type:'USER'
+      message_user_type:'USER',
+      content_type: type
     }),
   })
 }
