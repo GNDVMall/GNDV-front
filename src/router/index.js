@@ -17,6 +17,8 @@ import OrderHistory from '@/components/order/OrderHistory.vue'
 import SalesHistory from '@/components/order/SalesHistory.vue'
 import ModalContainer from '@/components/common/ModalContainer.vue'
 import ProductView from '@/views/ProductView.vue'
+import SearchResultsView from '@/views/SearchResultsView.vue' // 검색 결과 페이지 추가
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
 
@@ -36,8 +38,8 @@ const router = createRouter({
           path: 'purchase',
           name: 'purchase',
           component: OrderHistory
-        }
-        ,{
+        },
+        {
           path:'sales',
           name:'sales',
           component: SalesHistory
@@ -103,12 +105,17 @@ const router = createRouter({
       path: '/payment-test',
       name: 'PaymentTest',
       component: PaymentTest
-    }
-    ,
-    { path: '/review',
-     name: 'Review',
+    },
+    {
+      path: '/review',
+      name: 'Review',
       component: ModalContainer
-     }
+    },
+    {
+      path: '/search-results',
+      name: 'SearchResults',
+      component: SearchResultsView
+    }
   ]
 })
 
