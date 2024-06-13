@@ -1,20 +1,38 @@
 <template>
   <div>
     <CommonHeader title="판매내역"/>
-    <div v-for="sale in filteredSales" :key="sale.order_uid">
-      <!-- Your SaleItem component here, passing sale as prop -->
-      <SaleItem :sale="sale" @openReviewModal="openReviewModal" />
+    <div class="sale-list bg-white shadow-md rounded-md p-4">
+      <div v-for="sale in filteredSales" :key="sale.order_uid" class="mb-3 p-4 border-b border-gray-200">
+        <div class="flex justify-between items-center">
+          <div>
+            <h5 class="font-bold text-lg">{{ sale.item_name }}</h5>
+            <p class="text-sm text-gray-600">가격: {{ sale.price }}원</p>
+            <p class="text-sm text-gray-600">구매자: {{ sale.buyer_name }} ({{ sale.buyer_email }})</p>
+            <p class="text-sm text-gray-600">구매자 전화번호: {{ sale.buyer_tel }}</p>
+            <p class="text-sm text-gray-600">우편번호: {{ sale.buyer_postcode }}</p>
+            <p class="text-sm text-gray-600">주문번호: {{ sale.order_uid }}</p>
+            <p class="text-sm text-gray-600">결제 상태: {{ sale.payment_status || 'N/A' }}</p>
+            <p class="text-sm text-gray-600">결제 가격: {{ sale.paymentPrice || 'N/A' }}원</p>
+          </div>
+          <button 
+            :class="{'btn btn-primary': true, 'btn-secondary': sale.review_id}" 
+            :disabled="sale.review_id" 
+            @click="openReviewModal(sale)">
+            리뷰 작성
+          </button>
+        </div>
+      </div>
     </div>
-    <SellerReviewModal v-if="showModal" :productId="selectedSale.product_id" @close="closeReviewModal" />
+
+    <SellerReviewModal v-if="showModal" :isVisible="showModal" :productId="selectedSale.product_id" @close="closeReviewModal" />
   </div>
 </template>
 
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import instance from '@/utils/axios';
-import SaleItem from '@/components/order/SalesItem.vue';
-import SellerReviewModal from '@/views/ReviewForm.vue';
 import CommonHeader from '@/components/common/CommonHeader.vue';
+import SellerReviewModal from '@/components/modal/SellerReviewModal.vue';
 
 const sales = ref([]);
 const showModal = ref(false);
@@ -50,5 +68,12 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-/* Custom styles can be added here if needed. */
+.sale-list {
+  padding: 2rem;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
 </style>
