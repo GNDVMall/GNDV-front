@@ -2,7 +2,7 @@
   <aside class="border-r border-gray-300 z-50 w-full">
     <header class="h-16 w-full text-base font-bold pt-5 border-b border-gray-300">
     </header>
-    <ul v-if="data && data.list.length > 0" class="overflow-y-auto max-h-[calc(100vh-160px)] custom-scrollbar">
+    <ul v-if="data && data.list.length > 0" class="w-full overflow-x-hidden overflow-y-auto max-h-[calc(100vh-160px)] custom-scrollbar">
       <li v-for="item in data.list">
         <ChatRoomSideItem 
           @changeRoom="changeRoom"

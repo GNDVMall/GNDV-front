@@ -35,8 +35,6 @@
       <!-- 입력창 -->
       <ChatInput 
         @enter-pressed="send"
-        @compositionstart="onCompositionStart"
-        @compositionend="onCompositionEnd"
       />
     </div>
   </div>
@@ -62,7 +60,6 @@ const product = ref(null)
 const messages = ref(null)
 const loading = ref(false)
 const scrollDiv = ref(null)
-const isComposing = ref(false)
 
 stompClient.onConnect = () => {
   stompClient.subscribe(`/topic/${route.params.id}`, async (message) => {
@@ -96,8 +93,6 @@ stompClient.onConnect = () => {
 
 // 엔터 이벤트 발생 시, 메시지 전송
 const send = (value) => {
-  if (isComposing.value) return;
-
   stompClient.publish({
     destination: `/api/v2/chat/send/${route.params.id}`,
     body: JSON.stringify({
@@ -160,15 +155,6 @@ const handlerLeaveChatRoom = () => {
   router.push("/chat")
   sendSystemMessage()
   emit("upated-room-list")
-}
-
-// Handling composition events
-const onCompositionStart = () => {
-  isComposing.value = true;
-}
-
-const onCompositionEnd = () => {
-  isComposing.value = false;
 }
 
 onMounted(()=>{

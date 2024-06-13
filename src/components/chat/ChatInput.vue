@@ -3,11 +3,10 @@
   <!-- <div 
     @keydown="handleEnterPressed"
     id="editor" class="w-full sticky bottom-0 z-10 bg-white shadow-md"></div> -->
-  <div class="w-full sticky bottom-0 z-10 bg-white shadow-md">
-    <button><i class="fa-solid fa-image"></i></button>
+  <div class="w-full overflow-hidden sticky bottom-0 z-10 bg-white shadow-md">
+    <button class="px-4 pt-2 border border-b-0 rounded-md"><i class="fa-solid fa-image text-xl text-gray-500"></i></button>
     <textarea
       @keydown="handleEnterPressed"
-      v-model="content"
       class="w-full h-48 px-4 py-2 border border-gray-300 rounded-sm focus:outline-none focus:ring-2 focus:ring-green-200 mb-5"
       :placeholder="'메시지를 입력하세요.'"
       maxlength="1000"
