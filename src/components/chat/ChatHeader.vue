@@ -41,7 +41,7 @@
 <script setup>
 import { ref } from 'vue';
 import { defineProps, defineEmits } from 'vue';
-import CommonModal from '@/components/common/ModalContainer.vue';
+import CommonModal from '@/components/modal/ModalContainer.vue';
 import ReviewForm from '@/views/ReviewForm.vue';
 import instance from '@/utils/axios';
 import { store } from '@/store/store';

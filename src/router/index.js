@@ -8,11 +8,16 @@ import LoginView from '../views/LoginView.vue'
 import NoticeView from '../views/NoticeView.vue'
 import WishView from '../views/WishView.vue'
 import ItemView from '../views/ItemView.vue'
+import ProductView from '@/views/ProductView.vue'
 import TestView from '../views/TestView.vue'
 import PaymentTest from '@/views/PaymentTest.vue'
 import TestProductDetail from '@/views/TestProductDetail.vue'
 import TestProductList from '@/views/TestProductList.vue'
 import OrderTest from '@/views/OrderTest.vue' // OrderTest 뷰 추가
+import ItemEditView from '@/views/ItemEditView.vue'
+import ProductInsertView from '@/views/ProductInsertView.vue'
+import ProductEditView from '@/views/ProductEditView.vue'
+
 import OrderHistory from '@/components/order/OrderHistory.vue'
 import SalesHistory from '@/components/order/SalesHistory.vue'
 import ModalContainer from '@/components/common/ModalContainer.vue'
@@ -77,6 +82,16 @@ const router = createRouter({
       component: ProductView
     },
     {
+      path:'/items/:id/:pid',
+      name:'editProduct',
+      component: ProductEditView
+    },
+    {
+      path:'/items/:id/new',
+      name:'insertProduct',
+      component: ProductInsertView
+    },
+    {
       path:'/test',
       name:'test',
       component: TestView
@@ -120,3 +135,4 @@ const router = createRouter({
 })
 
 export default router
+

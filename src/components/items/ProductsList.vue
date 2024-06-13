@@ -35,7 +35,7 @@ import Title from '@/components/common/Title/Title.vue'
 import ProductCard from '@/components/common/ProductCard/ProductCard.vue'
 import Pagination from '@/components/common/Pagination/Pagination.vue'
 import { useRoute } from 'vue-router';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import router from '@/router';
 import { instance } from '@/utils/axios';
 
@@ -49,6 +49,7 @@ const loading = ref(null)
 
 const fetchData = async () => {
   loading.value = true
+  console.log("route.query", route.query)
   try {
     const res = await instance.get(`products?item_id=${route.params.id}&size=${size.value}&pageNo=${currentPage.value}`); // 원하는 엔드포인트를 입력합니다.
     data.value = res.data.data;
@@ -66,6 +67,13 @@ const handlePageChange = async (page) => {
 };
 
 onMounted(fetchData);
+
+watch(() => route.query, (newQuery, oldQuery) => {
+  if (newQuery.pageNo !== oldQuery.pageNo || newQuery.size !== oldQuery.size) {
+    currentPage.value = newQuery.pageNo
+    fetchData()
+  }
+});
 </script>
 
 <style scoped>

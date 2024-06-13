@@ -21,9 +21,9 @@
         <ItemSubInfo :text="'조각 개수'" :subText="data.pieces" />
       </div>
 
-      <div class="w-full flex gap-4 lg:flex-row flex-col">
+      <div v-if="!type" class="w-full flex gap-4 lg:flex-row flex-col">
         <!-- 버튼들 -->
-        <Button :text="'판매 등록'" :type="'green'">
+        <Button :text="'판매 등록'" :type="'green'" :click-handler="handleClick">
           <i class="fa-solid fa-plus"></i>
         </Button>
         <WishListButton :item-id="data.item_id" :wish-count="data.wish_count" />
@@ -45,10 +45,15 @@ import { useRoute } from 'vue-router';
 import { formatDate } from '@/utils/dateUtils';
 import { onMounted, ref } from 'vue';
 import { instance } from '@/utils/axios';
+import router from '@/router';
 
 const route = useRoute()
 const data = ref(null)
 const loading = ref(null)
+
+const props = defineProps({
+  type: String
+})
 
 const fetchData = async () => {
   loading.value = true
@@ -60,6 +65,10 @@ const fetchData = async () => {
   } finally {
     loading.value = false
   }
+}
+
+const handleClick = () => {
+  router.push(`/items/${data.value.item_id}/new`)
 }
 
 onMounted(fetchData)
