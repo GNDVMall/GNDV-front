@@ -11,7 +11,7 @@
       v-for="page in pages"
       :key="page"
       @click="goToPage(page)"
-      :class="['px-3 py-1 border rounded', currentPage === page ? 'bg-blue-500 text-white' : '']"
+      :class="['px-3 py-1 border rounded', Number(currentPage) === Number(page) ? 'bg-blue-500 text-white' : '']"
     >
       {{ page }}
     </button>
@@ -26,8 +26,11 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { defineProps, defineEmits } from 'vue';
+import { useRoute } from 'vue-router';
+
+const route = useRoute()
 
 const props = defineProps({
   startPage: {
@@ -35,10 +38,6 @@ const props = defineProps({
     required: true,
   },
   endPage: {
-    type: Number,
-    required: true,
-  },
-  currentPage: {
     type: Number,
     required: true,
   },
@@ -50,9 +49,10 @@ const props = defineProps({
     type: Boolean,
     default: false
   }
-});
+})
 
-const emit = defineEmits(['page-changed']);
+const emit = defineEmits(['page-changed'])
+const currentPage = ref(1)
 
 const pages = computed(() => {
   let pagesArray = [];
@@ -65,6 +65,14 @@ const pages = computed(() => {
 const goToPage = (page) => {
   emit('page-changed', page);
 };
+
+// 페이지네이션 CSS를 위한 watch
+watch(
+  () => route.query.pageNo,
+  (newPageNo) => {
+    currentPage.value = newPageNo
+  }
+);
 </script>
 
 <style scoped>

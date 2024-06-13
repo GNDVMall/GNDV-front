@@ -5,7 +5,7 @@
       <!-- 이미지 -->
       <ItemImage
         :alt="data.title"
-        :url="data.images?.length > 0 ? data.images[0] : 'https://kr.object.ncloudstorage.com/gndv/placeholder/500x500.svg'"
+        :images="data.images?.length > 0 ? data.images : ['https://kr.object.ncloudstorage.com/gndv/placeholder/500x500.svg']"
       />
 
       <!-- 정보 -->
@@ -84,9 +84,9 @@ const fetchData = async () => {
   try {
     const res = await instance.get(`/products/${route.params.id}`)
     data.value = res.data.data
-    console.log("data", res.data.data)
+    console.log("Product Data:", res.data.data)
   } catch (error) {
-    throw error
+    console.error('Error fetching product detail:', error)
   } finally {
     loading.value = false
   }
@@ -124,7 +124,7 @@ const handleChat = async () => {
 }
 
 const handleProductEdit = () => {
-  router.push(`/products/edit/${data.value.product_id}`)
+  router.push(`/items/${data.value.item_id}/${data.value.product_id}`)
 }
 </script>
 
