@@ -29,20 +29,16 @@
         </div>
       </div>
     </a>
-    <WishListButton :productId="productId" />
   </div>
 </template>
 
 <script setup>
-import WishListButton from './WishListButton.vue';
 
 const props = defineProps({
   href: String,
   title: String,
   series: String,
   bookmark: String,
-  description: String,
-  originalPrice: String,
   avgPrice: String,
   imageUrl: String,
   productId: Number
