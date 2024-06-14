@@ -23,6 +23,7 @@ import SalesHistory from '@/components/order/SalesHistory.vue'
 import ModalContainer from '@/components/modal/ModalContainer.vue'
 
 import SearchResultsView from '@/views/SearchResultsView.vue' // 검색 결과 페이지 추가
+import SignupComponent from '@/components/auth/SignupComponent.vue'
 
 
 const router = createRouter({
@@ -131,6 +132,11 @@ const router = createRouter({
       path: '/search-results',
       name: 'SearchResults',
       component: SearchResultsView
+    }
+    ,{
+      path: '/signup',
+      name: 'Signup',
+      component: SignupComponent
     }
   ]
 })

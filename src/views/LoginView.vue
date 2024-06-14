@@ -6,6 +6,5 @@
 </template>
 
 <script setup>
-import TestLoginComponentVue from "@/components/payments/TestLoginComponent.vue";
-
+import TestLoginComponentVue from "@/components/auth/LoginComponent.vue";
 </script>
