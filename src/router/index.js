@@ -21,7 +21,9 @@ import ProductEditView from '@/views/ProductEditView.vue'
 import OrderHistory from '@/components/order/OrderHistory.vue'
 import SalesHistory from '@/components/order/SalesHistory.vue'
 import ModalContainer from '@/components/modal/ModalContainer.vue'
+
 import SearchResultsView from '@/views/SearchResultsView.vue' // 검색 결과 페이지 추가
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
