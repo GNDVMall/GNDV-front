@@ -25,7 +25,7 @@
 
 <script setup>
 import { instance } from '@/utils/axios';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import ItemCard from '../common/ItemCard/ItemCard.vue';
 
@@ -47,6 +47,10 @@ const fetchSearchResults = async () => {
 
 onMounted(() => {
   fetchSearchResults();
+});
+
+watch(() => route.query, ()=>{
+  fetchSearchResults()
 });
 
 </script>
