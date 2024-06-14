@@ -7,7 +7,8 @@ export const store = reactive({
     email: null
   },
   accessToken: null,
-  refreshToken: localStorage.getItem('refreshToken') || null // Load refresh token from localStorage
+  refreshToken: localStorage.getItem('refreshToken') || null,
+  selectedThemes: []
 });
 
 export const setUser = (user) => {
@@ -23,11 +24,22 @@ export const setRefreshToken = (token) => {
   localStorage.setItem('refreshToken', token); // Save to localStorage
 };
 
+export const addCheckedThemes = (theme_id) => {
+  store.selectedThemes = [...store.selectedThemes, theme_id]
+  return store.selectedThemes
+}
+
+export const deleteCheckedThemes = (theme_id) => {
+  const idx = store.selectedThemes.findIndex(id => id === theme_id)
+  if(idx !== -1)  store.selectedThemes.splice(idx, 1)
+    return store.selectedThemes
+}
+
 export const logout = () => {
   store.user = { memberId: null, email: null };
   store.accessToken = null;
   store.refreshToken = null;
-  localStorage.removeItem('refreshToken'); // Clear from localStorage
+  localStorage.removeItem('refreshToken');
 };
 
 export const provideStore = () => {
