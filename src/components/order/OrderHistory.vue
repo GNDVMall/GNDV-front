@@ -56,7 +56,7 @@
 </template>
 <script setup>
 import { ref, onMounted } from "vue";
-import instance from "@/utils/axios";
+import { instance } from "@/utils/axios";
 import CommonHeader from "@/components/common/CommonHeader.vue";
 import BuyerReviewModal from "@/components/modal/BuyerReviewModal.vue";
 const orders = ref({ data: [] });

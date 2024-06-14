@@ -38,7 +38,7 @@
   <script setup>
   import { ref, onMounted, computed } from 'vue'
   import { useRouter } from 'vue-router'
-  import axios from '@/utils/axios'
+  import { instance } from '@/utils/axios';
   
   const props = defineProps(['isOpen'])
   const emit = defineEmits(['close'])
@@ -54,46 +54,53 @@
   
   const fetchPopularSearches = async () => {
     try {
-      const response = await axios.get('/search/popular')
+      const response = await instance.get('/search/popular')
       popularKeywords.value = response.data
     } catch (error) {
       console.error(error)
     }
   }
-  
-  const fetchRecentSearches = async () => {
-    try {
-      const response = await axios.get('/search/recent')
-      recentSearches.value = response.data
-    } catch (error) {
-      console.error(error)
-    }
+
+const fetchRecentSearches = async () => {
+  try {
+    const response = await instance.get("/search/recent");
+    recentSearches.value = response.data;
+  } catch (error) {
+    console.error(error);
   }
-  
-  const searchItems = () => {
-    if (searchKeyword.value.trim() !== '') {
-      router.push({ name: 'SearchResults', query: { keyword: searchKeyword.value } })
-      emit('close')
-    }
+};
+
+const searchItems = () => {
+  if (searchKeyword.value.trim() !== "") {
+    router.push({
+      name: "SearchResults",
+      query: { keyword: searchKeyword.value },
+    });
+    emit("close");
   }
-  
-  const clearRecentSearches = () => {
-    recentSearches.value = []
-  }
-  
-  onMounted(() => {
-    fetchPopularSearches()
-    fetchRecentSearches()
-  })
-  
-  const closeModal = () => {
-    emit('close')
-  }
-  </script>
-  
+};
+
+const clearRecentSearches = () => {
+  recentSearches.value = [];
+};
+
+onMounted(() => {
+  fetchPopularSearches();
+  fetchRecentSearches();
+});
+
+const closeModal = () => {
+  emit("close");
+};
+</script>
+
 <style scoped>
-  .icon_size {
-    font-size: 0.6rem
-  }
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
 </style>
-  

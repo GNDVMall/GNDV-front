@@ -1,8 +1,10 @@
 <script setup>
-import { RouterView } from 'vue-router';
-import LayoutVue from './components/common/Layout.vue';
-import { onErrorCaptured, ref } from 'vue';
+import { RouterView } from "vue-router";
+import LayoutVue from "./components/common/Layout.vue";
+import { onErrorCaptured, ref } from "vue";
+import { provideStore } from "./store/store.js";
 
+provideStore();
 const hasError = ref(false);
 const errorCode = ref(null);
 

@@ -1,25 +1,53 @@
-import axios from 'axios'
+// axios.js
+import axios from 'axios';
+import { store } from '@/store/store'; // Directly import the store
 
-// Axios Config
-export const instance = axios.create({
-  baseURL: 'http://localhost:8080/api/v2', // 후에 URL 변경
+const getAuthHeaders = () => {
+  return {
+    Authorization: `Bearer ${store.accessToken}`,
+    'x-refresh-token': store.refreshToken
+  };
+};
+
+const instance = axios.create({
+  baseURL: 'http://localhost:8080/api/v2',
   timeout: 5000,
-  headers:{
-    "X-Requested-With":"XMLHttpRequest",
-    "Content-Type":"application/json",
-    "Authorization":`Bearer ${localStorage.getItem('authToken')}`
+});
+
+instance.interceptors.request.use(config => {
+  const headers = getAuthHeaders();
+  if (headers.Authorization) {
+    config.headers.Authorization = headers.Authorization;
+  }
+  if (headers['x-refresh-token']) {
+    config.headers['x-refresh-token'] = headers['x-refresh-token'];
+  }
+  return config;
+}, error => {
+  return Promise.reject(error);
+});
+
+const instanceMultipart = axios.create({
+  baseURL: 'http://localhost:8080/api/v2',
+  timeout: 5000,
+  headers: {
+    "X-Requested-With": "XMLHttpRequest",
+    "Content-Type": "multipart/form-data"
   }
 });
 
-// Axios Config
-export const instanceMultipart = axios.create({
-  baseURL: 'http://localhost:8080/api/v2', // 후에 URL 변경
-  timeout: 5000,
-  headers:{
-    "X-Requested-With":"XMLHttpRequest",
-    "Content-Type":"multipart/form-data",
-    "Authorization":`Bearer ${localStorage.getItem('authToken')}`
-  }
-});
+instanceMultipart.interceptors.request.use(
+  (config) => {
+    const headers = getAuthHeaders();
+    if (headers.Authorization) {
+      config.headers.Authorization = headers.Authorization;
+    }
+    if (headers['x-refresh-token']) {
+      config.headers['x-refresh-token'] = headers['x-refresh-token'];
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
-export default instance;
+export { instance, instanceMultipart };

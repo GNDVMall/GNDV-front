@@ -2,7 +2,9 @@
   <div class="w-full max-w-lg">
     <h2 class="text-xl font-bold mb-4">리뷰 상세 정보</h2>
     <div v-if="review">
-      <p class="mb-2"><strong>리뷰 내용:</strong> {{ review.review_content }}</p>
+      <p class="mb-2">
+        <strong>리뷰 내용:</strong> {{ review.review_content }}
+      </p>
       <p class="mb-2"><strong>평점:</strong> {{ review.review_rating }} / 5</p>
       <p class="mb-2"><strong>작성자 이메일:</strong> {{ review.email }}</p>
       <p class="mb-2"><strong>작성 날짜:</strong> {{ review.created_at }}</p>
@@ -14,14 +16,14 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import instance from '@/utils/axios';
+import { ref, onMounted } from "vue";
+import { instance } from "@/utils/axios";
 
 const props = defineProps({
   reviewId: {
     type: Number,
-    required: true
-  }
+    required: true,
+  },
 });
 
 const review = ref(null);

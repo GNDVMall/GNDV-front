@@ -53,7 +53,7 @@
 
 <script setup>
 import { ref, computed, onMounted } from "vue";
-import instance from "@/utils/axios";
+import { instance } from "@/utils/axios";
 import CommonHeader from "@/components/common/CommonHeader.vue";
 import SellerReviewModal from "@/components/modal/SellerReviewModal.vue";
 const sales = ref([]);
