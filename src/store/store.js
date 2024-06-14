@@ -24,13 +24,17 @@ export const setRefreshToken = (token) => {
   localStorage.setItem('refreshToken', token); // Save to localStorage
 };
 
+export const setCheckedThemes = (themes)=>{
+  store.selectedThemes = themes
+}
+
 export const addCheckedThemes = (theme_id) => {
   store.selectedThemes = [...store.selectedThemes, theme_id]
   return store.selectedThemes
 }
 
 export const deleteCheckedThemes = (theme_id) => {
-  const idx = store.selectedThemes.findIndex(id => id === theme_id)
+  const idx = store.selectedThemes.findIndex(id => Number(id) === Number(theme_id))
   if(idx !== -1)  store.selectedThemes.splice(idx, 1)
     return store.selectedThemes
 }
