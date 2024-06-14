@@ -7,40 +7,63 @@
           <label for="email" class="block text-sm font-medium text-gray-700"
             >Email</label
           >
-          <input
-            type="email"
-            v-model="email"
-            id="email"
-            required
-            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          />
+          <div class="flex">
+            <input
+              type="email"
+              v-model="email"
+              id="email"
+              required
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            />
+            <button
+              @click.prevent="sendVerificationEmail"
+              class="bg-blue-500 text-white px-4 py-2 rounded ml-2"
+            >
+              Verify Email
+            </button>
+          </div>
         </div>
-        <div class="mb-4">
-          <label for="password" class="block text-sm font-medium text-gray-700"
-            >Password</label
+        <div v-if="emailVerificationSent" class="mb-4">
+          <label
+            for="verificationCode"
+            class="block text-sm font-medium text-gray-700"
+            >Verification Code</label
           >
-          <input
-            type="password"
-            v-model="password"
-            id="password"
-            required
-            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          />
+          <div class="flex">
+            <input
+              type="text"
+              v-model="verificationCode"
+              id="verificationCode"
+              required
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            />
+            <button
+              @click.prevent="verifyEmailCode"
+              class="bg-green-500 text-white px-4 py-2 rounded ml-2"
+            >
+              Verify
+            </button>
+          </div>
         </div>
-        <div class="mb-4">
-          <label for="nickname" class="block text-sm font-medium text-gray-700"
-            >Nickname</label
-          >
-          <input
-            type="text"
-            v-model="nickname"
-            id="nickname"
-            required
-            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          />
+        <div v-if="emailVerified">
+          <div class="mb-4">
+            <label
+              for="password"
+              class="block text-sm font-medium text-gray-700"
+              >Password</label
+            >
+            <input
+              type="password"
+              v-model="password"
+              id="password"
+              required
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            />
+          </div>
         </div>
         <button
           type="submit"
+          :disabled="!emailVerified"
           class="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         >
           Sign Up
@@ -54,9 +77,9 @@
 </template>
 
 <script>
-import { instance } from "@/utils/axios.js";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import { instance } from "@/utils/axios.js";
 
 export default {
   setup() {
@@ -64,7 +87,41 @@ export default {
     const email = ref("");
     const password = ref("");
     const nickname = ref("");
+    const verificationCode = ref("");
+    const emailVerificationSent = ref(false);
+    const emailVerified = ref(false);
     const error = ref(null);
+
+    const sendVerificationEmail = async () => {
+      try {
+        const response = await instance.post("/members/sendEmailVerification", {
+          email: email.value,
+        });
+        if (response.status === 200) {
+          emailVerificationSent.value = true;
+        }
+      } catch (e) {
+        error.value =
+          "Failed to send verification email: " +
+          (e.response?.data?.message || e.message);
+      }
+    };
+
+    const verifyEmailCode = async () => {
+      try {
+        const response = await instance.get("/members/verifyEmail", {
+          params: { email: email.value, code: verificationCode.value },
+        });
+        if (response.status === 200) {
+          emailVerified.value = true;
+        } else {
+          throw new Error("Verification failed");
+        }
+      } catch (e) {
+        error.value =
+          "Verification failed: " + (e.response?.data?.message || e.message);
+      }
+    };
 
     const signUp = async () => {
       try {
@@ -73,11 +130,9 @@ export default {
           password: password.value,
           nickname: nickname.value,
         });
-
-        console.log("response", response.data);
-
-        // 회원가입 성공 시 로그인 페이지로 이동
-        router.push("/login");
+        if (response.status === 200) {
+          router.push("/login");
+        }
       } catch (e) {
         error.value =
           "Sign up failed: " + (e.response?.data?.message || e.message);
@@ -88,7 +143,12 @@ export default {
       email,
       password,
       nickname,
+      verificationCode,
+      emailVerificationSent,
+      emailVerified,
       error,
+      sendVerificationEmail,
+      verifyEmailCode,
       signUp,
     };
   },
