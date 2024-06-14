@@ -8,7 +8,7 @@
       </router-link>
     </div>
 
-    <div class="grid grid-cols-4 items-center space-x-4 py-7">
+    <div class="grid grid-cols-4 items-center py-7">
       <div class="col-span-3 overflow-hidden">
         <h2 class="text-xl font-semibold mb-2">{{ nickname }}</h2>
         <p class="text-sm text-ellipsis overflow-hidden break-words line-clamp-4">{{ introduce }}</p>
