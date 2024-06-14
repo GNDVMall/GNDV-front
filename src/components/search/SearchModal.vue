@@ -8,23 +8,26 @@
       </div>
 
       <div class="mb-8 w-full max-w-3xl mx-auto">
-        <h3 class="mb-4"><span class="text-base font-bold mr-1">최근 검색어</span><span @click="clearRecentSearches" class="underline text-sm text-gray-500 cursor-pointer">지우기</span></h3>
+        <h3 class="mb-4"><span class="text-base font-bold mr-1">최근 검색어</span>
+          <span @click="clearRecentSearches" class="underline text-sm text-gray-500 cursor-pointer">지우기</span>
+        </h3>
         <div class="flex flex-wrap gap-2 items-center">
           <div v-for="tag in uniqueRecentSearches" :key="tag" class="px-2 py-1 rounded-2xl text-sm border flex border-gray-300">
-            <button class="min-w-5 text-center px-2">{{ tag }}</button><button><i class="fa-solid fa-x text-sm text-gray-300 icon_size px-2"></i></button>
+            <button class="min-w-5 text-center px-2" @click="handleKeyword(tag)">{{ tag }}</button><button><i class="fa-solid fa-x text-sm text-gray-300 icon_size px-2"></i></button>
           </div>
         </div>
       </div>
 
       <div class="mb-8 w-full max-w-3xl mx-auto">
-        <h3 class="text-2xl font-bold mb-4">인기 검색어</h3>
+        <h3 class="text-base font-bold mb-4">인기 검색어</h3>
         <div class="grid grid-cols-2 gap-x-12">
-          <ul class="list-decimal pl-5 space-y-2 text-lg">
+          <ul class="space-y-2 text-sm">
+            <!-- http://localhost:5173/search-results?keyword=f -->
             <li v-for="(keyword, index) in popularKeywords.slice(0, 10)" :key="keyword">
-              <span>{{ index + 1 }}. {{ keyword }}</span>
+              <button @click="handleKeyword(keyword)"><span>{{ index + 1 }}. {{ keyword }}</span></button>
             </li>
           </ul>
-          <ul class="list-decimal pl-5 space-y-2 text-lg">
+          <ul class="pl-5 space-y-2  text-sm">
             <li v-for="(keyword, index) in popularKeywords.slice(10, 20)" :key="keyword">
               <span>{{ index + 11 }}. {{ keyword }}</span>
             </li>
@@ -79,6 +82,12 @@ const searchItems = () => {
     emit("close");
   }
 };
+
+const handleKeyword = (keyword)=>{
+  // 페이지 이동
+  closeModal()
+  router.push(`/search-results?keyword=${keyword}`)
+}
 
 const clearRecentSearches = () => {
   recentSearches.value = [];
