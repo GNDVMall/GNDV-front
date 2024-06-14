@@ -55,6 +55,7 @@ import { instance } from "@/utils/axios";
 import { useRoute } from "vue-router";
 import stompClient, { connect, disconnect } from "@/websocket/websocket";
 import router from "@/router";
+import { store } from "@/store/store";
 
 const emit = defineEmits(["upated-room-list"]);
 const route = useRoute();
@@ -63,6 +64,7 @@ const messages = ref(null);
 const loading = ref(false);
 const scrollDiv = ref(null);
 
+stompClient.brokerURL = `ws://localhost:8080/gndv-websocket?token=${store.accessToken}`
 stompClient.onConnect = () => {
   stompClient.subscribe(`/topic/${route.params.id}`, async (message) => {
     // 받은 메시지

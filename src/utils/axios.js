@@ -1,6 +1,6 @@
 // axios.js
 import axios from 'axios';
-import { store } from '@/store/store'; // Directly import the store
+import { store } from '@/store/store';
 
 const getAuthHeaders = () => {
   return {

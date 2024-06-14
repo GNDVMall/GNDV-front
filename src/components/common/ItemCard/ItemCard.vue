@@ -1,7 +1,7 @@
 <template>
   <div class="lg:max-w-sm rounded overflow-hidden">
-    <a :href="href">
-      <!-- img -->
+    <RouterLink :to="href">
+      <!-- image -->
       <div class="w-full max-h-md-sm md:max-w-64 md:max-h-64 aspect-square place-content-center flex">
         <img class="w-full object-cover" :src="imageUrl" :alt="title">
       </div>
@@ -24,7 +24,7 @@
           </span>
         </div>
       </div>
-    </a>
+    </RouterLink>
   </div>
 </template>
 
