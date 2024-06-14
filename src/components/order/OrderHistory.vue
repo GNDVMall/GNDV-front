@@ -110,4 +110,12 @@ onMounted(async () => {
   background-color: #6c757d;
   cursor: not-allowed;
 }
+.sale-list {
+  padding: 2rem;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
 </style>

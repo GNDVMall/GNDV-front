@@ -30,13 +30,12 @@
           :date="message.sent_at"
           :key="message.message_id"
           :userType="message.message_user_type"
+          :contentType="message.content_type"
         />
       </ol>
       <!-- 입력창 -->
       <ChatInput 
         @enter-pressed="send"
-        @compositionstart="onCompositionStart"
-        @compositionend="onCompositionEnd"
       />
     </div>
   </div>
@@ -62,7 +61,6 @@ const product = ref(null)
 const messages = ref(null)
 const loading = ref(false)
 const scrollDiv = ref(null)
-const isComposing = ref(false)
 
 stompClient.onConnect = () => {
   stompClient.subscribe(`/topic/${route.params.id}`, async (message) => {
@@ -77,7 +75,8 @@ stompClient.onConnect = () => {
       sent_at: new Date(),
       // 임시로 로컬스토리지 사용
       message_type: isSender ? "SENT" : "RECEIVE",
-      message_user_type: messageBody.message_user_type
+      message_user_type: messageBody.message_user_type,
+      content_type: messageBody.content_type
     })
     scrollToBottom()
     emit("upated-room-list")
@@ -95,19 +94,17 @@ stompClient.onConnect = () => {
 }
 
 // 엔터 이벤트 발생 시, 메시지 전송
-const send = (editor) => {
-  if (isComposing.value) return;
-
+const send = (value, type) => {
   stompClient.publish({
     destination: `/api/v2/chat/send/${route.params.id}`,
     body: JSON.stringify({
-      content: editor.getMarkdown(),
+      content: value,
       chatroom_id: route.params.id,
       receiver: product.value.email,
-      message_user_type:'USER'
+      message_user_type:'USER',
+      content_type: type
     }),
   })
-  editor && editor.reset();
 }
 
 const sendSystemMessage = () => {
@@ -161,15 +158,6 @@ const handlerLeaveChatRoom = () => {
   router.push("/chat")
   sendSystemMessage()
   emit("upated-room-list")
-}
-
-// Handling composition events
-const onCompositionStart = () => {
-  isComposing.value = true;
-}
-
-const onCompositionEnd = () => {
-  isComposing.value = false;
 }
 
 onMounted(()=>{

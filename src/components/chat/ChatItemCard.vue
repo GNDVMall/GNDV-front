@@ -39,12 +39,17 @@
 </template>
 
 <script setup>
+<<<<<<< HEAD
 import { ref, onMounted } from 'vue';
 import { defineProps, defineEmits } from 'vue';
 import CommonModal from '@/components/modal/ModalContainer.vue';
 import ReviewForm from '@/views/ReviewForm.vue';
 import instance from '@/utils/axios';
 
+=======
+import { formatKoreanCurrency } from '@/utils/currency';
+import { defineProps } from 'vue';
+>>>>>>> 7be6713dc7affbcc8f05593337050e3eaf942a8e
 const props = defineProps({
   nickname: String,
   userType: String,

@@ -21,6 +21,10 @@ import ProductEditView from '@/views/ProductEditView.vue'
 import OrderHistory from '@/components/order/OrderHistory.vue'
 import SalesHistory from '@/components/order/SalesHistory.vue'
 import ModalContainer from '@/components/modal/ModalContainer.vue'
+<<<<<<< HEAD
+=======
+import SearchResultsView from '@/views/SearchResultsView.vue' // 검색 결과 페이지 추가
+>>>>>>> 7be6713dc7affbcc8f05593337050e3eaf942a8e
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -41,8 +45,8 @@ const router = createRouter({
           path: 'purchase',
           name: 'purchase',
           component: OrderHistory
-        }
-        ,{
+        },
+        {
           path:'sales',
           name:'sales',
           component: SalesHistory
@@ -118,12 +122,16 @@ const router = createRouter({
       path: '/payment-test',
       name: 'PaymentTest',
       component: PaymentTest
-    }
-    ,
-    { 
+    },
+    {
       path: '/review',
       name: 'Review',
       component: ModalContainer
+    },
+    {
+      path: '/search-results',
+      name: 'SearchResults',
+      component: SearchResultsView
     }
   ]
 })
