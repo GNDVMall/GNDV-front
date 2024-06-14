@@ -54,17 +54,14 @@
     />
   </div>
 </template>
-
 <script setup>
 import { ref, onMounted } from "vue";
 import instance from "@/utils/axios";
 import CommonHeader from "@/components/common/CommonHeader.vue";
 import BuyerReviewModal from "@/components/modal/BuyerReviewModal.vue";
-
 const orders = ref({ data: [] });
 const showModal = ref(false);
 const selectedOrder = ref(null);
-
 const openReviewModal = async (order) => {
   console.log("Selected order:", order);
   try {
@@ -79,12 +76,10 @@ const openReviewModal = async (order) => {
     console.error("Error fetching product ID:", error);
   }
 };
-
 const closeReviewModal = () => {
   showModal.value = false;
   selectedOrder.value = null;
 };
-
 onMounted(async () => {
   try {
     const response = await instance.get("/purchaseList");
@@ -100,20 +95,10 @@ onMounted(async () => {
   }
 });
 </script>
-
 <style scoped>
 .sale-list {
   padding: 2rem;
 }
-
-.btn-secondary {
-  background-color: #6c757d;
-  cursor: not-allowed;
-}
-.sale-list {
-  padding: 2rem;
-}
-
 .btn-secondary {
   background-color: #6c757d;
   cursor: not-allowed;

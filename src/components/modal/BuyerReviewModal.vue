@@ -92,7 +92,6 @@ import { ref, onMounted } from "vue";
 import instance from "@/utils/axios.js";
 import ProfileWithStar from "@/components/common/ProfileWithStar/Star.vue";
 import CommonModal from "@/components/modal/ModalContainer.vue";
-
 const review_content = ref("");
 const review_rating = ref(0);
 const reviewExists = ref(false);
@@ -102,7 +101,6 @@ const props = defineProps({
   onClose: Function,
 });
 const email = localStorage.getItem("email");
-
 const checkReviewExists = async () => {
   try {
     const response = await instance.get(`/reviews/check`, {
@@ -113,13 +111,11 @@ const checkReviewExists = async () => {
     console.error("Error checking review existence", error);
   }
 };
-
 const submitForm = async () => {
   if (!email) {
     alert("Email is not available.");
     return;
   }
-
   const review = {
     review_content: review_content.value,
     review_rating: review_rating.value,
@@ -127,7 +123,6 @@ const submitForm = async () => {
     email: email,
     product_id: props.productId,
   };
-
   try {
     const response = await instance.post("/reviews", review);
     console.log("Review submitted successfully", response.data);
@@ -136,20 +131,16 @@ const submitForm = async () => {
     console.error("Error submitting review", error);
   }
 };
-
 const setRating = (newRating) => {
   review_rating.value = newRating;
 };
-
 const closeModal = () => {
   props.onClose();
 };
-
 onMounted(() => {
   checkReviewExists();
 });
 </script>
 
 <style scoped>
-/* Custom styles can be added here if needed. */
-</style>
+	

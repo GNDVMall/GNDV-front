@@ -56,25 +56,20 @@ import { ref, computed, onMounted } from "vue";
 import instance from "@/utils/axios";
 import CommonHeader from "@/components/common/CommonHeader.vue";
 import SellerReviewModal from "@/components/modal/SellerReviewModal.vue";
-
 const sales = ref([]);
 const showModal = ref(false);
 const selectedSale = ref(null);
-
 const openReviewModal = (sale) => {
   selectedSale.value = sale;
   showModal.value = true;
 };
-
 const closeReviewModal = () => {
   showModal.value = false;
   selectedSale.value = null;
 };
-
 const filteredSales = computed(() => {
   return sales.value.filter((sale) => sale.product_id !== null);
 });
-
 onMounted(async () => {
   try {
     const response = await instance.get("/salesList");
@@ -89,12 +84,10 @@ onMounted(async () => {
   }
 });
 </script>
-
 <style scoped>
 .sale-list {
   padding: 2rem;
 }
-
 .btn-secondary {
   background-color: #6c757d;
   cursor: not-allowed;

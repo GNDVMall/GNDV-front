@@ -21,12 +21,10 @@
 
 <script setup>
 import { defineProps, defineEmits } from "vue";
-
 const props = defineProps({
   sale: Object,
 });
 const emit = defineEmits(["openReviewModal"]);
-
 const handleOpenReviewModal = () => {
   emit("openReviewModal", props.sale);
 };
