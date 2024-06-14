@@ -22,6 +22,7 @@
               Verify Email
             </button>
           </div>
+          <div class="text-sm text-gray-400">메일이 도착할 때 까지 시간이 걸릴 수 있습니다.</div>
         </div>
         <div v-if="emailVerificationSent" class="mb-4">
           <label
@@ -43,7 +44,8 @@
             >
               Verify
             </button>
-          </div>
+            </div>
+          <div class="text-sm text-blue-500">인증 코드를 입력해주세요.</div>
         </div>
         <div v-if="emailVerified">
           <div class="mb-4">
@@ -59,6 +61,7 @@
               required
               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             />
+            <div v-if="emailVerified" class="text-sm text-blue-500">비밀번호를 입력해주세요.</div>
           </div>
         </div>
         <button
@@ -93,10 +96,10 @@ export default {
     const error = ref(null);
 
     const sendVerificationEmail = async () => {
+      const formData = new FormData()
+      formData.append("email", email.value)
       try {
-        const response = await instance.post("/members/sendEmailVerification", {
-          email: email.value,
-        });
+        const response = await instance.post("/members/sendEmailVerification", formData);
         if (response.status === 200) {
           emailVerificationSent.value = true;
         }

@@ -1,5 +1,5 @@
 <template>
-  <aside class="w-1/4 pr-8">
+  <aside v-if="themes && store.selectedThemes" class="w-1/5 pr-8">
     <h2 class="text-xl font-bold mb-4">필터</h2>
     <div class="mb-6 text-sm">
       <h3 class="text-sm font-bold mb-2 ">가격</h3>
@@ -12,31 +12,11 @@
     </div>
     <div class="mb-6">
       <h3 class="text-sm font-bold mb-2">시리즈</h3>
-      <!--  -->
-      <ul class="space-y-2 text-sm">
-        <li>
-          <label class="flex items-center"><input type="checkbox" class="mr-2" /> 브리니얼</label>
-        </li>
-        <li>
-          <label class="flex items-center"><input type="checkbox" class="mr-2" /> 아이디어스</label>
-        </li>
-        <li>
-          <label class="flex items-center"><input type="checkbox" class="mr-2" /> DC 코믹스</label>
-        </li>
-        <li>
-          <label class="flex items-center"><input type="checkbox" class="mr-2" /> 앵그리 버드</label>
-        </li>
-        <li>
-          <label class="flex items-center"><input type="checkbox" class="mr-2" /> 자동차</label>
-        </li>
-        <li>
-          <label class="flex items-center"><input type="checkbox" class="mr-2" /> 완구책</label>
-        </li>
-        <li>
-          <label class="flex items-center"><input type="checkbox" class="mr-2" /> 마이크로피규어</label>
-        </li>
-        <li>
-          <label class="flex items-center"><input type="checkbox" class="mr-2" /> 클래식</label>
+      <ul v-if="themes" class="space-y-2 text-sm">
+        <li v-for="theme in themes" :key="theme.theme_id">
+          <label class="flex items-center"><input @change="toggleTheme(theme.theme_id, $event)" type="checkbox" class="mr-2" 
+            :value="theme.theme_id"             
+            :checked="store.selectedThemes.includes(String(theme.theme_id))"  /> {{ theme.theme_name }}</label>
         </li>
       </ul>
     </div>
@@ -44,20 +24,44 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import router from '@/router';
+import { addCheckedThemes, deleteCheckedThemes, setCheckedThemes, store } from '@/store/store';
+import { instance } from '@/utils/axios';
+import { onMounted, ref } from 'vue';
+import { useRoute } from 'vue-router';
 
-const toggle = ref(true)
-const toggleSidebar = ()=>{
-  toggle.value = !toggle.value
+const route = useRoute()
+const themes = ref()
+
+const fetchData = async ()=>{
+  const response = await instance.get(`/search/themes`)
+  themes.value = response.data.data
 }
+
+const toggleTheme = (theme_id, event) => {
+  let selectedThemes = []
+  if (event.target.checked) {
+    selectedThemes = addCheckedThemes(theme_id);
+  } else {
+    selectedThemes = deleteCheckedThemes(theme_id);
+  }
+
+  const query = new URLSearchParams(route.query)
+  query.delete('theme_id')
+  query.append('theme_id', selectedThemes)
+  router.push(`/search-results?${query.toString()}`)
+};
+
+onMounted(()=>{
+  fetchData()
+  const query = route.query.theme_id
+  setCheckedThemes(query ? query.split(',') : [])
+})
 
 </script>
 
 <style scoped>
-.hidden-slide {
-  transform: translateX(-100%);
-}
-.visible-slide {
-  transform: translateX(0);
+input {
+  accent-color: rgb(34 197 94);
 }
 </style>
