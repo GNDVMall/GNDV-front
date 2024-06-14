@@ -7,7 +7,7 @@
       </div>
       <!-- title -->
       <div class="px-1 py-2">
-        <div class="font-bold text-sm mb-1">{{ series }}</div>
+        <div class="font-bold text-sm">{{ series || '시리즈' }}</div>
         <p
           :title="title" 
           class="text-gray-700 text-sm text-ellipsis overflow-hidden break-words line-clamp-2">{{ title }}</p>
@@ -15,7 +15,7 @@
       <!-- price -->
       <div class="px-1 pb-3">
         <div class="flex flex-col mt-1">
-          <span class="text-sm font-bold">{{ regular_price }}</span>
+          <span class="text-sm font-bold">{{ formatKoreanCurrency(regular_price) }}원</span>
           <span class="text-xs opacity-60">정가</span>
         </div>
         <div class="flex flex-col mt-1">
@@ -29,6 +29,8 @@
 </template>
 
 <script setup>
+import { formatKoreanCurrency } from '@/utils/currency';
+
 
 const props = defineProps({
   href: String,

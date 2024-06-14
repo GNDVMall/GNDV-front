@@ -22,7 +22,6 @@
         <h3 class="text-base font-bold mb-4">인기 검색어</h3>
         <div class="grid grid-cols-2 gap-x-12">
           <ul class="space-y-2 text-sm">
-            <!-- http://localhost:5173/search-results?keyword=f -->
             <li v-for="(keyword, index) in popularKeywords.slice(0, 10)" :key="keyword">
               <button @click="handleKeyword(keyword)"><span>{{ index + 1 }}. {{ keyword }}</span></button>
             </li>
