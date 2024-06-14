@@ -89,7 +89,7 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import instance from "@/utils/axios.js";
+import { instance } from "@/utils/axios.js";
 import ProfileWithStar from "@/components/common/ProfileWithStar/Star.vue";
 import CommonModal from "@/components/modal/ModalContainer.vue";
 const review_content = ref("");

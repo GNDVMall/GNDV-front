@@ -1,103 +1,59 @@
-<template>
-    <transition name="fade">
-      <div v-if="isOpen" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-        <div class="bg-white w-full h-full p-8 relative overflow-y-auto">
-          <button @click="closeModal" class="absolute top-4 right-4 text-gray-600 text-2xl">&times;</button>
-  
-          <div class="flex flex-col items-center mb-8">
-            <input type="text" v-model="searchKeyword" @keyup.enter="searchItems" class="w-full max-w-3xl p-4 border-b border-gray-300 focus:outline-none text-2xl" placeholder="브랜드, 상품, 프로필, 태그 등">
-          </div>
-  
-          <div class="mb-8 w-full max-w-3xl mx-auto">
-            <h3 class="text-2xl font-bold mb-4">최근 검색어 <span @click="clearRecentSearches" class="text-sm text-gray-500 cursor-pointer">지우기</span></h3>
-            <div class="flex flex-wrap gap-2">
-              <span v-for="tag in uniqueRecentSearches" :key="tag" class="px-4 py-2 bg-gray-200 rounded-full text-lg">{{ tag }}</span>
-            </div>
-          </div>
-  
-          <div class="mb-8 w-full max-w-3xl mx-auto">
-            <h3 class="text-2xl font-bold mb-4">인기 검색어</h3>
-            <div class="grid grid-cols-2 gap-x-12">
-              <ul class="list-decimal pl-5 space-y-2 text-lg">
-                <li v-for="(keyword, index) in popularKeywords.slice(0, 10)" :key="keyword">
-                  <span>{{ index + 1 }}. {{ keyword }}</span>
-                </li>
-              </ul>
-              <ul class="list-decimal pl-5 space-y-2 text-lg">
-                <li v-for="(keyword, index) in popularKeywords.slice(10, 20)" :key="keyword">
-                  <span>{{ index + 11 }}. {{ keyword }}</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-  
-        </div>
-      </div>
-    </transition>
-  </template>
-  
-  <script setup>
-  import { ref, onMounted, computed } from 'vue'
-  import { useRouter } from 'vue-router'
-  import axios from '@/utils/axios'
-  
-  const props = defineProps(['isOpen'])
-  const emit = defineEmits(['close'])
-  const router = useRouter()
-  
-  const recentSearches = ref([])
-  const popularKeywords = ref([])
-  const recentProducts = ref([])
-  const searchKeyword = ref('')
-  
-  // 중복된 검색어를 제거한 배열을 계산합니다.
-  const uniqueRecentSearches = computed(() => [...new Set(recentSearches.value)])
-  
-  const fetchPopularSearches = async () => {
-    try {
-      const response = await axios.get('/search/popular')
-      popularKeywords.value = response.data
-    } catch (error) {
-      console.error(error)
-    }
+<script setup>
+import { ref, onMounted, computed } from "vue";
+import { useRouter } from "vue-router";
+import { instance } from "@/utils/axios"; // Correct import path for axios
+import { useStore } from "@/store/store"; // Import useStore
+
+const props = defineProps(["isOpen"]);
+const emit = defineEmits(["close"]);
+const router = useRouter();
+const store = useStore(); // Use the store
+
+const recentSearches = ref([]);
+const popularKeywords = ref([]);
+const searchKeyword = ref("");
+
+// Computed property to remove duplicate recent searches
+const uniqueRecentSearches = computed(() => [...new Set(recentSearches.value)]);
+
+const fetchPopularSearches = async () => {
+  try {
+    const response = await instance.get("/search/popular");
+    popularKeywords.value = response.data;
+  } catch (error) {
+    console.error(error);
   }
-  
-  const fetchRecentSearches = async () => {
-    try {
-      const response = await axios.get('/search/recent')
-      recentSearches.value = response.data
-    } catch (error) {
-      console.error(error)
-    }
+};
+
+const fetchRecentSearches = async () => {
+  try {
+    const response = await instance.get("/search/recent");
+    recentSearches.value = response.data;
+  } catch (error) {
+    console.error(error);
   }
-  
-  const searchItems = () => {
-    if (searchKeyword.value.trim() !== '') {
-      router.push({ name: 'SearchResults', query: { keyword: searchKeyword.value } })
-      emit('close')
-    }
+};
+
+const searchItems = () => {
+  if (searchKeyword.value.trim() !== "") {
+    router.push({
+      name: "SearchResults",
+      query: { keyword: searchKeyword.value },
+    });
+    emit("close");
   }
-  
-  const clearRecentSearches = () => {
-    recentSearches.value = []
-  }
-  
-  onMounted(() => {
-    fetchPopularSearches()
-    fetchRecentSearches()
-  })
-  
-  const closeModal = () => {
-    emit('close')
-  }
-  </script>
-  
-  <style scoped>
-  .fade-enter-active, .fade-leave-active {
-    transition: opacity 0.5s;
-  }
-  .fade-enter-from, .fade-leave-to {
-    opacity: 0;
-  }
-  </style>
-  
+};
+
+const clearRecentSearches = () => {
+  recentSearches.value = [];
+};
+
+onMounted(() => {
+  fetchPopularSearches();
+  fetchRecentSearches();
+});
+
+const closeModal = () => {
+  emit("close");
+};
+</script>
