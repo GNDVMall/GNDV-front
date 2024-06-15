@@ -13,18 +13,15 @@
     <div class="mt-4 flex flex-col items-center">
       <img v-if="profile_url" :src="profile_url" alt="프로필" class="w-24 h-24 rounded-full border-2 border-gray-300 mb-2" />
       <div v-else class="w-24 h-24 rounded-full border-2 border-gray-200 mb-2 bg-gray-200"></div>
-      <div class="text-xl font-semibold">4</div>
-      <div class="flex">
-        <i v-for="n in 4" class="fa-solid fa-star text-yellow-400" ></i>
-        <i class="fa-solid fa-star text-gray-200"></i>
-        <!-- <i v-for="n in Math.floor(rating)" class="fa-solid fa-star text-yellow-400" ></i>
-        <i v-for="n in 5 - Math.floor(rating)" class="fa-solid fa-star text-gray-200"></i> -->
-      </div>
+      <div class="text-xl font-semibold">3</div>
+      <ReadOnlyStar :rating="3"/>
     </div>
   </div>
 </template>
 
 <script setup>
+import ReadOnlyStar from '../common/Star/ReadOnlyStar.vue';
+
 const props = defineProps({
   rating: Number,
   nickname: String,
