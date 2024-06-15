@@ -2,6 +2,7 @@
 import axios from 'axios';
 import { store } from '@/store/store'; // Directly import the store
 
+
 const getAuthHeaders = () => {
   return {
     Authorization: `Bearer ${store.accessToken}`,
@@ -16,12 +17,10 @@ const instance = axios.create({
 
 instance.interceptors.request.use(config => {
   const headers = getAuthHeaders();
-  if (headers.Authorization) {
-    config.headers.Authorization = headers.Authorization;
-  }
-  if (headers['x-refresh-token']) {
-    config.headers['x-refresh-token'] = headers['x-refresh-token'];
-  }
+  config.headers = {
+    ...config.headers,
+    ...headers,
+  };
   return config;
 }, error => {
   return Promise.reject(error);
@@ -39,12 +38,10 @@ const instanceMultipart = axios.create({
 instanceMultipart.interceptors.request.use(
   (config) => {
     const headers = getAuthHeaders();
-    if (headers.Authorization) {
-      config.headers.Authorization = headers.Authorization;
-    }
-    if (headers['x-refresh-token']) {
-      config.headers['x-refresh-token'] = headers['x-refresh-token'];
-    }
+    config.headers = {
+      ...config.headers,
+      ...headers,
+    };
     return config;
   },
   (error) => Promise.reject(error)

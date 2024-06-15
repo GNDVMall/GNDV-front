@@ -50,14 +50,14 @@ import {
   setUser,
   setAccessToken,
   setRefreshToken,
-} from "@/store/store"; // Ensure correct imports
+} from "@/store/store";
 
 const email = ref("");
 const password = ref("");
 const error = ref(null);
 const router = useRouter();
-const store = useStore(); // Use the store
-
+const store = useStore();
+console.log("스토어값", store);
 const login = async () => {
   try {
     const response = await instance.post(
@@ -68,25 +68,33 @@ const login = async () => {
       },
       {
         headers: {
-          "X-Requested-With": "XMLHttpRequest", // Ensure this header is sent
+          "X-Requested-With": "XMLHttpRequest",
         },
       }
     );
 
     const token =
       response.headers["authorization"] || response.headers["Authorization"];
-    const refreshToken = response.headers["x-refresh-token"]; // Assuming refresh token comes in this header
+    const refreshToken = response.headers["x-refresh-token"];
 
-    setAccessToken(token); // Store access token in store
-    setRefreshToken(refreshToken); // Store refresh token in store and localStorage
+    console.log("토큰:", token);
+    console.log("리프레시 토큰:", refreshToken);
 
-    setUser({
+    setAccessToken(token);
+    setRefreshToken(refreshToken);
+
+    const userData = {
       email: response.data.email,
-      memberId: response.data.memberId,
-    });
+      memberId: response.data.id,
+    };
+    setUser(userData);
 
+    localStorage.setItem("memberId", response.data.id);
     localStorage.setItem("email", response.data.email);
+    localStorage.setItem("accessToken", token);
     localStorage.setItem("refreshToken", refreshToken);
+
+    console.log("스토어 값:", store);
 
     router.push("/");
   } catch (e) {

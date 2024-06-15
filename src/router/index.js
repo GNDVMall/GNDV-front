@@ -24,6 +24,7 @@ import ModalContainer from '@/components/modal/ModalContainer.vue'
 
 import SearchResultsView from '@/views/SearchResultsView.vue' // 검색 결과 페이지 추가
 import SignupComponent from '@/components/auth/SignupComponent.vue'
+import Profile from '@/views/Profile.vue'
 
 
 const router = createRouter({
@@ -50,6 +51,17 @@ const router = createRouter({
           path:'sales',
           name:'sales',
           component: SalesHistory
+        },
+        {
+          path: 'profile',
+          name: 'Profile',
+          component: Profile,
+          meta: { requiresAuth: true }
+        },
+        {
+          path: 'login-info',
+          name: 'LoginInfo',
+          component: LoginView
         }
       ]
     },
