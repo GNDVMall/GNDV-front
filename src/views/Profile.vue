@@ -54,9 +54,11 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { store } from "@/store/store";
+import { useStore } from "@/store/store";
 import { instance, instanceMultipart } from "@/utils/axios";
 import ProfileModal from "@/components/modal/ProfileModal.vue";
+
+const store = useStore();
 
 const profileImageUrl = ref("https://via.placeholder.com/150");
 const profileName = ref("프로필 이름");
@@ -86,7 +88,9 @@ const fetchProfileData = async () => {
     const memberId = store.user.memberId;
     if (!memberId) throw new Error("Member ID is missing");
 
-    const headers = getAuthHeaders();
+    const headers = {
+      Authorization: `Bearer ${store.accessToken}`,
+    };
     const response = await instance.get(`/members/${memberId}`, { headers });
     const member = response.data.data;
     profileImageUrl.value =
@@ -119,7 +123,9 @@ const changeProfileImage = async () => {
   formData.append("file", selectedFile.value);
 
   try {
-    const headers = getAuthHeaders();
+    const headers = {
+      Authorization: `Bearer ${store.accessToken}`,
+    };
     const response = await instanceMultipart.post(
       `/members/${store.user.memberId}/uploadProfileImage`,
       formData,
