@@ -1,5 +1,5 @@
 <template>
-  <div class="sm:flex-row flex-col flex items-end gap-11 pb-6 mt-10">
+  <div class="sm:flex-row flex-col flex sm:items-end gap-11 pb-6 mt-10">
     <!-- INFO -->
     <div class="w-full flex-1">
       <div class="text-3xl font-bold">{{nickname}}ratty-master</div>
