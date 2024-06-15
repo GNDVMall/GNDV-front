@@ -42,7 +42,7 @@
           <span class="text-black">CHAT</span>
         </RouterLink>
         <RouterLink to="/my">
-          <span class="text-black">MY GNDB</span>
+          <span class="text-black">MY GNDV</span>
         </RouterLink>
 
         <!-- 클릭 시, 검색 전체 모달 화면 -->
