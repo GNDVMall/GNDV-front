@@ -48,7 +48,7 @@
         </div>
       </div>
 
-      <div class="mb-8 w-full max-w-3xl mx-auto">
+      <div v-if="popularKeywords" class="mb-8 w-full max-w-3xl mx-auto">
         <h3 class="text-base font-bold mb-4">인기 검색어</h3>
         <div class="grid grid-cols-2 gap-x-12">
           <ul class="space-y-2 text-sm">
@@ -86,16 +86,15 @@ const router = useRouter();
 
 const recentSearches = ref([]);
 const popularKeywords = ref([]);
-const recentProducts = ref([]);
 const searchKeyword = ref("");
 
-// 중복된 검색어를 제거한 배열을 계산합니다.
+// 중복된 검색어를 제거한 배열을 계산합니다. - 일요일에 완성됨
 const uniqueRecentSearches = computed(() => [...new Set(recentSearches.value)]);
 
 const fetchPopularSearches = async () => {
   try {
     const response = await instance.get("/search/popular");
-    popularKeywords.value = response.data;
+    popularKeywords.value = response.data.data;
   } catch (error) {
     console.error(error);
   }
@@ -104,20 +103,18 @@ const fetchPopularSearches = async () => {
 const fetchRecentSearches = async () => {
   try {
     const response = await instance.get("/search/recent");
-    recentSearches.value = response.data;
+    recentSearches.value = response.data.data;
   } catch (error) {
     console.error(error);
   }
 };
 
 const searchItems = () => {
-  if (searchKeyword.value.trim() !== "") {
-    router.push({
-      name: "SearchResults",
-      query: { keyword: searchKeyword.value },
-    });
-    emit("close");
-  }
+  router.push({
+    name: "SearchResults",
+    query: { keyword: searchKeyword.value ? searchKeyword.value : "" },
+  });
+  emit("close");
 };
 
 const handleKeyword = (keyword) => {
