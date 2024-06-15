@@ -53,3 +53,4 @@ export const provideStore = () => {
 export const useStore = () => {
   return inject('store');
 };
+export const isAuthenticated = () => !!store.accessToken;
