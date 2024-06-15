@@ -17,6 +17,7 @@
             :bookmark="item.wish_count"
             :description="item.description"
             :regular_price="item.regular_price"
+            :recent_price="item.recent_price"
             :imageUrl="item.image_url"
           />
         </div>

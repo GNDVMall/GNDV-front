@@ -19,6 +19,10 @@
           <span class="text-xs opacity-60">정가</span>
         </div>
         <div class="flex flex-col mt-1">
+          <span class="text-sm font-bold">{{ formatKoreanCurrency(recent_price) }}원</span>
+          <span class="text-xs opacity-60">최근 거래가</span>
+        </div>
+        <div class="flex flex-col mt-1">
           <span class="text-xs opacity-60">
             <i class="fa-regular fa-bookmark mr-2"></i>{{ bookmark }}
           </span>
@@ -39,6 +43,7 @@ const props = defineProps({
   bookmark: String,
   description: String,
   regular_price: String,
+  recent_price: String,
   imageUrl: String,
 })
 </script>
