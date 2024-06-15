@@ -26,7 +26,6 @@
 
 <script setup>
 import CommonHeader from "@/components/common/CommonHeader.vue"
-import ReadOnlyStar from "@/components/common/Star/ReadOnlyStar.vue"
 import Review from "@/components/publicProfile/Review.vue"
 </script>
 
