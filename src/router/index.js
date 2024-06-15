@@ -9,12 +9,8 @@ import NoticeView from '../views/NoticeView.vue'
 import WishView from '../views/WishView.vue'
 import ItemView from '../views/ItemView.vue'
 import ProductView from '@/views/ProductView.vue'
-import TestView from '../views/TestView.vue'
 import PaymentTest from '@/views/PaymentTest.vue'
-import TestProductDetail from '@/views/TestProductDetail.vue'
-import TestProductList from '@/views/TestProductList.vue'
 import OrderTest from '@/views/OrderTest.vue' // OrderTest 뷰 추가
-import ItemEditView from '@/views/ItemEditView.vue'
 import ProductInsertView from '@/views/ProductInsertView.vue'
 import ProductEditView from '@/views/ProductEditView.vue'
 
@@ -24,6 +20,7 @@ import ModalContainer from '@/components/modal/ModalContainer.vue'
 
 import SearchResultsView from '@/views/SearchResultsView.vue' // 검색 결과 페이지 추가
 import SignupComponent from '@/components/auth/SignupComponent.vue'
+import PublicUserProfileView from '@/views/PublicUserProfileView.vue'
 
 
 const router = createRouter({
@@ -94,24 +91,9 @@ const router = createRouter({
       component: ProductInsertView
     },
     {
-      path:'/test',
-      name:'test',
-      component: TestView
-    },
-    {
       path:'/payment',
       name:'payment',
       component: PaymentTest
-    },
-    {
-      path:'/testproduct/:id',
-      name:'testproduct',
-      component: TestProductDetail
-    },
-    {
-      path:'/testproductlist',
-      name:'testproductlist',
-      component: TestProductList
     },
     {
       path: '/order-test',
@@ -137,6 +119,11 @@ const router = createRouter({
       path: '/signup',
       name: 'Signup',
       component: SignupComponent
+    },
+    {
+      path:'/profiles/:id',
+      name:'Profiles',
+      component: PublicUserProfileView
     }
   ]
 })

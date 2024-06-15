@@ -16,9 +16,6 @@
         >
           로그아웃
         </button>
-        <RouterLink to="/notice">
-          <span class="text-gray-600 text-xs">공지사항</span>
-        </RouterLink>
         <RouterLink to="/wish">
           <span class="text-gray-600 text-xs">관심</span>
         </RouterLink>
