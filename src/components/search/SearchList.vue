@@ -33,6 +33,7 @@
             :regular_price="item.regular_price"
             :recent_price="item.recent_price"
             :imageUrl="item.image_url"
+            :age_range="item.age_range"
           />
         </div>
         <div v-else>
