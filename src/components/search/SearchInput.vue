@@ -12,19 +12,18 @@ import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 
 const route = useRoute()
-const searchKeyword = ref(route.query.keyword)
+const searchKeyword = ref(route.query.keyword ? route.query.keyword : '')
 
 const clearSearch = ()=>{
   searchKeyword.value = ''
 }
 
 const searchItems = () => {
-  if (searchKeyword.value.trim() !== "") {
-    router.push({
-      name: "SearchResults",
-      query: { keyword: searchKeyword.value },
-    });
-  }
+  const query = new URLSearchParams(route.query)
+  query.delete('keyword')
+  query.append('keyword', searchKeyword.value ? searchKeyword.value : '')
+  
+  router.push(`/search-results?${query.toString()}`);
 };
 
 </script>

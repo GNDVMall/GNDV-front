@@ -6,17 +6,23 @@
         <img class="w-full object-cover" :src="imageUrl" :alt="title">
       </div>
       <!-- title -->
-      <div class="px-1 py-2">
-        <div class="font-bold text-sm">{{ series || '시리즈' }}</div>
+      <div class="px-1 py-2 md:max-w-64">
+        <div class="flex text-sm justify-between">
+          <div class="font-bold">{{ series || '시리즈' }}</div> <div>{{ age_range }}+</div>
+        </div>
         <p
           :title="title" 
           class="text-gray-700 text-sm text-ellipsis overflow-hidden break-words line-clamp-2">{{ title }}</p>
       </div>
       <!-- price -->
-      <div class="px-1 pb-3">
+      <div class="px-1 pb-3 md:max-w-64">
         <div class="flex flex-col mt-1">
           <span class="text-sm font-bold">{{ formatKoreanCurrency(regular_price) }}원</span>
           <span class="text-xs opacity-60">정가</span>
+        </div>
+        <div class="flex flex-col mt-1">
+          <span class="text-sm font-bold">{{ formatKoreanCurrency(recent_price) }}원</span>
+          <span class="text-xs opacity-60">최근 거래가</span>
         </div>
         <div class="flex flex-col mt-1">
           <span class="text-xs opacity-60">
@@ -39,6 +45,8 @@ const props = defineProps({
   bookmark: String,
   description: String,
   regular_price: String,
+  recent_price: String,
+  age_range: String,
   imageUrl: String,
 })
 </script>

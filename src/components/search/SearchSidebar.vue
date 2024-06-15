@@ -2,12 +2,13 @@
   <aside v-if="themes && store.selectedThemes" class="w-1/5 pr-8">
     <h2 class="text-xl font-bold mb-4">필터</h2>
     <div class="mb-6 text-sm">
-      <h3 class="text-sm font-bold mb-2 ">가격</h3>
+      <h3 class="text-sm font-bold mb-2 ">최근 거래 가격</h3>
       <div>
         <label>최소 가격</label>
-        <input type="text" class="w-full mb-2 border rounded px-2 py-1" />
+        <input v-model="price.min" type="text" class="w-full mb-2 border rounded px-2 py-1" />
         <label>최대 가격</label>
-        <input type="text" class="w-full border rounded px-2 py-1" />
+        <input v-model="price.max" type="text" class="w-full border rounded px-2 py-1" />
+        <button @click="handlePriceFilter" class="text-right w-full mt-1 underline text-green-500">설정</button>
       </div>
     </div>
     <div class="mb-6">
@@ -32,6 +33,10 @@ import { useRoute } from 'vue-router';
 
 const route = useRoute()
 const themes = ref()
+const price = ref({
+  min: null,
+  max: null
+})
 
 const fetchData = async ()=>{
   const response = await instance.get(`/search/themes`)
@@ -47,14 +52,27 @@ const toggleTheme = (theme_id, event) => {
   }
 
   const query = new URLSearchParams(route.query)
-  query.delete('theme_id')
-  query.append('theme_id', selectedThemes)
+  query.delete('themeIds')
+  query.append('themeIds', selectedThemes)
   router.push(`/search-results?${query.toString()}`)
 };
 
+const handlePriceFilter = ()=>{
+  const query = new URLSearchParams(route.query)
+  if(price.value.min) {
+    query.delete('minPrice')
+    query.append('minPrice', price.value.min)
+  }
+  if(price.value.max) {
+    query.delete('maxPrice')
+    query.append('maxPrice', price.value.max)
+  }
+  router.push(`/search-results?${query.toString()}`)
+}
+
 onMounted(()=>{
   fetchData()
-  const query = route.query.theme_id
+  const query = route.query.themeIds
   setCheckedThemes(query ? query.split(',') : [])
 })
 
