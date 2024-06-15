@@ -1,13 +1,11 @@
 <template>
   <header class="py-4">
-    <div class="container mx-auto">
-      <div class="flex items-center">
-        <h1 class="text-xl font-bold">{{ title }}</h1>
-      </div>
-      <div class="relative mt-2">
-        <div class="absolute inset-x-0 top-[-8px] h-1 "></div>
-        <div class="h-1 bg-black mt-2"></div>
-      </div>
+    <div class="flex items-center">
+      <h1 class="text-xl font-bold">{{ title }}</h1>
+    </div>
+    <div class="relative mt-2">
+      <div class="absolute inset-x-0 top-[-8px] h-1 "></div>
+      <div class="h-1 bg-black mt-2"></div>
     </div>
   </header>
 </template>
