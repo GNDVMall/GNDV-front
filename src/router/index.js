@@ -13,11 +13,11 @@ import PaymentTest from "@/views/PaymentTest.vue";
 import OrderTest from "@/views/OrderTest.vue"; // OrderTest 뷰 추가
 import ProductInsertView from "@/views/ProductInsertView.vue";
 import ProductEditView from "@/views/ProductEditView.vue";
-
+import LoginInfo from "@/views/LoginInfo.vue";
 import OrderHistory from "@/components/order/OrderHistory.vue";
 import SalesHistory from "@/components/order/SalesHistory.vue";
 import ModalContainer from "@/components/modal/ModalContainer.vue";
-
+import Profile from "@/views/Profile.vue";
 import SearchResultsView from "@/views/SearchResultsView.vue"; // 검색 결과 페이지 추가
 import SignupComponent from "@/components/auth/SignupComponent.vue";
 import PublicUserProfileView from "@/views/PublicUserProfileView.vue";
