@@ -95,12 +95,6 @@ import ProfileModal from "@/components/modal/ProfileModal.vue";
 
 const store = useStore();
 const router = useRouter();
-onMounted(() => {
-  console.log("Store values:", store);
-});
-const email = ref(store.user.email);
-const phoneNumber = ref("010-1234-1234"); // This should come from the user profile data
-const ageGroup = ref("20대"); // This should come from the user profile data
 const role = ref("판매자"); // This should come from the user profile data
 
 const modalVisible = ref(false);

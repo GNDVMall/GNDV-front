@@ -5,17 +5,15 @@
     class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
   >
     <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-      <h2 class="text-2xl font-bold mb-6">{{ getTitle(props.field) }}</h2>
+      <h2 class="text-2xl font-bold mb-6">{{ getTitle(field) }}</h2>
       <form @submit.prevent="save">
         <div class="mb-4">
-          <label
-            :for="props.field"
-            class="block text-sm font-medium text-gray-700"
-            >{{ getLabel(props.field) }}</label
-          >
+          <label :for="field" class="block text-sm font-medium text-gray-700">{{
+            getLabel(field)
+          }}</label>
           <input
             v-model="inputValue"
-            :id="props.field"
+            :id="field"
             type="text"
             required
             class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
@@ -44,7 +42,7 @@
 <script setup>
 import { useStore } from "@/store/store";
 import { ref, watch } from "vue";
-import { instance } from "@/utils/axios";
+import { instance } from "@/utils/axios"; // use instance instead of instanceMultipart
 
 const store = useStore();
 const props = defineProps({
@@ -73,9 +71,14 @@ const save = async () => {
     const memberId = store.user.memberId; // Get memberId from store
     if (!memberId) throw new Error("Member ID is missing");
 
-    await instance.put(`/members/${memberId}/edit/${props.field}`, {
-      value: inputValue.value,
-    });
+    const updateData = {};
+    if (props.field === "profileName") {
+      updateData.nickname = inputValue.value;
+    } else if (props.field === "introduction") {
+      updateData.introduction = inputValue.value;
+    }
+
+    await instance.put(`/members/${memberId}/edit`, updateData);
     emit("updated", { field: props.field, value: inputValue.value });
     close();
   } catch (error) {
@@ -90,6 +93,8 @@ const getTitle = (field) => {
     phone: "휴대폰 번호 변경",
     ageGroup: "연령대 변경",
     role: "권한 변경",
+    profileName: "프로필 이름 변경",
+    introduction: "소개 변경",
   };
   return titles[field] || "변경";
 };
@@ -101,6 +106,8 @@ const getLabel = (field) => {
     phone: "새 휴대폰 번호",
     ageGroup: "새 연령대",
     role: "새 권한",
+    profileName: "새 프로필 이름",
+    introduction: "새 소개",
   };
   return labels[field] || "새 값";
 };
