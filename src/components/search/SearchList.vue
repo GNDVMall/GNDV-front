@@ -13,7 +13,7 @@
             :key="item.id"
             :href="`/items/${item.item_id}`"
             :title="item.item_name"
-            :series="item.series"
+            :series="item.theme_name"
             :bookmark="item.wish_count"
             :description="item.description"
             :regular_price="item.regular_price"

@@ -19,12 +19,11 @@ const clearSearch = ()=>{
 }
 
 const searchItems = () => {
-  if (searchKeyword.value.trim() !== "") {
-    router.push({
-      name: "SearchResults",
-      query: { keyword: searchKeyword.value },
-    });
-  }
+  const query = new URLSearchParams(route.query)
+  query.delete('keyword')
+  query.append('keyword', searchKeyword.value)
+  
+  router.push(`/search-results?${query.toString()}`);
 };
 
 </script>

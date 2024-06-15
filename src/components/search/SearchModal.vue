@@ -72,13 +72,11 @@ const fetchRecentSearches = async () => {
 };
 
 const searchItems = () => {
-  if (searchKeyword.value.trim() !== "") {
-    router.push({
-      name: "SearchResults",
-      query: { keyword: searchKeyword.value },
-    });
-    emit("close");
-  }
+  router.push({
+    name: "SearchResults",
+    query: { keyword: searchKeyword.value ? searchKeyword.value : '' },
+  });
+  emit("close");
 };
 
 const handleKeyword = (keyword)=>{
