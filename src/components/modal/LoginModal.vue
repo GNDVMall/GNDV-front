@@ -4,17 +4,15 @@
     class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
   >
     <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-      <h2 class="text-2xl font-bold mb-6">{{ getTitle(props.field) }}</h2>
+      <h2 class="text-2xl font-bold mb-6">{{ getTitle(field) }}</h2>
       <form @submit.prevent="save">
         <div class="mb-4">
-          <label
-            :for="props.field"
-            class="block text-sm font-medium text-gray-700"
-            >{{ getLabel(props.field) }}</label
-          >
+          <label :for="field" class="block text-sm font-medium text-gray-700">{{
+            getLabel(field)
+          }}</label>
           <input
             v-model="inputValue"
-            :id="props.field"
+            :id="field"
             type="text"
             required
             class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
@@ -77,17 +75,17 @@ const save = async () => {
       updateData.nickname = inputValue.value;
     } else if (props.field === "introduction") {
       updateData.introduction = inputValue.value;
+    } else if (props.field === "password") {
+      updateData.password = inputValue.value;
+    } else if (props.field === "phone") {
+      updateData.phone = inputValue.value;
     }
 
     const response = await instance.put(
       `/members/${memberId}/edit`,
-      updateData,
-      {
-        headers: {
-          Authorization: `Bearer ${store.accessToken}`,
-        },
-      }
+      updateData
     );
+    console.log("Response data:", response.data); // Log response data
     emit("updated", { field: props.field, value: inputValue.value });
     close();
   } catch (error) {
@@ -97,11 +95,8 @@ const save = async () => {
 
 const getTitle = (field) => {
   const titles = {
-    email: "이메일 주소 변경",
     password: "비밀번호 변경",
     phone: "휴대폰 번호 변경",
-    ageGroup: "연령대 변경",
-    role: "권한 변경",
     profileName: "프로필 이름 변경",
     introduction: "소개 변경",
   };
@@ -110,11 +105,8 @@ const getTitle = (field) => {
 
 const getLabel = (field) => {
   const labels = {
-    email: "새 이메일 주소",
     password: "새 비밀번호",
     phone: "새 휴대폰 번호",
-    ageGroup: "새 연령대",
-    role: "새 권한",
     profileName: "새 프로필 이름",
     introduction: "새 소개",
   };
