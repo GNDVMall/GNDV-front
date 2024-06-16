@@ -1,5 +1,6 @@
 <template>
-  <div class="p-4">
+  <div>
+    <LoadingSpinner :visible="isLoading" />
     <CommonHeader title="구매 내역" />
     <div class="space-y-4">
       <div v-if="orders.data.length === 0" class="text-center text-gray-500">
@@ -59,6 +60,10 @@ import { ref, onMounted } from "vue";
 import { instance } from "@/utils/axios";
 import CommonHeader from "@/components/common/CommonHeader.vue";
 import BuyerReviewModal from "@/components/modal/BuyerReviewModal.vue";
+import { useFetchData } from "@/utils/useFetchData";
+import LoadingSpinner from "@/components/common/Loader/LoadingSpinner.vue";
+
+const { isLoading, fetchData } = useFetchData();
 const orders = ref({ data: [] });
 const showModal = ref(false);
 const selectedOrder = ref(null);
@@ -82,6 +87,7 @@ const closeReviewModal = () => {
 };
 onMounted(async () => {
   try {
+    fetchData();
     const response = await instance.get("/purchaseList");
     // Filter out orders with null product_id
     console.log("Fetched orders:", response.data);

@@ -1,5 +1,6 @@
 <template>
   <div>
+    <LoadingSpinner :visible="isLoading" />
     <h1 class="text-2xl font-bold mb-4">로그인 정보</h1>
     <!-- 내 계정 Section -->
     <div class="mb-6">
@@ -67,7 +68,10 @@ import { useStore } from "@/store/store";
 import { useRouter } from "vue-router";
 import LoginModal from "@/components/modal/LoginModal.vue";
 import { instance } from "@/utils/axios";
+import { useFetchData } from "@/utils/useFetchData";
+import LoadingSpinner from "@/components/common/Loader/LoadingSpinner.vue";
 
+const { isLoading, fetchData } = useFetchData();
 const store = useStore();
 const router = useRouter();
 const email = ref(store.user.email);
@@ -116,9 +120,9 @@ const logout = () => {
   localStorage.removeItem("refreshToken");
   router.push("/login");
 };
-
 onMounted(async () => {
   try {
+    fetchData();
     const memberId = store.user.memberId;
     if (!memberId) throw new Error("Member ID is missing");
     const response = await instance.get(`/members/${memberId}`, {

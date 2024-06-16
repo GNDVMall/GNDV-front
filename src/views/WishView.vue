@@ -1,5 +1,6 @@
 <template>
   <div>
+    <LoadingSpinner :visible="isLoading" />
     <CommonHeader title="Wishlist" />
     <div class="space-y-4">
       <WishItem
@@ -17,16 +18,23 @@ import { ref, onMounted } from "vue";
 import { instance } from "@/utils/axios";
 import WishItem from "../components/wish/WishItem.vue";
 import CommonHeader from "../components/common/CommonHeader.vue";
-
+import { useFetchData } from "@/utils/useFetchData";
+import LoadingSpinner from "@/components/common/Loader/LoadingSpinner.vue";
 const items = ref([]);
-
+const { isLoading, fetchData } = useFetchData();
 onMounted(async () => {
   try {
-    const response = await instance.get("/wish"); // 올바른 경로로 요청
+    fetchData();
+    const response = await instance.get("/wish");
     items.value = response.data;
-    console.log("items.value:", items.value); // 데이터 구조에 맞게 변경
+    console.log("items.value:", items.value);
   } catch (error) {
     console.error("Error fetching wishlist:", error);
+    if (error.response) {
+      console.error("Error response:", error.response);
+    } else {
+      console.error("Error message:", error.message);
+    }
   }
 });
 

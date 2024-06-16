@@ -1,6 +1,7 @@
 <!-- Profile.vue -->
 <template>
   <div>
+    <LoadingSpinner :visible="isLoading" />
     <h1 class="text-2xl font-bold mb-4">프로필 관리</h1>
     <div class="flex items-center mb-6">
       <img
@@ -57,7 +58,10 @@ import { ref, onMounted } from "vue";
 import { store } from "@/store/store";
 import { instance, instanceMultipart } from "@/utils/axios";
 import ProfileModal from "@/components/modal/ProfileModal.vue";
+import { useFetchData } from "@/utils/useFetchData";
+import LoadingSpinner from "@/components/common/Loader/LoadingSpinner.vue";
 
+const { isLoading, fetchData } = useFetchData();
 const profileImageUrl = ref("https://via.placeholder.com/150");
 const profileName = ref("프로필 이름");
 const introduction = ref("나를 소개하세요");
@@ -132,6 +136,7 @@ const changeProfileImage = async () => {
 };
 
 onMounted(() => {
+  fetchData();
   fetchProfileData();
 });
 </script>

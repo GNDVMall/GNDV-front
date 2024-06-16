@@ -1,5 +1,6 @@
 <template>
   <div class="w-full max-w-lg mx-auto p-4 bg-white shadow-md rounded-md">
+    <LoadingSpinner :visible="isLoading" />
     <h2 class="text-2xl font-bold mb-6">리뷰 작성</h2>
     <form @submit.prevent="submitForm" v-if="!reviewExists">
       <div class="mb-4">
@@ -45,7 +46,10 @@ import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { instance } from "@/utils/axios.js"; // axios 인스턴스 import
 import ProfileWithStar from "@/components/common/Star/Star.vue";
+import LoadingSpinner from "@/components/common/Loader/LoadingSpinner.vue";
+import { useFetchData } from "@/utils/useFetchData";
 
+const { isLoading, fetchData } = useFetchData();
 const review_content = ref("");
 const review_rating = ref(0);
 const route = useRoute();
@@ -99,6 +103,7 @@ const closeModal = () => {
 };
 
 onMounted(() => {
+  fetchData();
   console.log("Loaded email from local storage:", email); // 로드된 이메일 확인
   checkReviewExists();
 });
