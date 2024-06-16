@@ -48,11 +48,7 @@
         </div>
       </div>
 
-<<<<<<< HEAD
-      <div class="mb-8 w-full max-w-3xl mx-auto">
-=======
       <div v-if="popularKeywords" class="mb-8 w-full max-w-3xl mx-auto">
->>>>>>> 69b35d790f1209a78eaa9ce052db66a22fd6a37a
         <h3 class="text-base font-bold mb-4">인기 검색어</h3>
         <div class="grid grid-cols-2 gap-x-12">
           <ul class="space-y-2 text-sm">
@@ -98,11 +94,7 @@ const uniqueRecentSearches = computed(() => [...new Set(recentSearches.value)]);
 const fetchPopularSearches = async () => {
   try {
     const response = await instance.get("/search/popular");
-<<<<<<< HEAD
-    popularKeywords.value = response.data;
-=======
     popularKeywords.value = response.data.data;
->>>>>>> 69b35d790f1209a78eaa9ce052db66a22fd6a37a
   } catch (error) {
     console.error(error);
   }
@@ -111,11 +103,7 @@ const fetchPopularSearches = async () => {
 const fetchRecentSearches = async () => {
   try {
     const response = await instance.get("/search/recent");
-<<<<<<< HEAD
-    recentSearches.value = response.data;
-=======
     recentSearches.value = response.data.data;
->>>>>>> 69b35d790f1209a78eaa9ce052db66a22fd6a37a
   } catch (error) {
     console.error(error);
   }
@@ -127,12 +115,6 @@ const searchItems = () => {
     query: { keyword: searchKeyword.value ? searchKeyword.value : "" },
   });
   emit("close");
-};
-
-const handleKeyword = (keyword) => {
-  // 페이지 이동
-  closeModal();
-  router.push(`/search-results?keyword=${keyword}`);
 };
 
 const handleKeyword = (keyword) => {
