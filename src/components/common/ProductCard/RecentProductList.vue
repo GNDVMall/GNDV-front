@@ -1,5 +1,9 @@
 <template>
   <div class="mt-12">
+    <Title
+      :title="'Recent Products'"
+      :subTitle="'최근 등록된 상품'"
+    />
     <h2 class="text-2xl font-bold mb-4">Recent Products</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
       <router-link
@@ -34,6 +38,7 @@
 <script>
 import { ref, onMounted } from "vue";
 import { instance } from "@/utils/axios";
+import Title from "../Title/Title.vue";
 
 export default {
   name: "RecentProductList",
@@ -59,7 +64,7 @@ export default {
     };
 
     onMounted(() => {
-      fetchRecentProducts();
+      // fetchRecentProducts();
     });
 
     return {
