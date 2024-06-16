@@ -1,5 +1,6 @@
 <template>
   <div>
+    <LoadingSpinner :visible="isLoading" />
     <CommonHeader title="Wishlist" />
     <div class="space-y-4">
       <WishItem
@@ -17,11 +18,13 @@ import { ref, onMounted } from "vue";
 import { instance } from "@/utils/axios";
 import WishItem from "../components/wish/WishItem.vue";
 import CommonHeader from "../components/common/CommonHeader.vue";
-
+import { useFetchData } from "@/utils/useFetchData";
+import LoadingSpinner from "@/components/common/Loader/LoadingSpinner.vue";
 const items = ref([]);
-
+const { isLoading, fetchData } = useFetchData();
 onMounted(async () => {
   try {
+    fetchData();
     const response = await instance.get("/wish");
     items.value = response.data;
     console.log("items.value:", items.value);

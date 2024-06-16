@@ -18,7 +18,10 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { instance } from "@/utils/axios";
+import LoadingSpinner from "@/components/common/Loader/LoadingSpinner.vue";
+import { useFetchData } from "@/utils/useFetchData";
 
+const { isLoading, fetchData } = useFetchData();
 const props = defineProps({
   reviewId: {
     type: Number,
@@ -38,6 +41,7 @@ const fetchReviewDetail = async () => {
 };
 
 onMounted(() => {
+  fetchData();
   fetchReviewDetail();
 });
 </script>

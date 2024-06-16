@@ -1,6 +1,7 @@
 <template>
   <div>
     <CommonHeader title="판매내역" />
+    <LoadingSpinner :visible="isLoading" />
     <div class="sale-list bg-white shadow-md rounded-md p-4">
       <div
         v-for="sale in filteredSales"
@@ -56,6 +57,9 @@ import { ref, computed, onMounted } from "vue";
 import { instance } from "@/utils/axios";
 import CommonHeader from "@/components/common/CommonHeader.vue";
 import SellerReviewModal from "@/components/modal/SellerReviewModal.vue";
+import { useFetchData } from "@/utils/useFetchData";
+import LoadingSpinner from "../common/Loader/LoadingSpinner.vue";
+const { isLoading, fetchData } = useFetchData();
 const sales = ref([]);
 const showModal = ref(false);
 const selectedSale = ref(null);
@@ -72,6 +76,7 @@ const filteredSales = computed(() => {
 });
 onMounted(async () => {
   try {
+    fetchData();
     const response = await instance.get("/salesList");
     if (response.data && response.data.code === 200) {
       sales.value = response.data.data;

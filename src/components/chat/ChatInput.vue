@@ -13,8 +13,6 @@
       ref="textarea"
       @input="handleUpdateContent"
       @keydown="handleEnterPressed"
-      @compositionstart="handleCompositionStart"
-      @compositionend="handleCompositionEnd"
       class="w-full h-48 px-4 py-2 border border-gray-300 rounded-sm focus:outline-none focus:ring-2 focus:ring-green-200 mb-5"
       :placeholder="'메시지를 입력하세요.'"
       maxlength="1000"
@@ -29,7 +27,6 @@ import { ref } from 'vue'
 const emit = defineEmits(['enter-pressed'])
 const content = ref('')
 const textarea = ref(null)
-const isComposing = ref(false)
 
 const handleEnterPressed = (event)=>{
   if(event.shiftKey) return
@@ -41,19 +38,8 @@ const handleEnterPressed = (event)=>{
 
 }
 
-const handleCompositionStart = () => {
-  isComposing.value = true
-}
-
-const handleCompositionEnd = (event) => {
-  isComposing.value = false
-  content.value = event.target.value
-};
-
 const handleUpdateContent = (event) => {
-  if (!isComposing.value) {
-    content.value = event.target.value;
-  }
+  content.value = event.target.value;
 };
 
 const handleImage = ()=>{

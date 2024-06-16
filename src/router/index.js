@@ -60,6 +60,11 @@ const router = createRouter({
           name: "LoginInfo",
           component: LoginInfo,
         },
+        {
+          path: "/wish",
+          name: "wish",
+          component: WishView,
+        },
       ],
     },
     {
@@ -71,11 +76,6 @@ const router = createRouter({
       path: "/login",
       name: "login",
       component: LoginView,
-    },
-    {
-      path: "/wish",
-      name: "wish",
-      component: WishView,
     },
     {
       path: "/notice",
