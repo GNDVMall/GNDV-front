@@ -13,7 +13,7 @@
     </div>
     <div class="mb-6">
       <h3 class="text-sm font-bold mb-2">시리즈</h3>
-      <ul v-if="themes" class="space-y-2 text-sm">
+      <ul v-if="themes" class="space-y-2 text-sm max-h-96 overflow-y-auto custom-scrollbar">
         <li v-for="theme in themes" :key="theme.theme_id">
           <label class="flex items-center"><input @change="toggleTheme(theme.theme_id, $event)" type="checkbox" class="mr-2" 
             :value="theme.theme_id"             
@@ -81,5 +81,17 @@ onMounted(()=>{
 <style scoped>
 input {
   accent-color: rgb(34 197 94);
+}
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgb(214 211 209);
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
 }
 </style>
