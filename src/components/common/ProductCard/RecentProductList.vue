@@ -2,9 +2,13 @@
   <div class="mt-12">
     <h2 class="text-2xl font-bold mb-4">Recent Products</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-      <div
+      <router-link
         v-for="product in products"
         :key="product.product_id"
+        :to="{
+          name: 'ProductDetails',
+          params: { id: product.item_id, pid: product.product_id },
+        }"
         class="border rounded-lg overflow-hidden shadow-lg"
       >
         <div class="w-full h-48 bg-gray-200 flex items-center justify-center">
@@ -22,7 +26,7 @@
             {{ product.price.toLocaleString() }} 원
           </p>
         </div>
-      </div>
+      </router-link>
     </div>
   </div>
 </template>
@@ -35,13 +39,20 @@ export default {
   name: "RecentProductList",
   setup() {
     const products = ref([]);
-
     const fetchRecentProducts = async () => {
       try {
         const response = await instance.get("/recent-product");
         console.log("API Response:", response.data);
-        products.value = response.data.data.products;
-        console.log("Products:", products.value);
+        if (
+          response.data &&
+          response.data.data &&
+          response.data.data.products
+        ) {
+          products.value = response.data.data.products;
+          console.log("Products:", products.value);
+        } else {
+          console.error("Unexpected response structure:", response.data);
+        }
       } catch (error) {
         console.error("Error fetching recent products:", error);
       }

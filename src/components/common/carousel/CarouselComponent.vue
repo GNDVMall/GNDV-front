@@ -21,9 +21,9 @@
 
 <script>
 import { ref, onMounted, onUnmounted } from "vue";
-import slide1 from "@/assets/img/lego1.avif";
-import slide2 from "@/assets/img/lego2.avif";
-import slide3 from "@/assets/img/lego3.avif";
+import slide1 from "@/assets/img/lego1.webp";
+import slide2 from "@/assets/img/lego2.jpeg";
+import slide3 from "@/assets/img/lego3.jpeg";
 
 export default {
   name: "CarouselComponent",

@@ -1,8 +1,8 @@
 <template>
   <main class="flex flex-col items-center justify-center h-full">
     <LoadingSpinner :visible="isLoading" />
-    <CarouselComponent v-if="!isLoading" class="mt-40" />
-    <RecentProductList v-if="!isLoading" class="mt-40" />
+    <CarouselComponent class="mt-40" />
+    <RecentProductList class="mt-40" />
   </main>
 </template>
 
