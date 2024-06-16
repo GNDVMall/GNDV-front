@@ -22,11 +22,16 @@ const items = ref([]);
 
 onMounted(async () => {
   try {
-    const response = await instance.get("/wish"); // 올바른 경로로 요청
+    const response = await instance.get("/wish");
     items.value = response.data;
-    console.log("items.value:", items.value); // 데이터 구조에 맞게 변경
+    console.log("items.value:", items.value);
   } catch (error) {
     console.error("Error fetching wishlist:", error);
+    if (error.response) {
+      console.error("Error response:", error.response);
+    } else {
+      console.error("Error message:", error.message);
+    }
   }
 });
 
