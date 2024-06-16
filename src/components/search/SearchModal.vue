@@ -76,7 +76,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, watch } from "vue";
 import { useRouter } from "vue-router";
 import { instance } from "@/utils/axios";
 
@@ -135,6 +135,11 @@ onMounted(() => {
 const closeModal = () => {
   emit("close");
 };
+
+watch(()=> props.isOpen, ()=>{
+  fetchPopularSearches();
+  fetchRecentSearches();
+})
 </script>
 
 <style scoped>
