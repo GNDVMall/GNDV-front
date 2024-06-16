@@ -34,6 +34,8 @@
           :key="message.message_id"
           :userType="message.message_user_type"
           :contentType="message.content_type"
+          :profileUrl="product.profile_url"
+          :otherEmail="product.email"
         />
       </ol>
       <!-- 입력창 -->

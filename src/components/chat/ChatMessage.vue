@@ -1,6 +1,8 @@
 <template>
   <li v-if="userType !== 'SYSTEM'" :class="['flex over', messageClass]">
-    <img v-if="type !== 'SENT'" src="https://cdn.mos.cms.futurecdn.net/7auVjCELrhFKTPfudXRTgc.jpg" alt="프로필" class="w-10 h-10 rounded-full object-cover mr-3">
+    <RouterLink :to="`/profiles/${otherEmail}`">
+      <img v-if="type !== 'SENT'" :src="profileUrl" alt="프로필" class="w-10 h-10 rounded-full object-cover mr-3">
+    </RouterLink>
     <div class="gap-2" :class="[type === 'SENT' ? 'order-1' : '', 'flex items-start']">
       <span v-if="type === 'SENT'" class="text-sm text-gray-500 mt-2">
         {{ formatTime(date) }}
@@ -41,7 +43,9 @@ const props = defineProps({
   content: String,
   date: String,
   userType: String,
-  contentType: String
+  contentType: String,
+  profileUrl: String,
+  otherEmail: String
 });
 
 const messageClass = computed(() => props.type === 'SENT' ? 'justify-end' : 'justify-start');
