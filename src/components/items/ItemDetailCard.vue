@@ -4,7 +4,7 @@
     <!-- 이미지 -->
     <ItemImage
       :alt="data.item_name"
-      :url="data.real_filename"
+      :url="data.image_url"
     />
 
     <!-- 정보 -->
