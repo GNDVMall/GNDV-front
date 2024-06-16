@@ -10,4 +10,6 @@
 import TestLoginComponentVue from "@/components/auth/LoginComponent.vue";
 import LoadingSpinner from "@/components/common/Loader/LoadingSpinner.vue";
 import { useFetchData } from "@/utils/useFetchData";
+
+const { isLoading, data, fetchData } = useFetchData();
 </script>
