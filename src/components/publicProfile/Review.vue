@@ -18,7 +18,7 @@
       </div>
       <div class="order-2 sm:order-3 flex-shrink-0 flex flex-col items-center justify-between">
         <p class="mb-2"><span class="font-bold">리뷰어: </span><span>{{ reviewer }}</span></p>
-        <ReadOnlyStar :rating="review_rating"/>
+        <ReadOnlyStar v-if="review_rating" :rating="review_rating"/>
         <p class="text-sm text-gray-600">{{ formatDateWithTime(date) }}</p>
       </div>
     </RouterLink>

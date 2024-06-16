@@ -21,6 +21,7 @@ import NotFound from "@/views/NotFound.vue";
 import PublicUserProfileView from "@/views/PublicUserProfileView.vue";
 import SearchResultsView from "@/views/SearchResultsView.vue"; // 검색 결과 페이지 추가
 import SignupComponent from "@/components/auth/SignupComponent.vue";
+import { store } from "@/store/store";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -91,7 +92,7 @@ const router = createRouter({
       component: ProductView,
     },
     {
-      path: "/items/:id/:pid",
+      path: "/items/:id/:pid/edit",
       name: "editProduct",
       component: ProductEditView,
     },
@@ -146,6 +147,19 @@ const router = createRouter({
       component: NotFound,
     },
   ]
+})
+
+const required = ['/chat','/my','/wish','/edit', '/new']
+
+router.beforeEach((to, from)=>{
+  
+  required.forEach((keyword)=>{
+    if(to.path.includes(keyword)){
+      // 로그인 필요
+      if(!store.user.email) router.push("/login")
+    }
+  })
+
 })
 
 export default router

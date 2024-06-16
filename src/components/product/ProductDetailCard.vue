@@ -56,10 +56,11 @@
             v-if="data.email !== email"
             :text="'채팅 하기'"
             :clickHandler="handleChat"
+            :enable="email ? false : true"
           >
             <i class="fa-solid fa-comments"></i>
           </Button>
-          <Button v-else :text="'수정 하기'" :click-handler="handleProductEdit">
+          <Button v-if="email === data.email" :text="'수정 하기'" :click-handler="handleProductEdit">
             <i class="fa-regular fa-pen-to-square"></i>
           </Button>
           <PaymentButton
@@ -105,12 +106,13 @@ import { useRoute } from "vue-router";
 import { getDaysAgo } from "@/utils/dateUtils";
 import { formatKoreanCurrency } from "@/utils/currency";
 import router from "@/router";
+import { store } from "@/store/store";
 
 const route = useRoute();
 const data = ref(null);
 const loading = ref(false);
 const paymentData = ref({});
-const email = localStorage.getItem("email");
+const email = store.user.email;
 
 const fetchData = async () => {
   loading.value = true;
@@ -158,7 +160,7 @@ const handleChat = async () => {
 };
 
 const handleProductEdit = () => {
-  router.push(`/items/${data.value.item_id}/${data.value.product_id}`);
+  router.push(`/items/${data.value.item_id}/${data.value.product_id}/edit`);
 };
 </script>
 
