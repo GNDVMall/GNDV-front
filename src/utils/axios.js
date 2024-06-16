@@ -51,8 +51,6 @@ const instanceMultipart = axios.create({
     "X-Requested-With": "XMLHttpRequest",
     "Content-Type": "multipart/form-data",
   },
-    "Content-Type": "multipart/form-data",
-  },
 });
 
 instanceMultipart.interceptors.request.use(
