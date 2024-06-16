@@ -7,7 +7,7 @@
       <div
         v-for="(slide, index) in slides"
         :key="index"
-        class="w-full h-full flex-shrink-0"
+        class="w-full h-full flex-shrink-0 bg-slate-100"
       >
         <img
           :src="slide"
@@ -21,9 +21,9 @@
 
 <script>
 import { ref, onMounted, onUnmounted } from "vue";
-import slide1 from "@/assets/img/1.png";
-import slide2 from "@/assets/img/2.png";
-import slide3 from "@/assets/img/3.png";
+import slide1 from "@/assets/img/lego1.avif";
+import slide2 from "@/assets/img/lego2.avif";
+import slide3 from "@/assets/img/lego3.avif";
 
 export default {
   name: "CarouselComponent",
