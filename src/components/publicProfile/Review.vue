@@ -4,7 +4,8 @@
       :to="`/products/${product_id}`"
       class="sm:flex-row flex flex-col gap-4 items-center sm:items-start mb-8">
       <!-- IMAGE -->
-      <img class="order-1 flex-shrink-0 w-32 h-32 overflow-hidden object-contain rounded-lg" :src="url" :alt="title">
+      <img v-if="url" class="order-1 flex-shrink-0 w-32 h-32 overflow-hidden object-contain rounded-lg" :src="url" :alt="title">
+      <div class="order-1 flex-shrink-0 w-32 h-32 overflow-hidden object-contain rounded-lg bg-gray-200" v-else></div>
 
       <!-- REVIEW -->
       <div class="order-3 sm:order-2 flex-1">
