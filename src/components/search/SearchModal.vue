@@ -24,11 +24,11 @@
       <div class="mb-8 w-full max-w-3xl mx-auto">
         <h3 class="mb-4">
           <span class="text-base font-bold mr-1">최근 검색어</span>
-          <span
+          <!-- <span
             @click="clearRecentSearches"
             class="underline text-sm text-gray-500 cursor-pointer"
             >지우기</span
-          >
+          > -->
         </h3>
         <div class="flex flex-wrap gap-2 items-center">
           <div
@@ -42,7 +42,7 @@
             >
               {{ tag }}</button
             ><button>
-              <i class="fa-solid fa-x text-sm text-gray-300 icon_size px-2"></i>
+              <!-- <i class="fa-solid fa-x text-sm text-gray-300 icon_size px-2"></i> -->
             </button>
           </div>
         </div>
@@ -76,7 +76,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, watch } from "vue";
 import { useRouter } from "vue-router";
 import { instance } from "@/utils/axios";
 
@@ -135,6 +135,11 @@ onMounted(() => {
 const closeModal = () => {
   emit("close");
 };
+
+watch(()=> props.isOpen, ()=>{
+  fetchPopularSearches();
+  fetchRecentSearches();
+})
 </script>
 
 <style scoped>
