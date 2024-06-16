@@ -5,7 +5,7 @@
     />
     <ul v-if="list">
       <Review v-for="review in list"
-        :url="review.product_images? review.product_images[0]:''"
+        :url="review.product_images? review.product_images.split(',')[0]:''"
         :title="review.product_title"
         :review_content="review.review_content"
         :review_rating="review.review_rating"

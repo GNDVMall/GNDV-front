@@ -30,7 +30,7 @@ const reviews = ref([])
 
 const fetch = async () => {
   const res = await instance.get(`/members/profile?email=${route.params.email}`)
-  console.log("res", res.data.data)
+  console.log("resggg", res.data.data)
   member.value = res.data.data.member
   reviews.value = res.data.data.reviews
 }
