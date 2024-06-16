@@ -6,7 +6,6 @@ const getAuthHeaders = () => {
   return {
     Authorization: `Bearer ${store.accessToken}`,
     "x-refresh-token": store.refreshToken,
-    "x-refresh-token": store.refreshToken,
   };
 };
 
