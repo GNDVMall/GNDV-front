@@ -10,6 +10,7 @@
         :key="theme.theme_id"
         :name="theme.theme_name"
         :url="theme.theme_image_url"
+        :id="theme.theme_id"
       />
     </div>
   </div>
