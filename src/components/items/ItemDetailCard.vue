@@ -28,9 +28,6 @@
         </Button>
         <WishListButton :item-id="data.item_id" :wish-count="data.wish_count" />
       </div>
-
-      <!-- 차트 -->
-      <div>차트표</div>
     </div>
   </article>
 </template>

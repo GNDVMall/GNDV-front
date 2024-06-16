@@ -1,5 +1,5 @@
 <template>
-  <div v-if="images" class="carousel w-full md:max-w-lg xl:max-w-xl aspect-square object-cover place-content-center flex bg-gray-200 border rounded-lg border-gray-200 overflow-hidden">
+  <div v-if="images" class="carousel w-full md:max-w-md aspect-square object-cover place-content-center flex bg-gray-200 border rounded-lg border-gray-200 overflow-hidden">
     <div class="relative w-full h-full">
       <div class="carousel-inner relative w-full h-full overflow-hidden">
         <div 
@@ -20,7 +20,7 @@
     </div>
   </div>
   <div v-if="url"
-    class="w-full md:max-w-lg xl:max-w-xl aspect-square object-cover  place-content-center flex bg-gray-200 border rounded-lg border-gray-200 overflow-hidden">
+    class="w-full md:max-w-md aspect-square object-cover  place-content-center flex bg-gray-200 border rounded-lg border-gray-200 overflow-hidden">
     <img class="w-full object-contain" :src="url" :alt="alt">
   </div>
 </template>
