@@ -31,7 +31,7 @@
           class="block text-gray-700 hover:text-blue-500"
           >프로필 관리</router-link
         >
-        <router-link
+        <!-- <router-link
           to="/my/address-book"
           class="block text-gray-700 hover:text-blue-500"
           >주소록</router-link
@@ -45,7 +45,7 @@
           to="/my/sales-account"
           class="block text-gray-700 hover:text-blue-500"
           >판매 정산 계좌</router-link
-        >
+        > -->
       </nav>
     </div>
   </div>
