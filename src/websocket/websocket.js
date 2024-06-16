@@ -1,8 +1,9 @@
 import { Client } from '@stomp/stompjs'
+import { store } from '@/store/store';
 
 export const stompClient = new Client({
   // brokerURL: 'ws://localhost:8080/api/v2/gndv-websocket',
-  brokerURL: `ws://localhost:8080/gndv-websocket?token=${localStorage.getItem('authToken')}`
+  brokerURL: `ws://localhost:8080/gndv-websocket?token=${store.accessToken}`
 })
 
 stompClient.onWebSocketError = (error) => {

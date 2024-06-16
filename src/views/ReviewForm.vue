@@ -44,7 +44,7 @@
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { instance } from "@/utils/axios.js"; // axios 인스턴스 import
-import ProfileWithStar from "@/components/common/ProfileWithStar/Star.vue";
+import ProfileWithStar from "@/components/common/Star/Star.vue";
 
 const review_content = ref("");
 const review_rating = ref(0);

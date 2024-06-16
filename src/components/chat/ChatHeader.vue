@@ -37,7 +37,7 @@
           <button @click="openReviewModal">
             <div class="border-b border-gray-300 py-2">리뷰 작성</div>
           </button>
-          <button>
+          <button @click="handleLeaveChatRoom">
             <div class="border-b border-gray-300 py-2">채팅방 나가기</div>
           </button>
           <button>
@@ -65,6 +65,10 @@ import CommonModal from "@/components/modal/ModalContainer.vue";
 import ReviewForm from "@/views/ReviewForm.vue";
 import { instance } from "@/utils/axios";
 import { store } from "@/store/store";
+import { useRoute } from "vue-router";
+import router from "@/router";
+
+const route = useRoute()
 
 const props = defineProps({
   nickname: String,
@@ -93,6 +97,11 @@ const openReviewModal = () => {
 const closeReviewModal = () => {
   isReviewModalOpen.value = false;
 };
+
+const handleLeaveChatRoom = async () => {
+  await instance.delete(`/chat/${route.params.id}`)
+  router.push('/chat')
+}
 
 const submitReview = async (review) => {
   try {

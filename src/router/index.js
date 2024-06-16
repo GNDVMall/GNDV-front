@@ -24,9 +24,7 @@ import ModalContainer from "@/components/modal/ModalContainer.vue";
 
 import SearchResultsView from "@/views/SearchResultsView.vue"; // 검색 결과 페이지 추가
 import SignupComponent from "@/components/auth/SignupComponent.vue";
-import Profile from "@/views/Profile.vue";
-import LoginInfo from "@/views/LoginInfo.vue";
-import NotFound from "@/views/NotFound.vue";
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
 
@@ -116,16 +114,6 @@ const router = createRouter({
       component: PaymentTest,
     },
     {
-      path: "/testproduct/:id",
-      name: "testproduct",
-      component: TestProductDetail,
-    },
-    {
-      path: "/testproductlist",
-      name: "testproductlist",
-      component: TestProductList,
-    },
-    {
       path: "/order-test",
       name: "OrderTest",
       component: OrderTest,
@@ -149,6 +137,11 @@ const router = createRouter({
       path: "/signup",
       name: "Signup",
       component: SignupComponent,
+    },
+    {
+      path: "/profiles/:id",
+      name: "Profiles",
+      component: PublicUserProfileView,
     },
     {
       path: "/:catchAll(.*)",
