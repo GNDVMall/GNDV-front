@@ -43,7 +43,7 @@ onErrorCaptured((e) => {
           <LayoutVue>
             <div v-if="hasError">
               <NotFound v-if="networkError" />
-              <div v-else>에러 발생 {{ errorCode }}</div>
+              <div v-else><NotFound /></div>
             </div>
             <!-- 메인 컨텐츠 -->
             <component v-else :is="Component"></component>
