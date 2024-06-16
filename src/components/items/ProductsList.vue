@@ -49,7 +49,6 @@ const loading = ref(null)
 
 const fetchData = async () => {
   loading.value = true
-  console.log("route.query", route.query)
   try {
     const res = await instance.get(`products?item_id=${route.params.id}&size=${size.value}&pageNo=${currentPage.value}`); // 원하는 엔드포인트를 입력합니다.
     data.value = res.data.data;
