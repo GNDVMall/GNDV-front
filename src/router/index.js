@@ -136,7 +136,7 @@ const router = createRouter({
       component: SignupComponent
     },
     {
-      path:'/profiles/:id',
+      path:'/profiles/:email',
       name:'Profiles',
       component: PublicUserProfileView
     },

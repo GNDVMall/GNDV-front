@@ -72,7 +72,7 @@
 
         <!-- 사용자 정보 -->
         <UserInfo
-          :href="`/profiles/${data.member_id}`"
+          :href="`/profiles/${data.email}`"
           :rating="data.rating"
           :url="data.profile_url"
           :nickname="data.nickname"
