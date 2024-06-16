@@ -158,7 +158,7 @@ const handleChat = async () => {
 };
 
 const handleProductEdit = () => {
-  router.push(`/items/${data.value.item_id}/${data.value.product_id}`);
+  router.push(`/items/${data.value.item_id}/${data.value.product_id}/edit`);
 };
 </script>
 
