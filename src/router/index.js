@@ -9,18 +9,20 @@ import NoticeView from "../views/NoticeView.vue";
 import WishView from "../views/WishView.vue";
 import ItemView from "../views/ItemView.vue";
 import ProductView from "@/views/ProductView.vue";
+import TestView from "../views/TestView.vue";
 import PaymentTest from "@/views/PaymentTest.vue";
 import OrderTest from "@/views/OrderTest.vue"; // OrderTest 뷰 추가
 import ProductInsertView from "@/views/ProductInsertView.vue";
 import ProductEditView from "@/views/ProductEditView.vue";
-import LoginInfo from "@/views/LoginInfo.vue";
+import Profile from "@/views/Profile.vue";
 import OrderHistory from "@/components/order/OrderHistory.vue";
 import SalesHistory from "@/components/order/SalesHistory.vue";
 import ModalContainer from "@/components/modal/ModalContainer.vue";
-import Profile from "@/views/Profile.vue";
+import LoginInfo from "@/views/LoginInfo.vue";
+import NotFound from "@/views/NotFound.vue";
+import PublicUserProfileView from "@/views/PublicUserProfileView.vue";
 import SearchResultsView from "@/views/SearchResultsView.vue"; // 검색 결과 페이지 추가
 import SignupComponent from "@/components/auth/SignupComponent.vue";
-import PublicUserProfileView from "@/views/PublicUserProfileView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -101,6 +103,11 @@ const router = createRouter({
       component: ProductInsertView,
     },
     {
+      path: "/test",
+      name: "test",
+      component: TestView,
+    },
+    {
       path: "/payment",
       name: "payment",
       component: PaymentTest,
@@ -134,6 +141,11 @@ const router = createRouter({
       path: "/profiles/:id",
       name: "Profiles",
       component: PublicUserProfileView,
+    },
+    {
+      path: "/:catchAll(.*)",
+      name: "NotFound",
+      component: NotFound,
     },
   ],
 });

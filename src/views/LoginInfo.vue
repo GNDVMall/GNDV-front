@@ -1,23 +1,14 @@
-<!-- ProfileManagement.vue -->
 <template>
   <div>
     <h1 class="text-2xl font-bold mb-4">로그인 정보</h1>
-
     <!-- 내 계정 Section -->
     <div class="mb-6">
       <h2 class="text-xl font-semibold">내 계정</h2>
       <div class="flex items-center mb-2">
         <label class="w-1/4 text-gray-700">이메일 주소 변경</label>
         <span class="flex-1">{{ email }}</span>
-        <button
-          class="ml-4 p-2 bg-gray-200 rounded"
-          @click="openModal('email')"
-        >
-          변경
-        </button>
       </div>
     </div>
-
     <!-- 비밀번호 변경 Section -->
     <div class="mb-6">
       <h2 class="text-xl font-semibold">비밀번호 변경</h2>
@@ -32,7 +23,6 @@
         </button>
       </div>
     </div>
-
     <!-- 개인 정보 Section -->
     <div class="mb-6">
       <h2 class="text-xl font-semibold">개인 정보</h2>
@@ -46,39 +36,23 @@
           변경
         </button>
       </div>
-      <div class="flex items-center mb-2">
-        <label class="w-1/4 text-gray-700">연령대</label>
-        <span class="flex-1">{{ ageGroup }}</span>
-        <button
-          class="ml-4 p-2 bg-gray-200 rounded"
-          @click="openModal('ageGroup')"
-        >
-          변경
-        </button>
-      </div>
     </div>
-
     <!-- 나의 권한 Section -->
     <div class="mb-6">
       <h2 class="text-xl font-semibold">나의 권한</h2>
       <div class="flex items-center mb-2">
         <label class="w-1/4 text-gray-700">현재 권한</label>
         <span class="flex-1">{{ role }}</span>
-        <button class="ml-4 p-2 bg-gray-200 rounded" @click="openModal('role')">
-          변경
-        </button>
       </div>
     </div>
-
     <div class="flex justify-end">
       <button @click="logout" class="p-2 bg-red-500 text-white rounded">
         로그아웃
       </button>
     </div>
-
     <!-- Modal for updating fields -->
-    <ProfileModal
-      v-if="modalVisible"
+    <LoginModal
+      :isVisible="modalVisible"
       :field="currentField"
       :value="currentValue"
       @close="closeModal"
@@ -91,11 +65,15 @@
 import { ref, onMounted } from "vue";
 import { useStore } from "@/store/store";
 import { useRouter } from "vue-router";
-import ProfileModal from "@/components/modal/ProfileModal.vue";
+import LoginModal from "@/components/modal/LoginModal.vue";
+import { instance } from "@/utils/axios";
 
 const store = useStore();
 const router = useRouter();
-const role = ref("판매자"); // This should come from the user profile data
+const email = ref(store.user.email);
+const phoneNumber = ref(""); // This should come from the user profile data
+const ageGroup = ref(""); // This should come from the user profile data
+const role = ref(""); // This should come from the user profile data
 
 const modalVisible = ref(false);
 const currentField = ref(null);
@@ -104,7 +82,7 @@ const currentValue = ref("");
 const openModal = (field) => {
   currentField.value = field;
   currentValue.value = {
-    email: email.value,
+    profileName: email.value,
     password: "", // Do not pre-fill password
     phone: phoneNumber.value,
     ageGroup: ageGroup.value,
@@ -118,8 +96,10 @@ const closeModal = () => {
 };
 
 const handleUpdate = ({ field, value }) => {
-  if (field === "email") {
+  if (field === "profileName") {
     email.value = value;
+  } else if (field === "password") {
+    // Do not display password
   } else if (field === "phone") {
     phoneNumber.value = value;
   } else if (field === "ageGroup") {
@@ -136,6 +116,26 @@ const logout = () => {
   localStorage.removeItem("refreshToken");
   router.push("/login");
 };
+
+onMounted(async () => {
+  try {
+    const memberId = store.user.memberId;
+    if (!memberId) throw new Error("Member ID is missing");
+    const response = await instance.get(`/members/${memberId}`, {
+      headers: {
+        Authorization: `Bearer ${store.accessToken}`,
+      },
+    });
+
+    const memberData = response.data.data;
+    email.value = memberData.email;
+    phoneNumber.value = memberData.phone;
+    ageGroup.value = memberData.ageGroup;
+    role.value = memberData.role;
+  } catch (error) {
+    console.error("Failed to fetch profile data:", error);
+  }
+});
 </script>
 
 <style scoped>

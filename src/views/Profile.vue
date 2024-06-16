@@ -1,3 +1,4 @@
+<!-- Profile.vue -->
 <template>
   <div>
     <h1 class="text-2xl font-bold mb-4">프로필 관리</h1>
@@ -80,13 +81,13 @@ const getFieldValue = (field) => {
   if (field === "introduction") return introduction.value;
   return "";
 };
-
 const fetchProfileData = async () => {
   try {
     const memberId = store.user.memberId;
     if (!memberId) throw new Error("Member ID is missing");
 
-    const response = await instance.get(`/members/${memberId}`);
+    const headers = getAuthHeaders();
+    const response = await instance.get(`/members/${memberId}`, { headers });
     const member = response.data.data;
     profileImageUrl.value =
       member.profile_url || "https://via.placeholder.com/150";
@@ -97,6 +98,9 @@ const fetchProfileData = async () => {
   }
 };
 
+const getAuthHeaders = () => {
+  return { Authorization: `Bearer ${store.user.accessToken}` };
+};
 const triggerFileInput = () => {
   document.querySelector('input[type="file"]').click();
 };
@@ -113,25 +117,17 @@ const changeProfileImage = async () => {
 
   const formData = new FormData();
   formData.append("file", selectedFile.value);
-  formData.append("nickname", profileName.value);
-  formData.append("introduction", introduction.value);
 
   try {
+    const headers = getAuthHeaders();
     const response = await instanceMultipart.post(
       `/members/${store.user.memberId}/uploadProfileImage`,
-      formData
+      formData,
+      { headers }
     );
     profileImageUrl.value = response.data.data;
   } catch (error) {
     console.error("Failed to upload profile image:", error);
-  }
-};
-
-const handleUpdate = (data) => {
-  if (data.field === "profileName") {
-    profileName.value = data.value;
-  } else if (data.field === "introduction") {
-    introduction.value = data.value;
   }
 };
 
