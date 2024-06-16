@@ -9,9 +9,7 @@ import NoticeView from "../views/NoticeView.vue";
 import WishView from "../views/WishView.vue";
 import ItemView from "../views/ItemView.vue";
 import ProductView from "@/views/ProductView.vue";
-import TestView from "../views/TestView.vue";
 import PaymentTest from "@/views/PaymentTest.vue";
-import OrderTest from "@/views/OrderTest.vue"; // OrderTest 뷰 추가
 import ProductInsertView from "@/views/ProductInsertView.vue";
 import ProductEditView from "@/views/ProductEditView.vue";
 import Profile from "@/views/Profile.vue";
@@ -103,23 +101,13 @@ const router = createRouter({
       component: ProductInsertView,
     },
     {
-      path: "/test",
-      name: "test",
-      component: TestView,
+      path:'/payment',
+      name:'payment',
+      component: PaymentTest
     },
     {
       path: "/payment",
       name: "payment",
-      component: PaymentTest,
-    },
-    {
-      path: "/order-test",
-      name: "OrderTest",
-      component: OrderTest,
-    },
-    {
-      path: "/payment-test",
-      name: "PaymentTest",
       component: PaymentTest,
     },
     {
@@ -138,16 +126,26 @@ const router = createRouter({
       component: SignupComponent,
     },
     {
-      path: "/profiles/:id",
-      name: "Profiles",
-      component: PublicUserProfileView,
+      path: '/search-results',
+      name: 'SearchResults',
+      component: SearchResultsView
+    }
+    ,{
+      path: '/signup',
+      name: 'Signup',
+      component: SignupComponent
+    },
+    {
+      path:'/profiles/:email',
+      name:'Profiles',
+      component: PublicUserProfileView
     },
     {
       path: "/:catchAll(.*)",
       name: "NotFound",
       component: NotFound,
     },
-  ],
-});
+  ]
+})
 
-export default router;
+export default router

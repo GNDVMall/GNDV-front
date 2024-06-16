@@ -1,5 +1,5 @@
 <template>
-  <aside class="border-r border-gray-300 z-50 w-full">
+  <aside class="border-r border-gray-300 z-40 w-full">
     <header
       class="h-16 w-full text-base font-bold pt-5 border-b border-gray-300"
     >

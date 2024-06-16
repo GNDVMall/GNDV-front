@@ -1,5 +1,5 @@
 <template>
-  <li v-if="userType !== 'SYSTEM'" :class="['flex', messageClass]">
+  <li v-if="userType !== 'SYSTEM'" :class="['flex over', messageClass]">
     <img v-if="type !== 'SENT'" src="https://cdn.mos.cms.futurecdn.net/7auVjCELrhFKTPfudXRTgc.jpg" alt="프로필" class="w-10 h-10 rounded-full object-cover mr-3">
     <div class="gap-2" :class="[type === 'SENT' ? 'order-1' : '', 'flex items-start']">
       <span v-if="type === 'SENT'" class="text-sm text-gray-500 mt-2">
@@ -9,7 +9,7 @@
         <div v-if="contentType === 'IMAGE'">
           <img :src="content" alt="이미지"  @click="toggleImage"/>
         </div>
-        <p v-else class="text-gray-800">
+        <p v-else class="text-gray-800 break-all">
           {{ content }}
         </p>
       </div>
