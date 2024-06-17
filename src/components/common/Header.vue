@@ -38,7 +38,7 @@
         <RouterLink to="/chat">
           <span class="text-black">CHAT</span>
         </RouterLink>
-        <RouterLink to="/my">
+        <RouterLink to="/my/main">
           <span class="text-black">MY GNDV</span>
         </RouterLink>
 
