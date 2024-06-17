@@ -2,7 +2,10 @@
   <div>
     <CommonHeader title="판매내역" />
     <LoadingSpinner :visible="isLoading" />
-    <div class="sale-list bg-white shadow-md rounded-md p-4">
+    <div
+      v-if="filteredSales.length"
+      class="sale-list bg-white shadow-md rounded-md p-4"
+    >
       <div
         v-for="sale in filteredSales"
         :key="sale.order_uid"
@@ -42,6 +45,7 @@
         </div>
       </div>
     </div>
+    <div v-else class="text-center text-gray-500">판매 내역이 없습니다.</div>
 
     <SellerReviewModal
       v-if="showModal"
@@ -89,6 +93,7 @@ onMounted(async () => {
   }
 });
 </script>
+
 <style scoped>
 .sale-list {
   padding: 2rem;

@@ -14,7 +14,7 @@
         class="block text-gray-700 hover:text-blue-500"
         >판매 내역</router-link
       >
-      <router-link to="/wish" class="block text-gray-700 hover:text-blue-500"
+      <router-link to="/my/wish" class="block text-gray-700 hover:text-blue-500"
         >관심</router-link
       >
     </nav>
