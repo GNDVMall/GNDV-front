@@ -5,16 +5,17 @@
   >
     <!-- 상대방 정보 -->
     <div class="flex items-center">
-      <img
-        v-if="props.profileUrl"
-        :src="props.profileUrl"
-        class="w-10 h-10 rounded-full object-cover"
-        alt="프로필"
-      />
-      <div v-else class="w-10 h-10 rounded-full bg-gray-300"></div>
-      <div class="ml-3">{{ props.nickname }}</div>
+      <RouterLink class="flex items-center":to="`/profiles/${otherEmail}`">
+        <img
+          v-if="props.profileUrl"
+          :src="props.profileUrl"
+          class="w-10 h-10 rounded-full object-cover"
+          alt="프로필"
+        />
+        <div v-else class="w-10 h-10 rounded-full bg-gray-300"></div>
+        <div class="ml-3">{{ props.nickname }}</div>
+      </RouterLink>
     </div>
-
     <!-- 메뉴바 - 자신이 판매자인 경우에만 나와야함 -->
     <div class="z-30 relative">
       <button @click="toggleMenu" class="w-7 h-7 text-xl">
@@ -37,7 +38,7 @@
           <button @click="openReviewModal">
             <div class="border-b border-gray-300 py-2">리뷰 작성</div>
           </button>
-          <button @click="handleLeaveChatRoom">
+          <button @click="handlerLeaveChatRoom">
             <div class="border-b border-gray-300 py-2">채팅방 나가기</div>
           </button>
           <button>
@@ -53,55 +54,47 @@
         :reviewType="'PRODUCT'"
         :email="store.user.email"
         :productId="props.productId"
+        :onClose="closeReviewModal"
       />
     </CommonModal>
   </header>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { defineProps, defineEmits } from "vue";
 import CommonModal from "@/components/modal/ModalContainer.vue";
 import ReviewForm from "@/views/ReviewForm.vue";
 import { instance } from "@/utils/axios";
 import { store } from "@/store/store";
-import { useRoute } from "vue-router";
-import router from "@/router";
-
-const route = useRoute()
 
 const props = defineProps({
   nickname: String,
   userType: String,
   profileUrl: String,
   productId: Number,
+  otherEmail:String, 
   handlerLeaveChatRoom: Function,
+  handleChangeProductStatus: Function,
+  isReviewModalOpen: Boolean
 });
-const emit = defineEmits(["change-product-status"]);
+const emit = defineEmits(["close-review-modal"]);
 
 const isMenuOpen = ref(false);
-const isReviewModalOpen = ref(false);
 
 const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value;
 };
 
-const handleChangeProductStatus = (e) => {
-  emit("change-product-status", e.target.dataset.type);
-};
 
 const openReviewModal = () => {
-  isReviewModalOpen.value = true;
+  emit("open-review-modal")
 };
 
 const closeReviewModal = () => {
-  isReviewModalOpen.value = false;
+  emit("close-review-modal")
 };
 
-const handleLeaveChatRoom = async () => {
-  await instance.delete(`/chat/${route.params.id}`)
-  router.push('/chat')
-}
 
 const submitReview = async (review) => {
   try {
@@ -112,4 +105,5 @@ const submitReview = async (review) => {
     console.error("Failed to submit review:", error);
   }
 };
+
 </script>

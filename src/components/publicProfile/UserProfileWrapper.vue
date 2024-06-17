@@ -14,6 +14,7 @@
 <script setup>
 import UserProfileCard from '@/components/publicProfile/UserProfileCard.vue'
 import UserReviewList from '@/components/publicProfile/UserReviewList.vue';
+import { store } from '@/store/store';
 import { instance } from '@/utils/axios';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
@@ -29,8 +30,9 @@ const member = ref({
 const reviews = ref([])
 
 const fetch = async () => {
-  const res = await instance.get(`/members/profile?email=${route.params.email}`)
-  console.log("resggg", res.data.data)
+  let res
+  if(route.params.email) res = await instance.get(`/members/profile?email=${route.params.email}`)
+  else res = await instance.get(`/members/profile?email=${store.user.email}`)
   member.value = res.data.data.member
   reviews.value = res.data.data.reviews
 }

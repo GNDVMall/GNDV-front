@@ -11,7 +11,7 @@
 
     <!-- IMAGE & RATING -->
     <div class="mt-4 flex flex-col items-center">
-      <img v-if="profile_url" :src="profile_url" alt="프로필" class="w-24 h-24 rounded-full border-2 border-gray-300 mb-2" />
+      <img v-if="profile_url" :src="profile_url" alt="프로필" class="w-24 h-24 rounded-full border-2 border-gray-300 mb-2 object-cover" />
       <div v-else class="w-24 h-24 rounded-full border-2 border-gray-200 mb-2 bg-gray-200"></div>
       <div class="text-xl font-semibold">{{ rating }}</div>
       <ReadOnlyStar :rating="rating"/>

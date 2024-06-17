@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from "vue-router";
 // PAGES
 import HomeView from "../views/HomeView.vue";
 import MyView from "../views/MyView.vue";
+import MyProfileView from '@/views/MyProfileView.vue'
 import ChatView from "../views/ChatView.vue";
 import LoginView from "../views/LoginView.vue";
 import NoticeView from "../views/NoticeView.vue";
@@ -63,6 +64,11 @@ const router = createRouter({
           path: "/wish",
           name: "wish",
           component: WishView,
+        },
+        {
+          path: "main",
+          name: "main",
+          component: MyProfileView,
         },
       ],
     },
