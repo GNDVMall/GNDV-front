@@ -131,8 +131,8 @@ onMounted(fetchData);
 
 const getTradeOptionString = (opt1, opt2) => {
   let options = [];
-  if (opt1 === "Y") options.push("중고");
-  if (opt2 === "Y") options.push("새상품");
+  if (opt1 === "Y") options.push("직거래");
+  if (opt2 === "Y") options.push("택배");
   return options.join(",");
 };
 
