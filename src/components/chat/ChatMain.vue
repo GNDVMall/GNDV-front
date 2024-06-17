@@ -7,8 +7,13 @@
       :user-type="product.chat_user_type"
       :profile-url="product.profile_url"
       :product-id="product.product_id"
+      :otherEmail="product.email"
       :handlerLeaveChatRoom="handlerLeaveChatRoom"
-      @change-product-status="handleChangeProductStatus"
+      :handleChangeProductStatus="handleChangeProductStatus"
+      :isReviewModalOpen="isReviewModalOpen"
+      @open-review-modal="openReviewModal"
+      @close-review-modal="closeReviewModal"
+
     />
     <!-- 채팅방 -->
     <div
@@ -34,6 +39,8 @@
           :key="message.message_id"
           :userType="message.message_user_type"
           :contentType="message.content_type"
+          :profileUrl="product.profile_url"
+          :otherEmail="product.email"
         />
       </ol>
       <!-- 입력창 -->
@@ -63,6 +70,7 @@ const product = ref(null);
 const messages = ref(null);
 const loading = ref(false);
 const scrollDiv = ref(null);
+const isReviewModalOpen = ref(false);
 
 stompClient.brokerURL = `ws://localhost:8080/gndv-websocket?token=${store.accessToken}`
 stompClient.onConnect = () => {
@@ -122,10 +130,20 @@ const sendSystemMessage = () => {
 
 // 상품 거래 상태 변경
 const handleChangeProductStatus = async (type) => {
-  await instance.put(`/products/${product.value.product_id}`, {
-    product_sales_status: type,
-    email: localStorage.getItem("email"),
-  });
+  await instance.put(`/products/status/${product.value.product_id}`, {
+    product_sales_status: 'SOLDOUT',
+    email: store.user.email,
+  })
+  openReviewModal()
+  fetchData()
+};
+
+const openReviewModal = () => {
+  isReviewModalOpen.value = true
+};
+
+const closeReviewModal = () => {
+  isReviewModalOpen.value = false
 };
 
 // 새 메시지가 도착하면 스크롤을 가장 아래로 내림

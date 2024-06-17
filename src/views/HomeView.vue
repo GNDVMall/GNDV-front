@@ -1,8 +1,9 @@
 <template>
   <main class="flex flex-col items-center justify-center h-full">
     <LoadingSpinner :visible="isLoading" />
-    <CarouselComponent class="mt-40" />
-    <RecentProductList class="mt-40" />
+    <CarouselComponent class="mt-11" />
+    <RecentProductList class="mt-11" />
+    <ThemeList class="mt-11" />
   </main>
 </template>
 
@@ -10,8 +11,8 @@
 import { ref, onMounted } from "vue";
 import LoadingSpinner from "@/components/common/Loader/LoadingSpinner.vue";
 import CarouselComponent from "@/components/common/carousel/CarouselComponent.vue";
-import RecentProductList from "@/views/RecentProductList.vue";
-
+import RecentProductList from "@/components/common/ProductCard/RecentProductList.vue";
+import ThemeList from "@/components/theme/ThemeList.vue";
 const isLoading = ref(true);
 
 onMounted(async () => {

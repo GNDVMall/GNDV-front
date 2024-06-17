@@ -39,6 +39,15 @@
         <div v-else>
           <p class="text-xl">검색 결과가 없습니다.</p>
         </div>
+          <!-- 페이지네이션 -->
+      <Pagination v-if="items"
+        :totalPages="items.end" 
+        :currentPage="currentPage" 
+        :startPage="items.start"
+        :endPage="items.end"
+        :is-prev="items.prev"
+        :is-next="items.next"
+        @page-changed="handlePageChange" />
       </div>
 </template>
 
@@ -48,6 +57,7 @@ import { onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import ItemCard from '../common/ItemCard/ItemCard.vue'
 import router from '@/router';
+import Pagination from '../common/Pagination/Pagination.vue';
 
 const route = useRoute()
 const items = ref(null)
@@ -55,7 +65,7 @@ const items = ref(null)
 const sortOptions = [{key:'item_name', name:'이름'}, {key:'age_range', name:'연령'},{key:'recent_price', name:'최근 거래가'},{key:'regular_price',name:'정가'}]
 const selectedOption = ref('item_name')
 const orderBy = ref('asc')
-
+const currentPage = ref(Number(route.query.pageNo) || 1)
 
 // 검색 결과를 호출
 const fetchSearchResults = async () => {
@@ -73,6 +83,15 @@ const handleSortOrderBy = ()=>{
   if(orderBy.value === 'desc') orderBy.value = 'asc'
   else orderBy.value = 'desc'
 }
+
+const handlePageChange = async (page) => {
+  currentPage.value = page;
+  const query = new URLSearchParams(route.query) 
+  query.delete('pageNo')
+  query.append('pageNo', currentPage.value )
+  router.push(`?${query.toString()}`)
+  fetchSearchResults()
+};
 
 onMounted(() => {
   fetchSearchResults();

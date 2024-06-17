@@ -1,6 +1,5 @@
 <template>
   <main>
-    로그인 페이지
     <TestLoginComponentVue />
     <LoadingSpinner v-if="isLoading" />
   </main>

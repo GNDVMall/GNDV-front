@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import MyView from "../views/MyView.vue";
+import MyProfileView from "@/views/MyProfileView.vue";
 import ChatView from "../views/ChatView.vue";
 import LoginView from "../views/LoginView.vue";
 import NoticeView from "../views/NoticeView.vue";
@@ -20,6 +21,7 @@ import PublicUserProfileView from "@/views/PublicUserProfileView.vue";
 import SearchResultsView from "@/views/SearchResultsView.vue";
 import SignupComponent from "@/components/auth/SignupComponent.vue";
 import RecentProductList from "@/views/RecentProductList.vue";
+import { store } from "@/store/store";
 
 const routes = [
   {
@@ -54,9 +56,14 @@ const routes = [
         component: LoginInfo,
       },
       {
-        path: "/wish",
+        path: "wish",
         name: "wish",
         component: WishView,
+      },
+      {
+        path: "main",
+        name: "main",
+        component: MyProfileView,
       },
     ],
   },
@@ -86,7 +93,7 @@ const routes = [
     component: ProductView,
   },
   {
-    path: "/items/:id/:pid",
+    path: "/items/:id/:pid/edit",
     name: "editProduct",
     component: ProductEditView,
   },
@@ -135,6 +142,17 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
+});
+
+const required = ["/chat", "/my", "/wish", "/edit", "/new"];
+
+router.beforeEach((to, from) => {
+  required.forEach((keyword) => {
+    if (to.path.includes(keyword)) {
+      // 로그인 필요
+      if (!store.user.email) router.push("/login");
+    }
+  });
 });
 
 export default router;

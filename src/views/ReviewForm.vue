@@ -99,6 +99,7 @@ const setRating = (newRating) => {
 };
 
 const closeModal = () => {
+  console.log("???")
   props.onClose();
 };
 
