@@ -1,5 +1,4 @@
 <template>
-  <div v-if="loading">ItemDetailCard 로딩</div>
   <article v-if="data" class="flex md:flex-row gap-10 pt-8 flex-col mx-auto">
     <!-- 이미지 -->
     <ItemImage
