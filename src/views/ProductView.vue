@@ -1,9 +1,9 @@
 <script setup>
-import { useFetchData } from "@/utils/useFetchData";
 import { useRoute } from "vue-router";
 import { ref, onMounted } from "vue";
 import ProductDetailCard from "@/components/product/ProductDetailCard.vue";
 import LoadingSpinner from "@/components/common/Loader/LoadingSpinner.vue";
+import { instance } from "@/utils/axios";
 
 const route = useRoute();
 const product = ref(null);
