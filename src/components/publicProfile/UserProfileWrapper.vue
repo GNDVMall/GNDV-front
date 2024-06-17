@@ -7,7 +7,7 @@
     :profile_url="member.profile_url"
   />
   <UserReviewList 
-    :list="reviews"
+    :reviews="reviews"
   />
 </template>
 
@@ -35,6 +35,7 @@ const fetch = async () => {
   else res = await instance.get(`/members/profile?email=${store.user.email}`)
   member.value = res.data.data.member
   reviews.value = res.data.data.reviews
+  console.log("res", res.data.data.reviews)
 }
 
 onMounted(()=>{

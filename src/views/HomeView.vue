@@ -1,9 +1,9 @@
 <template>
   <main class="flex flex-col items-center justify-center h-full">
     <LoadingSpinner :visible="isLoading" />
-    <CarouselComponent class="mt-40" />
-    <RecentProductList class="mt-40" />
-    <ThemeList />
+    <CarouselComponent class="mt-11" />
+    <RecentProductList class="mt-11" />
+    <ThemeList class="mt-11" />
   </main>
 </template>
 
