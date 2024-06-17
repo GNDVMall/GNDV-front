@@ -1,6 +1,6 @@
 <template>
-  <div v-if="loading">ProductDetailCard 로딩</div>
-  <article v-if="data">
+  <article class="relative" v-if="data">
+    <div v-if="data.product_sales_status === 'SOLDOUT'" class="w-full bg-red-500 p-5 text-white">판매 완료된 상품입니다.</div>
     <div class="flex md:flex-row gap-10 py-8 flex-col mx-auto">
       <!-- 이미지 -->
       <ItemImage
@@ -47,7 +47,6 @@
               )
             "
           />
-          <!-- <ItemSubInfo :text="'안전 거래'" :subText="'미사용'" /> -->
         </div>
 
         <div class="w-full flex gap-4 lg:flex-row flex-col mb-5">
@@ -56,7 +55,7 @@
             v-if="data.email !== email"
             :text="'채팅 하기'"
             :clickHandler="handleChat"
-            :enable="email ? false : true"
+            :disabled="(email ? false : true) || (data.product_sales_status !== 'SOLDOUT'? false : true)"
           >
             <i class="fa-solid fa-comments"></i>
           </Button>
@@ -67,6 +66,7 @@
             :productId="data.product_id"
             :price="data.price"
             :itemName="data.title"
+            :disabled="(email ? false : true) || (data.product_sales_status !== 'SOLDOUT'? false : true)"
             @paymentSuccess="handlePaymentSuccess"
           />
         </div>
@@ -119,9 +119,7 @@ const fetchData = async () => {
   try {
     const res = await instance.get(`/products/${route.params.id}`);
     data.value = res.data.data;
-    console.log("Product Data:", res.data.data);
   } catch (error) {
-    console.error("Error fetching product detail:", error);
   } finally {
     loading.value = false;
   }

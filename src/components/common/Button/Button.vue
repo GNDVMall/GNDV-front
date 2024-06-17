@@ -1,5 +1,5 @@
 <template>
-  <button :disabled="enable" type="button" :class="buttonClasses" @click="clickHandler">
+  <button :disabled="disabled" type="button" :class="buttonClasses" @click="clickHandler">
     <div class="flex items-center gap-x-3 justify-center">
       <div><slot/></div>
       <p>{{ text }}</p>
@@ -21,7 +21,7 @@ const props = defineProps({
     type: String,
     default: 'default'
   },
-  enable:{
+  disabled:{
     default: false,
     type: Boolean
   }
