@@ -7,6 +7,7 @@
       :user-type="product.chat_user_type"
       :profile-url="product.profile_url"
       :product-id="product.product_id"
+      :otherEmail="product.email"
       :handlerLeaveChatRoom="handlerLeaveChatRoom"
       :handleChangeProductStatus="handleChangeProductStatus"
       :isReviewModalOpen="isReviewModalOpen"
