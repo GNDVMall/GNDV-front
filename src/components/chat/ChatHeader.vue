@@ -53,13 +53,14 @@
         :reviewType="'PRODUCT'"
         :email="store.user.email"
         :productId="props.productId"
+        :onClose="closeReviewModal"
       />
     </CommonModal>
   </header>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { defineProps, defineEmits } from "vue";
 import CommonModal from "@/components/modal/ModalContainer.vue";
 import ReviewForm from "@/views/ReviewForm.vue";
@@ -76,26 +77,25 @@ const props = defineProps({
   profileUrl: String,
   productId: Number,
   handlerLeaveChatRoom: Function,
+  handleChangeProductStatus: Function,
+  isReviewModalOpen: Boolean
 });
-const emit = defineEmits(["change-product-status"]);
+const emit = defineEmits(["close-review-modal"]);
 
 const isMenuOpen = ref(false);
-const isReviewModalOpen = ref(false);
+// const isReviewModalOpen = ref(false);
 
 const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value;
 };
 
-const handleChangeProductStatus = (e) => {
-  emit("change-product-status", e.target.dataset.type);
-};
 
 const openReviewModal = () => {
-  isReviewModalOpen.value = true;
+  emit("open-review-modal")
 };
 
 const closeReviewModal = () => {
-  isReviewModalOpen.value = false;
+  emit("close-review-modal")
 };
 
 const handleLeaveChatRoom = async () => {
@@ -112,4 +112,5 @@ const submitReview = async (review) => {
     console.error("Failed to submit review:", error);
   }
 };
+
 </script>
