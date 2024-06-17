@@ -2,10 +2,11 @@
   <div class="lg:max-w-sm rounded overflow-hidden">
     <router-link :to="{path: href}">
       <!-- img -->
-      <div class="w-full max-h-md-sm md:max-w-64 md:max-h-64 aspect-square  place-content-center flex relative">
+      <div :class="['w-full max-h-md-sm md:max-w-64 md:max-h-64 aspect-square place-content-center flex relative']">
         <span v-if="isNew" class="px-2 py-1 text-xs bg-green-100 text-green-600 rounded-md absolute right-2 top-1">새 제품</span>
         <span v-else class="px-2 py-1 text-xs bg-yellow-100 text-yellow-600 rounded-md absolute right-2 top-1">중고</span>
-        <img class="w-full object-cover" :src="imageUrl" :alt="title">
+        <img :class="['w-full object-cover', soldout]" :src="imageUrl" :alt="title">
+        <div v-if="product_sales_status==='SOLDOUT'" class="absolute bottom-0 bg-red-500 p-2 w-full text-base text-center text-white" >판매 완료</div>
       </div>
       <!-- title -->
       <div class="px-1 py-2">
@@ -29,6 +30,7 @@
 <script setup>
 import { formatKoreanCurrency } from '@/utils/currency';
 import { formatDate } from '@/utils/dateUtils';
+import { computed } from 'vue';
 
 const props = defineProps({
   href:String,
@@ -38,8 +40,11 @@ const props = defineProps({
   price: String,
   imageUrl: String,
   isNew: Boolean,
-  createdAt: String
+  createdAt: String,
+  product_sales_status:String
 })
+
+const soldout = computed(()=> props.product_sales_status === 'SOLDOUT'? 'filter grayscale':'')
 
 </script>
 
