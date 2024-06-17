@@ -16,6 +16,7 @@
       :price="`${product.price}원`"
       :is-new="product.product_status === 'NEW' ? true : false"
       :created-at="product.created_at"
+      :product_sales_status="product.product_sales_status"
     />    
   </div>
 
