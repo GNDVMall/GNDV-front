@@ -30,11 +30,13 @@
     </div>
   </div>
 </template>
+
 <script>
 import { ref, onMounted } from "vue";
 import { instance } from "@/utils/axios";
 import Title from "@/components/common/Title/Title.vue";
 import LoadingSpinnerVue from "@/components/common/Loader/LoadingSpinner.vue";
+
 export default {
   name: "RecentProductList",
   components: {
@@ -45,6 +47,7 @@ export default {
     const products = ref([]);
     const isLoading = ref(true);
     const error = ref(null);
+
     const fetchRecentProducts = async () => {
       try {
         const response = await instance.get("/recent-product");
@@ -57,9 +60,11 @@ export default {
         isLoading.value = false;
       }
     };
+
     onMounted(() => {
       fetchRecentProducts();
     });
+
     return {
       products,
       isLoading,
@@ -68,6 +73,7 @@ export default {
   },
 };
 </script>
+
 <style scoped>
 /* Add custom styles here if needed */
 </style>
