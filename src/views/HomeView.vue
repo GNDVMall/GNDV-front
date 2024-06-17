@@ -12,7 +12,7 @@ import { ref, onMounted } from "vue";
 import LoadingSpinner from "@/components/common/Loader/LoadingSpinner.vue";
 import CarouselComponent from "@/components/common/carousel/CarouselComponent.vue";
 import RecentProductList from "@/components/common/ProductCard/RecentProductList.vue";
-import ThemeList from "@/components/theme/ThemeList.vue"
+import ThemeList from "@/components/theme/ThemeList.vue";
 const isLoading = ref(true);
 
 onMounted(async () => {
