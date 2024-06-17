@@ -70,7 +70,8 @@ const close = () => {
 const save = async () => {
   try {
     const memberId = store.user.memberId;
-    if (!memberId) throw new Error("Member ID is missing");
+    const email = store.user.email;
+    if (!memberId || !email) throw new Error("Member ID or email is missing");
 
     const updateData = {};
     if (props.field === "profileName") {
@@ -80,11 +81,11 @@ const save = async () => {
     }
 
     const response = await instance.put(
-      `/members/${memberId}/edit`,
+      `/members/${memberId}/edit/${email}`,
       updateData,
       {
         headers: {
-          Authorization: `Bearer ${store.accessToken}`,
+          Authorization: `Bearer ${store.user.accessToken}`,
         },
       }
     );

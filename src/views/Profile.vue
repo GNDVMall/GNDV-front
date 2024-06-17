@@ -1,4 +1,3 @@
-<!-- Profile.vue -->
 <template>
   <div>
     <LoadingSpinner :visible="isLoading" />
@@ -43,7 +42,7 @@
       </div>
     </div>
     <ProfileModal
-      v-if="modalField"
+      v-if="isModalVisible"
       :isVisible="isModalVisible"
       :field="modalField"
       :value="modalValue"
@@ -85,18 +84,22 @@ const getFieldValue = (field) => {
   if (field === "introduction") return introduction.value;
   return "";
 };
+
 const fetchProfileData = async () => {
   try {
-    const memberId = store.user.memberId;
-    if (!memberId) throw new Error("Member ID is missing");
+    const email = store.user.email;
+    if (!email) throw new Error("Email is missing");
 
     const headers = getAuthHeaders();
-    const response = await instance.get(`/members/${memberId}`, { headers });
-    const member = response.data.data;
+    const response = await instance.get(`/members/profile?email=${email}`, {
+      headers,
+    });
+    const member = response.data.data.member;
     profileImageUrl.value =
       member.profile_url || "https://via.placeholder.com/150";
     profileName.value = member.nickname || "프로필 이름";
     introduction.value = member.introduction || "나를 소개하세요";
+    store.user.memberId = member.member_id; // Ensure memberId is set
   } catch (error) {
     console.error("Failed to fetch profile data:", error);
   }
@@ -105,6 +108,7 @@ const fetchProfileData = async () => {
 const getAuthHeaders = () => {
   return { Authorization: `Bearer ${store.user.accessToken}` };
 };
+
 const triggerFileInput = () => {
   document.querySelector('input[type="file"]').click();
 };
@@ -121,17 +125,28 @@ const changeProfileImage = async () => {
 
   const formData = new FormData();
   formData.append("file", selectedFile.value);
+  formData.append("email", store.user.email);
 
   try {
     const headers = getAuthHeaders();
+    const memberId = store.user.memberId;
+    if (!memberId) throw new Error("Member ID is missing");
     const response = await instanceMultipart.post(
-      `/members/${store.user.memberId}/uploadProfileImage`,
+      `/members/${memberId}/uploadProfileImage`,
       formData,
       { headers }
     );
     profileImageUrl.value = response.data.data;
   } catch (error) {
     console.error("Failed to upload profile image:", error);
+  }
+};
+
+const handleUpdate = ({ field, value }) => {
+  if (field === "profileName") {
+    profileName.value = value;
+  } else if (field === "introduction") {
+    introduction.value = value;
   }
 };
 
