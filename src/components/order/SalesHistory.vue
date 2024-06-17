@@ -45,7 +45,7 @@
         </div>
       </div>
     </div>
-    <div v-else class="p-4 text-gray-600">판매 내역이 없습니다.</div>
+    <div v-else class="text-center text-gray-500">판매 내역이 없습니다.</div>
 
     <SellerReviewModal
       v-if="showModal"
