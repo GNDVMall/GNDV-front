@@ -1,14 +1,14 @@
 <template>
   <div class="mt-12">
-    <h2 class="text-2xl font-bold mb-4">Recent Products</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <Title title="Recent Products" sub-title="최근 등록한 상품" />
+    <div v-if="isLoading" class="flex justify-center items-center">
+      <LoadingSpinnerVue />
+    </div>
+    <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
       <router-link
         v-for="product in products"
         :key="product.product_id"
-        :to="{
-          name: 'ProductDetails',
-          params: { id: product.item_id, pid: product.product_id },
-        }"
+        :to="{ name: 'ProductDetails', params: { id: product.product_id } }"
         class="border rounded-lg overflow-hidden shadow-lg"
       >
         <div class="w-full h-48 bg-gray-200 flex items-center justify-center">
@@ -34,27 +34,30 @@
 <script>
 import { ref, onMounted } from "vue";
 import { instance } from "@/utils/axios";
+import Title from "@/components/common/Title/Title.vue";
+import LoadingSpinnerVue from "@/components/common/Loader/LoadingSpinner.vue";
 
 export default {
   name: "RecentProductList",
+  components: {
+    Title,
+    LoadingSpinnerVue,
+  },
   setup() {
     const products = ref([]);
+    const isLoading = ref(true);
+    const error = ref(null);
+
     const fetchRecentProducts = async () => {
       try {
         const response = await instance.get("/recent-product");
         console.log("API Response:", response.data);
-        if (
-          response.data &&
-          response.data.data &&
-          response.data.data.products
-        ) {
-          products.value = response.data.data.products;
-          console.log("Products:", products.value);
-        } else {
-          console.error("Unexpected response structure:", response.data);
-        }
-      } catch (error) {
-        console.error("Error fetching recent products:", error);
+        products.value = response.data.data.products;
+      } catch (err) {
+        error.value = "Failed to load products";
+        console.error(err);
+      } finally {
+        isLoading.value = false;
       }
     };
 
@@ -64,6 +67,8 @@ export default {
 
     return {
       products,
+      isLoading,
+      error,
     };
   },
 };
