@@ -134,6 +134,7 @@ const handleChangeProductStatus = async (type) => {
     email: store.user.email,
   })
   openReviewModal()
+  fetchData()
 };
 
 const openReviewModal = () => {
