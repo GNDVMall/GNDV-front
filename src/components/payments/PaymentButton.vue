@@ -30,10 +30,6 @@ export default {
   setup(props, { emit }) {
     const createOrder = async () => {
       try {
-        console.log("Product ID:", props.productId); // 디버깅용 로그
-        console.log("Price:", props.price); // 디버깅용 로그
-        console.log("Item Name:", props.itemName); // 디버깅용 로그
-
         const res = await instance.post("/order", {
           product_id: props.productId,
           price: props.price,
