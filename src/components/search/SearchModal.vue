@@ -17,7 +17,7 @@
           v-model="searchKeyword"
           @keyup.enter="searchItems"
           class="w-full max-w-3xl py-4 border-b border-gray-300 focus:outline-none text-2xl"
-          placeholder="브랜드, 상품, 프로필, 태그 등"
+          placeholder="검색어를 입력하세요."
         />
       </div>
 
