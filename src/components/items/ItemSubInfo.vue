@@ -1,7 +1,7 @@
 <template>
   <div :class="['flex flex-col items-center pr-4 border-slate-300 max-w-24', borderClass]">
-    <p class="opacity-60 text-xs">{{ text }}</p>
-    <p class="text-sm">{{ subText }}</p>
+    <p class="opacity-60 text-xs w-full">{{ text }}</p>
+    <p class="text-sm w-full text-right">{{ subText }}</p>
   </div>
 </template>
 

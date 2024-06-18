@@ -1,5 +1,5 @@
 <template>
-  <Button :text="'안전 거래'" :type="'green'" :clickHandler="handlePayment">
+  <Button :disabled="disabled" :text="'안전 거래'" :type="'green'" :clickHandler="handlePayment">
     <i class="fa-solid fa-money-check-dollar"></i>
   </Button>
 </template>
@@ -23,6 +23,10 @@ export default {
       type: String,
       required: true,
     },
+    disabled:{
+      default: false,
+      type: Boolean
+  }
   },
   components: {
     Button,

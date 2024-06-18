@@ -19,7 +19,7 @@
       <!-- price -->
       <div class="px-1 pb-3">
         <div class="flex flex-col">
-          <span class="text-sm font-bold">{{ price }}</span>
+          <span class="text-sm font-bold">{{ formatKoreanCurrency(price) }}원</span>
           <span class="text-xs opacity-60">판매가</span>
         </div>
       </div>
@@ -28,6 +28,7 @@
 </template>
 
 <script setup>
+import { formatKoreanCurrency } from '@/utils/currency';
 import { formatDate } from '@/utils/dateUtils';
 import { computed } from 'vue';
 

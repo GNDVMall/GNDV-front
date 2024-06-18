@@ -1,5 +1,4 @@
 <template>
-  <div v-if="loading">ItemDetailCard 로딩</div>
   <article v-if="data" class="flex md:flex-row gap-10 pt-8 flex-col mx-auto">
     <!-- 이미지 -->
     <ItemImage
@@ -14,8 +13,8 @@
       
       <div class="flex w-full gap-4 lg:justify-between flex-initial flex-wrap justify-start">
         <!-- 설명들 -->
-        <ItemSubInfo :text="'최근 거래가'" :type="'right'" :subText="data.recent_price" />
-        <ItemSubInfo :text="'발매가'" :type="'right'" :subText="data.regular_price" />
+        <ItemSubInfo :text="'최근 거래가'" :type="'right'" :subText="formatKoreanCurrency(data.recent_price)" />
+        <ItemSubInfo :text="'발매가'" :type="'right'" :subText="formatKoreanCurrency(data.regular_price)" />
         <ItemSubInfo :text="'모델번호'" :type="'right'" :subText="data.item_number" />
         <ItemSubInfo :text="'출시일자'" :type="'right'" :subText="formatDate(data.release_date)" />
         <ItemSubInfo :text="'조각 개수'" :subText="data.pieces" />
@@ -43,6 +42,7 @@ import { formatDate } from '@/utils/dateUtils';
 import { onMounted, ref } from 'vue';
 import { instance } from '@/utils/axios';
 import router from '@/router';
+import { formatKoreanCurrency } from '@/utils/currency';
 
 const route = useRoute()
 const data = ref(null)
