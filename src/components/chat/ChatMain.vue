@@ -71,6 +71,7 @@ const messages = ref(null);
 const loading = ref(false);
 const scrollDiv = ref(null);
 const isReviewModalOpen = ref(false);
+const scrollMove = ref(false);
 
 stompClient.brokerURL = `ws://localhost:8080/gndv-websocket?token=${store.accessToken}`
 stompClient.onConnect = () => {
@@ -180,8 +181,8 @@ const handlerLeaveChatRoom = () => {
 };
 
 onMounted(() => {
-  fetchData();
-  connect();
+  fetchData()
+  connect()
 });
 
 onUnmounted(() => {
@@ -190,10 +191,13 @@ onUnmounted(() => {
 
 watch(
   () => route.params.id,
-  () => {
-    disconnect();
-    fetchData();
-    connect();
+  async () => {
+    disconnect()
+    await fetchData()
+    connect()
+    setTimeout(()=>{
+        scrollToBottom()
+    },0)
   }
 );
 </script>
