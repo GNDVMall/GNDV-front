@@ -1,7 +1,7 @@
 <template>
       <div v-if="items" class="w-full">
         <div class="flex justify-between mb-4">
-          <p class="text-sm">상품 {{ items.list.length }}</p>
+          <p class="text-sm">상품 {{ items.total }}</p>
           <div class="w-full max-w-32 text-sm">
             <select
               id="sort"
