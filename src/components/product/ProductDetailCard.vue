@@ -1,4 +1,5 @@
 <template>
+  <LoadingSpinner :visible="loading" />
   <article class="relative" v-if="data">
     <div v-if="data.product_sales_status === 'SOLDOUT'" class="w-full bg-red-500 p-5 text-white">판매 완료된 상품입니다.</div>
     <div class="flex md:flex-row gap-10 py-8 flex-col mx-auto">
@@ -107,6 +108,7 @@ import { getDaysAgo } from "@/utils/dateUtils";
 import { formatKoreanCurrency } from "@/utils/currency";
 import router from "@/router";
 import { store } from "@/store/store";
+import LoadingSpinner from "../common/Loader/LoadingSpinner.vue";
 
 const route = useRoute();
 const data = ref(null);

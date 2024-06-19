@@ -77,13 +77,12 @@ stompClient.onConnect = () => {
   stompClient.subscribe(`/topic/${route.params.id}`, async (message) => {
     // 받은 메시지
     const messageBody = JSON.parse(message.body);
-    const isSender = messageBody.email === localStorage.getItem("email");
+    const isSender = messageBody.email === store.user.email;
 
     messages.value.list.push({
       message_id: messageBody.message_id,
       chat_content: messageBody.content,
       sent_at: new Date(),
-      // 임시로 로컬스토리지 사용
       message_type: isSender ? "SENT" : "RECEIVE",
       message_user_type: messageBody.message_user_type,
       content_type: messageBody.content_type,
@@ -97,7 +96,7 @@ stompClient.onConnect = () => {
     }
   });
 
-  stompClient.subscribe(`/topic/${localStorage.getItem("email")}`, () => {
+  stompClient.subscribe(`/topic/${store.user.email}`, () => {
     // 받은 메시지
     emit("upated-room-list");
   });
