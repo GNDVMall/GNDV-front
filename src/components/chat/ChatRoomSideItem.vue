@@ -6,7 +6,8 @@
       <div class="ml-4 flex-1 flex flex-col text-left md:max-w-24 lg:max-w-32 xl:max-w-56">
         <div class="font-bold">{{ nickname }}</div>
         <div class="text-gray-500 text-sm">{{ timestamp }}</div>
-        <div class="text-gray-700 mt-1 text-ellipsis break-words line-clamp-1">{{ message }}</div>
+        <div v-if="message_user_type === 'SYSTEM'">상대방이 채팅방을 떠났습니다.</div>
+        <div v-else class="text-gray-700 mt-1 text-ellipsis break-words line-clamp-1">{{ message }}</div>
       </div>
       <div class="ml-4 bg-red-500 flex-shrink-0 text-white rounded-full w-6 h-6 flex items-center justify-center">
         {{ selected? 0 :unread_count || 0 }}
@@ -23,7 +24,8 @@ const props = defineProps({
   unread_count: Number,
   profile_url: String,
   roomId: Number,
-  selected: Boolean
+  selected: Boolean,
+  message_user_type: String
 })
 
 const emit = defineEmits(['changeRoom'])
