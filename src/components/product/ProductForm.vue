@@ -57,6 +57,7 @@ import { instance, instanceMultipart } from "@/utils/axios";
 import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 import router from "@/router";
+import { store } from "@/store/store";
 
 const props = defineProps({
   type: String,
@@ -139,7 +140,7 @@ const handleFormButton = async (e) => {
     "product_trade_opt2",
     formData.value.tradeOpt.includes("product_trade_opt2") ? "Y" : "N"
   );
-  request.append("email", localStorage.getItem("email"));
+  request.append("email", store.user.email);
   request.append("item_id", route.params.id);
 
   if (props.type === "EDIT") {

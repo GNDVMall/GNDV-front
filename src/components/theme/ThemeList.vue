@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full mb-10">
+  <div class="w-full mb-32">
     <Title
       :title="'Series'"
       :subTitle="'레고 시리즈'"
