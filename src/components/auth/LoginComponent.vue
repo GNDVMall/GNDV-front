@@ -57,7 +57,9 @@ const password = ref("");
 const error = ref(null);
 const router = useRouter();
 const store = useStore();
+
 console.log("스토어값", store);
+
 const login = async () => {
   try {
     const response = await instance.post(
@@ -85,16 +87,11 @@ const login = async () => {
 
     const userData = {
       email: response.data.email,
-      memberId: response.data.id,
+      memberId: response.data.member_id,
     };
     setUser(userData);
 
-    localStorage.setItem("memberId", response.data.id);
-    localStorage.setItem("email", response.data.email);
-    localStorage.setItem("accessToken", token);
-    localStorage.setItem("refreshToken", refreshToken);
-
-    console.log("스토어 값:", store);
+    console.log("스토어 값:", store.user);
 
     router.push("/");
   } catch (e) {
@@ -104,5 +101,4 @@ const login = async () => {
 </script>
 
 <style scoped>
-/* Tailwind CSS classes are used for styling */
 </style>

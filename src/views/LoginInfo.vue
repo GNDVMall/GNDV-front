@@ -5,7 +5,6 @@
     <div class="mb-6">
       <h2 class="text-xl font-semibold">내 계정</h2>
       <div class="flex items-center mb-2">
-        <label class="w-1/4 text-gray-700">이메일 주소 변경</label>
         <span class="flex-1">{{ email }}</span>
       </div>
     </div>
@@ -72,6 +71,7 @@ const router = useRouter();
 const email = ref(store.user.email || "");
 const phoneNumber = ref("");
 const role = ref("");
+const password = ref("");
 
 const modalVisible = ref(false);
 const currentField = ref(null);
@@ -96,7 +96,7 @@ const handleUpdate = ({ field, value }) => {
   if (field === "profileName") {
     email.value = value;
   } else if (field === "password") {
-    // Do not display password
+    password.value = value;
   } else if (field === "phone") {
     phoneNumber.value = value;
   } else if (field === "role") {

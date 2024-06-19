@@ -80,6 +80,8 @@ const save = async () => {
       updateData.introduction = inputValue.value;
     } else if (props.field === "phone") {
       updateData.phone = inputValue.value;
+    } else if(props.field === "password"){
+      updateData.password = inputValue.value;
     }
 
     const response = await instance.put(
