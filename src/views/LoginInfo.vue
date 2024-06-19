@@ -2,7 +2,6 @@
   <div>
     <LoadingSpinner :visible="isLoading" />
     <h1 class="text-2xl font-bold mb-4">로그인 정보</h1>
-    <!-- 내 계정 Section -->
     <div class="mb-6">
       <h2 class="text-xl font-semibold">내 계정</h2>
       <div class="flex items-center mb-2">
@@ -10,7 +9,6 @@
         <span class="flex-1">{{ email }}</span>
       </div>
     </div>
-    <!-- 비밀번호 변경 Section -->
     <div class="mb-6">
       <h2 class="text-xl font-semibold">비밀번호 변경</h2>
       <div class="flex items-center mb-2">
@@ -24,7 +22,6 @@
         </button>
       </div>
     </div>
-    <!-- 개인 정보 Section -->
     <div class="mb-6">
       <h2 class="text-xl font-semibold">개인 정보</h2>
       <div class="flex items-center mb-2">
@@ -38,7 +35,6 @@
         </button>
       </div>
     </div>
-    <!-- 나의 권한 Section -->
     <div class="mb-6">
       <h2 class="text-xl font-semibold">나의 권한</h2>
       <div class="flex items-center mb-2">
@@ -51,7 +47,6 @@
         로그아웃
       </button>
     </div>
-    <!-- Modal for updating fields -->
     <LoginModal
       :isVisible="modalVisible"
       :field="currentField"
@@ -74,10 +69,9 @@ import LoadingSpinner from "@/components/common/Loader/LoadingSpinner.vue";
 const { isLoading, fetchData } = useFetchData();
 const store = useStore();
 const router = useRouter();
-const email = ref(store.user.email);
-const phoneNumber = ref(""); // This should come from the user profile data
-const ageGroup = ref(""); // This should come from the user profile data
-const role = ref(""); // This should come from the user profile data
+const email = ref(store.user.email || "");
+const phoneNumber = ref("");
+const role = ref("");
 
 const modalVisible = ref(false);
 const currentField = ref(null);
@@ -87,9 +81,8 @@ const openModal = (field) => {
   currentField.value = field;
   currentValue.value = {
     profileName: email.value,
-    password: "", // Do not pre-fill password
+    password: "",
     phone: phoneNumber.value,
-    ageGroup: ageGroup.value,
     role: role.value,
   }[field];
   modalVisible.value = true;
@@ -106,8 +99,6 @@ const handleUpdate = ({ field, value }) => {
     // Do not display password
   } else if (field === "phone") {
     phoneNumber.value = value;
-  } else if (field === "ageGroup") {
-    ageGroup.value = value;
   } else if (field === "role") {
     role.value = value;
   }
@@ -120,12 +111,16 @@ const logout = () => {
   localStorage.removeItem("refreshToken");
   router.push("/login");
 };
+
 onMounted(async () => {
   try {
-    fetchData();
-    const memberId = store.user.memberId;
-    if (!memberId) throw new Error("Member ID is missing");
-    const response = await instance.get(`/members/${memberId}`, {
+    await fetchData();
+    if (!store.user.memberId) {
+      console.error("Member ID is missing");
+      return;
+    }
+
+    const response = await instance.get(`/members/${store.user.memberId}`, {
       headers: {
         Authorization: `Bearer ${store.accessToken}`,
       },
@@ -134,7 +129,6 @@ onMounted(async () => {
     const memberData = response.data.data;
     email.value = memberData.email;
     phoneNumber.value = memberData.phone;
-    ageGroup.value = memberData.ageGroup;
     role.value = memberData.role;
   } catch (error) {
     console.error("Failed to fetch profile data:", error);
