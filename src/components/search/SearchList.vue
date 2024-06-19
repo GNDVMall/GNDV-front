@@ -1,7 +1,7 @@
 <template>
       <div v-if="items" class="w-full">
         <div class="flex justify-between mb-4">
-          <p class="text-sm">상품 {{ items.list.length }}</p>
+          <p class="text-sm">상품 {{ items.total }}</p>
           <div class="w-full max-w-32 text-sm">
             <select
               id="sort"
@@ -115,6 +115,8 @@ watch(() => orderBy.value, ()=>{
     const query = new URLSearchParams(route.query)
     query.delete('sortOrder')
     query.append('sortOrder', orderBy.value)
+    query.delete('sortBy')
+    query.append('sortBy', selectedOption.value)
     router.push(`?${query.toString()}`)
   }
 });

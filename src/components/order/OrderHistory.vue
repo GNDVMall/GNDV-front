@@ -2,10 +2,10 @@
   <div>
     <LoadingSpinner :visible="isLoading" />
     <CommonHeader title="구매 내역" />
-    <div class="space-y-4">
-      <div v-if="orders.data.length === 0" class="text-center text-gray-500">
+    <div v-if="orders.data.length === 0" class="text-center text-gray-500">
         구매 내역이 없습니다.
       </div>
+    <div v-else class="p-8 bg-white shadow-md rounded-md">
       <div
         v-for="order in orders.data"
         :key="order.order_uid"

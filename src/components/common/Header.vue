@@ -16,7 +16,7 @@
         >
           로그아웃
         </button>
-        <RouterLink to="/wish">
+        <RouterLink to="/my/wish">
           <span class="text-gray-600 text-xs">관심</span>
         </RouterLink>
         <!-- <RouterLink to="/"><span href="#" class="text-gray-600 text-xs">알림</span></RouterLink> -->

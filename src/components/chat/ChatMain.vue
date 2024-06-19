@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full" v-if="route.params.id">
+  <div v-if="route.params.id && product" :class="['w-full', product.product_sales_status === 'SOLDOUT' && 'completed']" >
     <ChatHeader
       v-if="product"
       :nickname="product.nickname"
@@ -18,7 +18,7 @@
     <!-- 채팅방 -->
     <div
       ref="scrollDiv"
-      class="w-full max-h-[calc(100vh-90px)] relative overflow-y-auto custom-scrollbar"
+      class="w-full max-h-[calc(100vh-90px)] relative overflow-y-scroll custom-scrollbar"
     >
       <!-- 판매 상품 정보 -->
       <ChatItemCard
@@ -30,7 +30,7 @@
         :product-status="product.product_sales_status"
       />
       <!-- 채팅 내용 -->
-      <ol v-if="messages" class="p-10 space-y-6">
+      <ol v-if="messages" class="p-10 space-y-6 main">
         <ChatMessage
           v-for="message in messages.list"
           :type="message.message_type"
@@ -180,8 +180,8 @@ const handlerLeaveChatRoom = () => {
 };
 
 onMounted(() => {
-  fetchData();
-  connect();
+  fetchData()
+  connect()
 });
 
 onUnmounted(() => {
@@ -190,10 +190,13 @@ onUnmounted(() => {
 
 watch(
   () => route.params.id,
-  () => {
-    disconnect();
-    fetchData();
-    connect();
+  async () => {
+    disconnect()
+    await fetchData()
+    connect()
+    setTimeout(()=>{
+        scrollToBottom()
+    },0)
   }
 );
 </script>
@@ -214,5 +217,22 @@ watch(
 
 .icon-size {
   font-size: 10rem;
+}
+
+.main{
+  min-height: 500px;
+}
+
+.completed::before {
+  content: "거래 완료";
+  position: absolute;
+  top: 46%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-15deg);
+  font-size: 6rem;
+  font-weight: bold;
+  color: rgba(255, 0, 0, 0.15); 
+  white-space: nowrap;
+  z-index: 1; 
 }
 </style>

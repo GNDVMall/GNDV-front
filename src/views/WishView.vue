@@ -1,8 +1,8 @@
 <template>
   <div>
     <LoadingSpinner :visible="isLoading" />
-    <CommonHeader title="Wishlist" />
-    <div class="space-y-4">
+    <CommonHeader title="관심 상품" />
+    <div v-if="items && items.length > 0" class="space-y-4">
       <WishItem
         v-for="item in items"
         :key="item.item_id"
@@ -10,6 +10,7 @@
         @wish-removed="removeWishFromList"
       />
     </div>
+    <div v-else class="text-center text-gray-500">관심 상품이 없습니다.</div>
   </div>
 </template>
 

@@ -6,7 +6,7 @@
     </div>
     <div
       v-else
-      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-4"
+      class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6"
     >
       <router-link
         v-for="product in products"
@@ -22,12 +22,14 @@
             :alt="product.title"
           />
         </div>
-        <div class="p-4 m-2 flex flex-col justify-between h-full">
+        <div class="py-4 px-2 m-2 flex flex-col justify-between h-full">
           <div>
-            <h3 class="text-xl font-bold text-xl mb-2">{{ product.title }}</h3>
-          </div>
-          <div>
-            <p class="text-gray-500 mb-2">{{ product.content }}</p>
+            <div class="overflow-hidden max-w-full">
+              <h3 class="font-bold text-lg mb-2 overflow-hidden text-ellipsis whitespace-nowrap">{{ product.title }}</h3>
+            </div>
+            <div class="overflow-hidden">
+              <p class="text-gray-500 mb-2 text-ellipsis overflow-hidden break-words line-clamp-2">{{ product.content }}</p>
+            </div>
           </div>
           <div>
             <h3 class="text-rose-500 font-bold text-xl">
