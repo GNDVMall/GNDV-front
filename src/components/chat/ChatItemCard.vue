@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="props"
-    class="w-full sticky top-0 z-10 bg-white shadow-md overflow-hidden"
+    class="w-full sticky top-0 z-20 bg-white shadow-md overflow-hidden"
   >
     <RouterLink :to="`/products/${props.productId}`">
       <div class="flex items-center p-4">

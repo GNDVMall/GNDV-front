@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full" v-if="route.params.id">
+  <div v-if="route.params.id && product" :class="['w-full', product.product_sales_status === 'SOLDOUT' && 'completed']" >
     <ChatHeader
       v-if="product"
       :nickname="product.nickname"
@@ -221,5 +221,18 @@ watch(
 
 .main{
   min-height: 500px;
+}
+
+.completed::before {
+  content: "거래 완료";
+  position: absolute;
+  top: 46%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-15deg);
+  font-size: 6rem; /* 텍스트 크기 조정 */
+  font-weight: bold;
+  color: rgba(255, 0, 0, 0.15); /* 빨간색, 투명도 조정 */
+  white-space: nowrap;
+  z-index: 1; /* 백그라운드에 나타나도록 설정 */
 }
 </style>
