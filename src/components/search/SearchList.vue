@@ -115,6 +115,8 @@ watch(() => orderBy.value, ()=>{
     const query = new URLSearchParams(route.query)
     query.delete('sortOrder')
     query.append('sortOrder', orderBy.value)
+    query.delete('sortBy')
+    query.append('sortBy', selectedOption.value)
     router.push(`?${query.toString()}`)
   }
 });
