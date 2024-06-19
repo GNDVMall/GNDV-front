@@ -1,10 +1,10 @@
 <template>
   <div>
-    <CommonHeader title="판매내역" />
+    <CommonHeader title="판매 내역" />
     <LoadingSpinner :visible="isLoading" />
     <div
       v-if="filteredSales.length"
-      class="sale-list bg-white shadow-md rounded-md p-4"
+      class="p-8 bg-white shadow-md rounded-md"
     >
       <div
         v-for="sale in filteredSales"
@@ -95,9 +95,6 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-.sale-list {
-  padding: 2rem;
-}
 .btn-secondary {
   background-color: #6c757d;
   cursor: not-allowed;
