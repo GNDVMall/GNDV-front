@@ -18,7 +18,7 @@
     <!-- 채팅방 -->
     <div
       ref="scrollDiv"
-      class="w-full max-h-[calc(100vh-90px)] relative overflow-y-auto custom-scrollbar"
+      class="w-full max-h-[calc(100vh-90px)] relative overflow-y-scroll custom-scrollbar"
     >
       <!-- 판매 상품 정보 -->
       <ChatItemCard
@@ -30,7 +30,7 @@
         :product-status="product.product_sales_status"
       />
       <!-- 채팅 내용 -->
-      <ol v-if="messages" class="p-10 space-y-6">
+      <ol v-if="messages" class="p-10 space-y-6 main">
         <ChatMessage
           v-for="message in messages.list"
           :type="message.message_type"
@@ -71,7 +71,6 @@ const messages = ref(null);
 const loading = ref(false);
 const scrollDiv = ref(null);
 const isReviewModalOpen = ref(false);
-const scrollMove = ref(false);
 
 stompClient.brokerURL = `ws://localhost:8080/gndv-websocket?token=${store.accessToken}`
 stompClient.onConnect = () => {
@@ -218,5 +217,9 @@ watch(
 
 .icon-size {
   font-size: 10rem;
+}
+
+.main{
+  min-height: 500px;
 }
 </style>
