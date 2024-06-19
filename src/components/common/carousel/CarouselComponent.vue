@@ -7,12 +7,21 @@
       <div
         v-for="(slide, index) in slides"
         :key="index"
-        class="w-full h-full flex-shrink-0 bg-slate-100"
+        class="relative w-full h-full flex-shrink-0 bg-slate-100 transition-opacity duration-500"
+        :class="{
+          'opacity-0': currentIndex !== index,
+          'opacity-100': currentIndex === index,
+        }"
       >
         <img
           :src="slide"
-          alt="carousel image"
-          class="w-full h-full object-contain"
+          alt="carousel image1"
+          class="absolute top-0 left-0 w-full h-full object-cover rounded-sm opacity-30"
+        />
+        <img
+          :src="slide"
+          alt="carousel image2"
+          class="relative z-10 w-full h-full object-contain border-r-2"
         />
       </div>
     </div>
@@ -21,8 +30,8 @@
 
 <script>
 import { ref, onMounted, onUnmounted } from "vue";
-import slide1 from "@/assets/img/lego1.webp";
-import slide2 from "@/assets/img/lego2.jpeg";
+import slide1 from "@/assets/img/legofriends.jpeg";
+import slide2 from "@/assets/img/legow.jpeg";
 import slide3 from "@/assets/img/lego3.jpeg";
 
 export default {
@@ -38,7 +47,7 @@ export default {
     let interval = null;
 
     onMounted(() => {
-      interval = setInterval(nextSlide, 3000);
+      interval = setInterval(nextSlide, 2000);
     });
 
     onUnmounted(() => {
@@ -54,5 +63,15 @@ export default {
 </script>
 
 <style scoped>
-/* Add any additional styling here if needed */
+.opacity-0 {
+  opacity: 0;
+}
+
+.opacity-100 {
+  opacity: 1;
+}
+
+.transition-opacity {
+  transition: opacity 0.5s ease-in-out;
+}
 </style>
