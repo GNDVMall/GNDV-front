@@ -1,7 +1,7 @@
 <template>
   <header
     v-if="!props.loading && props"
-    class="h-16 w-full text-base font-bold px-5 py-1 flex items-center justify-between border-b border-gray-300"
+    class="h-16 w-full text-base font-bold px-5 py-1 flex items-center justify-between border-b z-10 border-gray-300"
   >
     <!-- 상대방 정보 -->
     <div class="flex items-center">

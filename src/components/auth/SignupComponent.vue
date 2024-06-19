@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center justify-center min-h-screen bg-gray-100">
+  <div class="flex items-center justify-center py-32 bg-gray-100">
     <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
       <h1 class="text-2xl font-bold mb-6 text-center">Sign Up</h1>
       <form @submit.prevent="signUp">
@@ -17,9 +17,9 @@
             />
             <button
               @click.prevent="sendVerificationEmail"
-              class="bg-blue-500 text-white px-4 py-2 rounded ml-2"
+              class="bg-blue-500 w-28 text-sm text-white px-4 py-2 rounded ml-2"
             >
-              Verify Email
+              이메일 확인
             </button>
           </div>
           <div class="text-sm text-gray-400">메일이 도착할 때 까지 시간이 걸릴 수 있습니다.</div>
@@ -40,9 +40,9 @@
             />
             <button
               @click.prevent="verifyEmailCode"
-              class="bg-green-500 text-white px-4 py-2 rounded ml-2"
+              class="bg-green-500 text-sm w-28 text-white px-4 py-2 rounded ml-2"
             >
-              Verify
+              인증
             </button>
             </div>
           <div class="text-sm text-blue-500">인증 코드를 입력해주세요.</div>
@@ -67,7 +67,7 @@
         <button
           type="submit"
           :disabled="!emailVerified"
-          class="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          class="w-full py-2 cursor-pointer px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         >
           Sign Up
         </button>

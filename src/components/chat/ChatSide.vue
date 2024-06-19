@@ -13,10 +13,11 @@
         <ChatRoomSideItem
           @changeRoom="changeRoom"
           :roomId="item.chatroom_id"
-          :message="item.chat_content || '아직 메시지가 없습니다.'"
+          :message=" item.chat_content || '아직 메시지가 없습니다.'"
+          :message_user_type="item.message_user_type"
           :nickname="item.nickname"
           :profile_url="item.profile_url"
-          :timestamp="formatDateWithTime(item.updated_at || new Date())"
+          :timestamp="formatDateWithTime(item.sent_at || new Date())"
           :unread_count="item.unread_count"
           :selected="Number(route.params.id) === item.chatroom_id"
         />

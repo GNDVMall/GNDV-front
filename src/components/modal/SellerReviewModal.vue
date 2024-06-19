@@ -101,12 +101,11 @@ const props = defineProps({
   productId: Number,
   onClose: Function,
 });
-const email = localStorage.getItem("email");
 
 const checkReviewExists = async () => {
   try {
     const response = await instance.get(`/reviews/check`, {
-      params: { productId: props.productId, email },
+      params: { productId: props.productId, email: store.user.email  },
     });
     reviewExists.value = response.data.data;
   } catch (error) {
@@ -115,7 +114,7 @@ const checkReviewExists = async () => {
 };
 
 const submitForm = async () => {
-  if (!email) {
+  if (!store.user.email ) {
     alert("Email is not available.");
     return;
   }
@@ -124,7 +123,7 @@ const submitForm = async () => {
     review_content: review_content.value,
     review_rating: review_rating.value,
     review_type: "PRODUCT",
-    email: email,
+    email: store.user.email ,
     product_id: props.productId,
   };
 

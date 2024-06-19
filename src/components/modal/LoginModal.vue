@@ -4,15 +4,17 @@
     class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
   >
     <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-      <h2 class="text-2xl font-bold mb-6">{{ getTitle(field) }}</h2>
+      <h2 class="text-2xl font-bold mb-6">{{ getTitle(props.field) }}</h2>
       <form @submit.prevent="save">
         <div class="mb-4">
-          <label :for="field" class="block text-sm font-medium text-gray-700">{{
-            getLabel(field)
-          }}</label>
+          <label
+            :for="props.field"
+            class="block text-sm font-medium text-gray-700"
+            >{{ getLabel(props.field) }}</label
+          >
           <input
             v-model="inputValue"
-            :id="field"
+            :id="props.field"
             type="text"
             required
             class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
@@ -68,24 +70,30 @@ const close = () => {
 const save = async () => {
   try {
     const memberId = store.user.memberId;
-    if (!memberId) throw new Error("Member ID is missing");
+    const email = store.user.email;
+    if (!memberId || !email) throw new Error("Member ID or email is missing");
 
     const updateData = {};
     if (props.field === "profileName") {
       updateData.nickname = inputValue.value;
     } else if (props.field === "introduction") {
       updateData.introduction = inputValue.value;
-    } else if (props.field === "password") {
-      updateData.password = inputValue.value;
     } else if (props.field === "phone") {
       updateData.phone = inputValue.value;
+    } else if(props.field === "password"){
+      updateData.password = inputValue.value;
     }
 
     const response = await instance.put(
-      `/members/${memberId}/edit`,
-      updateData
+      `/members/${memberId}/edit/${email}`,
+      updateData,
+      {
+        headers: {
+          Authorization: `Bearer ${store.user.accessToken}`,
+        },
+      }
     );
-    console.log("Response data:", response.data); // Log response data
+
     emit("updated", { field: props.field, value: inputValue.value });
     close();
   } catch (error) {

@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full" v-if="route.params.id">
+  <div v-if="route.params.id && product" :class="['w-full', product.product_sales_status === 'SOLDOUT' && 'completed']" >
     <ChatHeader
       v-if="product"
       :nickname="product.nickname"
@@ -18,7 +18,7 @@
     <!-- 채팅방 -->
     <div
       ref="scrollDiv"
-      class="w-full max-h-[calc(100vh-90px)] relative overflow-y-auto custom-scrollbar"
+      class="w-full max-h-[calc(100vh-90px)] relative overflow-y-scroll custom-scrollbar"
     >
       <!-- 판매 상품 정보 -->
       <ChatItemCard
@@ -30,7 +30,7 @@
         :product-status="product.product_sales_status"
       />
       <!-- 채팅 내용 -->
-      <ol v-if="messages" class="p-10 space-y-6">
+      <ol v-if="messages" class="p-10 space-y-6 main">
         <ChatMessage
           v-for="message in messages.list"
           :type="message.message_type"
@@ -77,13 +77,12 @@ stompClient.onConnect = () => {
   stompClient.subscribe(`/topic/${route.params.id}`, async (message) => {
     // 받은 메시지
     const messageBody = JSON.parse(message.body);
-    const isSender = messageBody.email === localStorage.getItem("email");
+    const isSender = messageBody.email === store.user.email;
 
     messages.value.list.push({
       message_id: messageBody.message_id,
       chat_content: messageBody.content,
       sent_at: new Date(),
-      // 임시로 로컬스토리지 사용
       message_type: isSender ? "SENT" : "RECEIVE",
       message_user_type: messageBody.message_user_type,
       content_type: messageBody.content_type,
@@ -97,7 +96,7 @@ stompClient.onConnect = () => {
     }
   });
 
-  stompClient.subscribe(`/topic/${localStorage.getItem("email")}`, () => {
+  stompClient.subscribe(`/topic/${store.user.email}`, () => {
     // 받은 메시지
     emit("upated-room-list");
   });
@@ -181,8 +180,8 @@ const handlerLeaveChatRoom = () => {
 };
 
 onMounted(() => {
-  fetchData();
-  connect();
+  fetchData()
+  connect()
 });
 
 onUnmounted(() => {
@@ -191,10 +190,13 @@ onUnmounted(() => {
 
 watch(
   () => route.params.id,
-  () => {
-    disconnect();
-    fetchData();
-    connect();
+  async () => {
+    disconnect()
+    await fetchData()
+    connect()
+    setTimeout(()=>{
+        scrollToBottom()
+    },0)
   }
 );
 </script>
@@ -215,5 +217,22 @@ watch(
 
 .icon-size {
   font-size: 10rem;
+}
+
+.main{
+  min-height: 500px;
+}
+
+.completed::before {
+  content: "거래 완료";
+  position: absolute;
+  top: 46%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-15deg);
+  font-size: 6rem;
+  font-weight: bold;
+  color: rgba(255, 0, 0, 0.15); 
+  white-space: nowrap;
+  z-index: 1; 
 }
 </style>

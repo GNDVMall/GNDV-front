@@ -7,7 +7,7 @@
       <span v-if="type === 'SENT'" class="text-sm text-gray-500 mt-2">
         {{ formatTime(date) }}
       </span>
-      <div :class="['p-3 rounded-lg max-w-60', bubbleClass]">
+      <div :class="['p-3 rounded-lg max-w-60 z-10', bubbleClass]">
         <div v-if="contentType === 'IMAGE'">
           <img :src="content" alt="이미지"  @click="toggleImage"/>
         </div>
