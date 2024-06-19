@@ -89,7 +89,7 @@
       <h2 class="text-xl font-bold">상품 정보</h2>
     </div>
     <div class="min-h-60 pt-6">
-      {{ data.content }}
+      <pre class="font-sans">{{ data.content }}</pre>
     </div>
   </article>
 </template>
