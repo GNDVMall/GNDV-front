@@ -229,10 +229,10 @@ watch(
   top: 46%;
   left: 50%;
   transform: translate(-50%, -50%) rotate(-15deg);
-  font-size: 6rem; /* 텍스트 크기 조정 */
+  font-size: 6rem;
   font-weight: bold;
-  color: rgba(255, 0, 0, 0.15); /* 빨간색, 투명도 조정 */
+  color: rgba(255, 0, 0, 0.15); 
   white-space: nowrap;
-  z-index: 1; /* 백그라운드에 나타나도록 설정 */
+  z-index: 1; 
 }
 </style>
