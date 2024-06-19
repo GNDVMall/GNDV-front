@@ -4,7 +4,7 @@
     <h1 class="text-2xl font-bold mb-4">프로필 관리</h1>
     <div class="flex items-center mb-6">
       <img
-        class="w-16 h-16 rounded-full"
+        class="w-16 h-16 rounded-full object-cover"
         :src="profileImageUrl"
         alt="프로필 이미지"
       />
