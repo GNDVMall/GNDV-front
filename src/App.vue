@@ -1,10 +1,27 @@
 <script setup>
-import { RouterView } from 'vue-router';
-import LayoutVue from './components/common/Layout.vue';
-import { onErrorCaptured, ref } from 'vue';
+import { RouterView } from "vue-router";
+import LayoutVue from "./components/common/Layout.vue";
+import { onMounted, onUnmounted, onErrorCaptured, ref } from "vue";
+import { provideStore } from "./store/store.js";
+import NotFound from "@/views/NotFound.vue";
 
+provideStore();
 const hasError = ref(false);
 const errorCode = ref(null);
+const networkError = ref(false);
+
+const handleNetworkError = () => {
+  hasError.value = true;
+  networkError.value = true;
+};
+
+onMounted(() => {
+  window.addEventListener("network-error", handleNetworkError);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("network-error", handleNetworkError);
+});
 
 onErrorCaptured((e) => {
   console.error(e);
@@ -12,7 +29,7 @@ onErrorCaptured((e) => {
   if (e.response && e.response.data) {
     errorCode.value = e.response.data;
   } else {
-    errorCode.value = 403; // 기본 에러 코드 설정
+    errorCode.value = 403;
   }
   return false;
 });
@@ -24,7 +41,10 @@ onErrorCaptured((e) => {
       <Transition mode="out-in">
         <KeepAlive>
           <LayoutVue>
-            <div v-if="hasError">에러 발생 {{ errorCode }}</div>
+            <div v-if="hasError">
+              <NotFound v-if="networkError" />
+              <div v-else><NotFound /></div>
+            </div>
             <!-- 메인 컨텐츠 -->
             <component v-else :is="Component"></component>
           </LayoutVue>

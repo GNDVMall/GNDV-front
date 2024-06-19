@@ -1,11 +1,14 @@
 <template>
   <main>
-    로그인 페이지
     <TestLoginComponentVue />
+    <LoadingSpinner v-if="isLoading" />
   </main>
 </template>
 
 <script setup>
-import TestLoginComponentVue from "@/components/payments/TestLoginComponent.vue";
+import TestLoginComponentVue from "@/components/auth/LoginComponent.vue";
+import LoadingSpinner from "@/components/common/Loader/LoadingSpinner.vue";
+import { useFetchData } from "@/utils/useFetchData";
 
+const { isLoading, data, fetchData } = useFetchData();
 </script>

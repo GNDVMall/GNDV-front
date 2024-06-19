@@ -2,10 +2,9 @@
   <section v-if="data" class="mt-10" >
     <Title 
       :title="`${data.total} Items Found`"
-      :sub-title="'현재 판매중인 상품 목록'"
+      :sub-title="'상품 목록'"
     />
   </section>
-  <div v-if="loading">ProductList 로딩</div>
   <!-- 카드 리스트 -->
   <div v-if="data" class="grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-8 md:gap-4">
     <ProductCard v-for="product in data.list"
@@ -16,6 +15,7 @@
       :price="`${product.price}원`"
       :is-new="product.product_status === 'NEW' ? true : false"
       :created-at="product.created_at"
+      :product_sales_status="product.product_sales_status"
     />    
   </div>
 
@@ -49,7 +49,6 @@ const loading = ref(null)
 
 const fetchData = async () => {
   loading.value = true
-  console.log("route.query", route.query)
   try {
     const res = await instance.get(`products?item_id=${route.params.id}&size=${size.value}&pageNo=${currentPage.value}`); // 원하는 엔드포인트를 입력합니다.
     data.value = res.data.data;

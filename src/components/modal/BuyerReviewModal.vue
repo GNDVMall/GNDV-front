@@ -1,106 +1,145 @@
 <template>
-  <div v-if="showModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
-    <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-lg">
-      <div class="flex justify-between items-center mb-4">
-        <h2 class="text-xl font-bold">리뷰 상세 정보</h2>
-        <button @click="closeModal" class="text-gray-600 hover:text-gray-800">&times;</button>
-      </div>
-      <div v-if="review">
-        <p class="mb-2"><strong>리뷰 내용:</strong> {{ review.review_content }}</p>
-        <p class="mb-2"><strong>평점:</strong> {{ review.review_rating }} / 5</p>
-        <p class="mb-2"><strong>작성자 이메일:</strong> {{ review.email }}</p>
-        <p class="mb-2"><strong>작성 날짜:</strong> {{ review.created_at }}</p>
-      </div>
-      <div v-else>
-        <p class="text-red-500">리뷰 정보를 불러올 수 없습니다.</p>
-      </div>
-      <div v-if="!feedbackGiven">
-        <h3 class="text-lg font-semibold mt-4">피드백 작성</h3>
-        <form @submit.prevent="submitFeedback">
-          <div class="mb-4">
-            <label for="feedbackContent" class="block text-gray-700">피드백 내용</label>
-            <textarea v-model="feedback_content" id="feedbackContent" class="mt-1 block w-full border border-gray-300 rounded p-2"></textarea>
+  <CommonModal :isVisible="isVisible" @close="closeModal">
+    <form v-if="!reviewExists" @submit.prevent="submitForm">
+      <div
+        class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg"
+      >
+        <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+          <div class="sm:flex sm:items-start">
+            <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+              <h3
+                class="text-base font-semibold leading-6 text-gray-900"
+                id="modal-title"
+              >
+                리뷰 작성
+              </h3>
+              <div class="mt-2">
+                <div class="mb-3">
+                  <label for="reviewContent" class="form-label"
+                    >리뷰 내용</label
+                  >
+                  <textarea
+                    v-model="review_content"
+                    id="reviewContent"
+                    class="form-control"
+                    rows="3"
+                  ></textarea>
+                </div>
+                <div class="mb-3">
+                  <label for="reviewRating" class="form-label">평점</label>
+                  <ProfileWithStar
+                    :rating="review_rating"
+                    @update:rating="setRating"
+                    url="https://via.placeholder.com/150"
+                  />
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="mb-4">
-            <label for="feedbackRating" class="block text-gray-700">평점</label>
-            <ProfileWithStar :rating="feedback_rating" @update:rating="setRating" />
-          </div>
-          <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">피드백 제출</button>
-        </form>
+        </div>
+        <div
+          class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row justify-end sm:px-6"
+        >
+          <button type="submit" class="btn btn-primary">리뷰 제출</button>
+          <button
+            type="button"
+            class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+            @click="closeModal"
+          >
+            닫기
+          </button>
+        </div>
+      </div>
+    </form>
+    <div v-else class="alert alert-danger" role="alert">
+      <div
+        class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10"
+      >
+        <svg
+          class="h-6 w-6 text-red-600"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          aria-hidden="true"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"
+          />
+        </svg>
+      </div>
+      <div>
+        <h3>이미 이 제품에 대한 리뷰를 작성하셨습니다.</h3>
+
+        <div class="px-4 py-3 sm:flex sm:flex-row justify-end sm:px-6">
+          <button
+            type="button"
+            class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+            @click="closeModal"
+          >
+            닫기
+          </button>
+        </div>
       </div>
     </div>
-  </div>
+  </CommonModal>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import instance from '@/utils/axios';
-import ProfileWithStar from '@/components/common/ProfileWithStar/Star.vue';
-
+import { ref, onMounted } from "vue";
+import { instance } from "@/utils/axios.js";
+import ProfileWithStar from "@/components/common/Star/Star.vue";
+import CommonModal from "@/components/modal/ModalContainer.vue";
+const review_content = ref("");
+const review_rating = ref(0);
+const reviewExists = ref(false);
 const props = defineProps({
-  showModal: Boolean,
-  closeModal: Function,
-  reviewId: Number
+  isVisible: Boolean,
+  productId: Number,
+  onClose: Function,
 });
-
-const review = ref(null);
-const feedback_content = ref('');
-const feedback_rating = ref(0);
-const feedbackGiven = ref(false);
-
-const fetchReviewDetail = async () => {
+const email = localStorage.getItem("email");
+const checkReviewExists = async () => {
   try {
-    const response = await instance.get(`/api/v2/reviews/${props.reviewId}`);
-    review.value = response.data.data;
+    const response = await instance.get(`/reviews/check`, {
+      params: { productId: props.productId, email },
+    });
+    reviewExists.value = response.data.data;
   } catch (error) {
-    console.error("Error fetching review detail:", error);
+    console.error("Error checking review existence", error);
   }
 };
-
-const submitFeedback = async () => {
-  const email = localStorage.getItem('email');
-
+const submitForm = async () => {
   if (!email) {
-    alert('Email is not available.');
+    alert("Email is not available.");
     return;
   }
-
-  const feedback = {
-    feedback_content: feedback_content.value,
-    feedback_rating: feedback_rating.value,
-    review_id: props.reviewId,
-    email
+  const review = {
+    review_content: review_content.value,
+    review_rating: review_rating.value,
+    review_type: "PRODUCT",
+    email: email,
+    product_id: props.productId,
   };
-
   try {
-    const response = await instance.post('/feedback', feedback);
-    console.log("Feedback submitted successfully", response.data);
-    feedbackGiven.value = true; // Mark feedback as given
-    props.closeModal(); // Close the modal after successful submission
+    const response = await instance.post("/reviews", review);
+    console.log("Review submitted successfully", response.data);
+    props.onClose(); // Close the modal after submission
   } catch (error) {
-    console.error("Error submitting feedback", error);
+    console.error("Error submitting review", error);
   }
 };
-
 const setRating = (newRating) => {
-  feedback_rating.value = newRating;
+  review_rating.value = newRating;
 };
-
+const closeModal = () => {
+  props.onClose();
+};
 onMounted(() => {
-  fetchReviewDetail();
+  checkReviewExists();
 });
 </script>
 
-<style scoped>
-.modal {
-  @apply fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50;
-}
-
-.modal-content {
-  @apply bg-white rounded-lg shadow-lg p-6 w-full max-w-lg;
-}
-
-.close {
-  @apply text-gray-600 hover:text-gray-800;
-}
-</style>
+<style scoped></style>
