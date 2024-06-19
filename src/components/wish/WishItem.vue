@@ -1,7 +1,7 @@
 <template>
   <div class="max-w-4xl mx-auto border rounded-lg p-6 flex items-center mb-6">
     <img
-      :src="item.real_filename"
+      :src="item.image_url"
       alt="Item Image"
       class="w-64 h-64 object-cover rounded-lg mr-8"
     />
