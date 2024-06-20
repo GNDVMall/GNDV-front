@@ -60,9 +60,9 @@ export default {
           itemId: this.itemId,
         });
 
-        if (response.data.message === "Wish added successfully") {
+        if (response.data === "Wish added successfully") {
           this.currentWishCount += 1;
-        } else if (response.data.message === "Wish removed successfully") {
+        } else if (response.data === "Wish removed successfully") {
           this.currentWishCount -= 1;
         }
 
