@@ -10,7 +10,7 @@ const getAuthHeaders = () => {
 };
 
 const instance = axios.create({
-  baseURL: "http://43.200.252.4:8080/api/v2",
+  baseURL: "http://43.202.103.222:8080/api/v2",
   timeout: 5000,
 });
 
@@ -43,7 +43,7 @@ instance.interceptors.response.use(
 );
 
 const instanceMultipart = axios.create({
-  baseURL: "http://43.200.252.4:8080/api/v2",
+  baseURL: "http://43.202.103.222:8080/api/v2",
   timeout: 5000,
   headers: {
     "X-Requested-With": "XMLHttpRequest",
