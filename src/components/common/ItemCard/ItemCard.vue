@@ -12,7 +12,7 @@
         </div>
         <p
           :title="title" 
-          class="text-gray-700 text-sm text-ellipsis overflow-hidden break-words line-clamp-2">{{ title }}</p>
+          class="text-gray-700 text-sm text-ellipsis overflow-hidden break-words line-clamp-2 min-h-10">{{ title }}</p>
       </div>
       <!-- price -->
       <div class="px-1 pb-3 md:max-w-64">
@@ -24,11 +24,11 @@
           <span class="text-sm font-bold">{{ formatKoreanCurrency(recent_price) }}원</span>
           <span class="text-xs opacity-60">최근 거래가</span>
         </div>
-        <div class="flex flex-col mt-1">
+        <!-- <div class="flex flex-col mt-1">
           <span class="text-xs opacity-60">
             <i class="fa-regular fa-bookmark mr-2"></i>{{ bookmark }}
           </span>
-        </div>
+        </div> -->
       </div>
     </RouterLink>
   </div>
