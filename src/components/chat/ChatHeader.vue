@@ -50,9 +50,8 @@
 
     <CommonModal :isVisible="isReviewModalOpen" @close="closeReviewModal">
       <ReviewForm
-        @submit="submitReview"
         :reviewType="'PRODUCT'"
-        :email="store.user.email"
+        :email="otherEmail"
         :productId="props.productId"
         :onClose="closeReviewModal"
       />
@@ -61,11 +60,10 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import { ref } from "vue";
 import { defineProps, defineEmits } from "vue";
 import CommonModal from "@/components/modal/ModalContainer.vue";
 import ReviewForm from "@/views/ReviewForm.vue";
-import { instance } from "@/utils/axios";
 import { store } from "@/store/store";
 
 const props = defineProps({
@@ -96,14 +94,5 @@ const closeReviewModal = () => {
 };
 
 
-const submitReview = async (review) => {
-  try {
-    const response = await instance.post("/reviews", review);
-    console.log("Review submitted successfully:", response.data);
-    closeReviewModal();
-  } catch (error) {
-    console.error("Failed to submit review:", error);
-  }
-};
 
 </script>

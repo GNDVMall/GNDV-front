@@ -43,8 +43,7 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { useRoute } from "vue-router";
-import { instance } from "@/utils/axios.js"; // axios 인스턴스 import
+import { instance } from "@/utils/axios.js"; 
 import ProfileWithStar from "@/components/common/Star/Star.vue";
 import LoadingSpinner from "@/components/common/Loader/LoadingSpinner.vue";
 import { useFetchData } from "@/utils/useFetchData";
@@ -52,18 +51,18 @@ import { useFetchData } from "@/utils/useFetchData";
 const { isLoading, fetchData } = useFetchData();
 const review_content = ref("");
 const review_rating = ref(0);
-const route = useRoute();
 const reviewExists = ref(false);
 const props = defineProps({
   productId: Number,
   onClose: Function,
+  email: String
 });
-const email = localStorage.getItem("email");
+
 
 const checkReviewExists = async () => {
   try {
     const response = await instance.get(`/reviews/check`, {
-      params: { productId: props.productId, email },
+      params: { productId: props.productId, email: props.email },
     });
     reviewExists.value = response.data.data;
   } catch (error) {
@@ -72,7 +71,7 @@ const checkReviewExists = async () => {
 };
 
 const submitForm = async () => {
-  if (!email) {
+  if (!props.email) {
     alert("Email is not available.");
     return;
   }
@@ -81,16 +80,17 @@ const submitForm = async () => {
     review_content: review_content.value,
     review_rating: review_rating.value,
     review_type: "PRODUCT",
-    email: email,
+    email: props.email,
     product_id: props.productId,
   };
 
   try {
     const response = await instance.post("/reviews", review);
     console.log("Review submitted successfully", response.data);
-    // Add any additional logic after a successful submission
   } catch (error) {
     console.error("Error submitting review", error);
+  } finally{
+    closeModal()
   }
 };
 
@@ -99,13 +99,11 @@ const setRating = (newRating) => {
 };
 
 const closeModal = () => {
-  console.log("???")
   props.onClose();
 };
 
 onMounted(() => {
   fetchData();
-  console.log("Loaded email from local storage:", email); // 로드된 이메일 확인
   checkReviewExists();
 });
 </script>
