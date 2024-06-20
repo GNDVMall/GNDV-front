@@ -1,5 +1,11 @@
 <template>
-  <div v-if="route.params.id && product" :class="['w-full', product.product_sales_status === 'SOLDOUT' && 'completed']" >
+  <div
+    v-if="route.params.id && product"
+    :class="[
+      'w-full',
+      product.product_sales_status === 'SOLDOUT' && 'completed',
+    ]"
+  >
     <ChatHeader
       v-if="product"
       :nickname="product.nickname"
@@ -13,7 +19,6 @@
       :isReviewModalOpen="isReviewModalOpen"
       @open-review-modal="openReviewModal"
       @close-review-modal="closeReviewModal"
-
     />
     <!-- 채팅방 -->
     <div
@@ -53,18 +58,18 @@
 </template>
 
 <script setup>
-import ChatHeader from "@/components/chat/ChatHeader.vue";
-import ChatItemCard from "@/components/chat/ChatItemCard.vue";
-import ChatMessage from "@/components/chat/ChatMessage.vue";
-import ChatInput from "@/components/chat/ChatInput.vue";
-import { onMounted, onUnmounted, ref, watch } from "vue";
-import { instance } from "@/utils/axios";
-import { useRoute } from "vue-router";
-import stompClient, { connect, disconnect } from "@/websocket/websocket";
-import router from "@/router";
-import { store } from "@/store/store";
+import ChatHeader from '@/components/chat/ChatHeader.vue';
+import ChatItemCard from '@/components/chat/ChatItemCard.vue';
+import ChatMessage from '@/components/chat/ChatMessage.vue';
+import ChatInput from '@/components/chat/ChatInput.vue';
+import { onMounted, onUnmounted, ref, watch } from 'vue';
+import { instance } from '@/utils/axios';
+import { useRoute } from 'vue-router';
+import stompClient, { connect, disconnect } from '@/websocket/websocket';
+import router from '@/router';
+import { store } from '@/store/store';
 
-const emit = defineEmits(["upated-room-list"]);
+const emit = defineEmits(['upated-room-list']);
 const route = useRoute();
 const product = ref(null);
 const messages = ref(null);
@@ -72,7 +77,7 @@ const loading = ref(false);
 const scrollDiv = ref(null);
 const isReviewModalOpen = ref(false);
 
-stompClient.brokerURL = `ws://localhost:8080/gndv-websocket?token=${store.accessToken}`
+stompClient.brokerURL = `ws://43.200.252.4:8080/gndv-websocket?token=${store.accessToken}`;
 stompClient.onConnect = () => {
   stompClient.subscribe(`/topic/${route.params.id}`, async (message) => {
     // 받은 메시지
@@ -83,12 +88,12 @@ stompClient.onConnect = () => {
       message_id: messageBody.message_id,
       chat_content: messageBody.content,
       sent_at: new Date(),
-      message_type: isSender ? "SENT" : "RECEIVE",
+      message_type: isSender ? 'SENT' : 'RECEIVE',
       message_user_type: messageBody.message_user_type,
       content_type: messageBody.content_type,
     });
     scrollToBottom();
-    emit("upated-room-list");
+    emit('upated-room-list');
 
     // 메시지 읽음 처리
     if (!isSender) {
@@ -98,7 +103,7 @@ stompClient.onConnect = () => {
 
   stompClient.subscribe(`/topic/${store.user.email}`, () => {
     // 받은 메시지
-    emit("upated-room-list");
+    emit('upated-room-list');
   });
 };
 
@@ -110,7 +115,7 @@ const send = (value, type) => {
       content: value,
       chatroom_id: route.params.id,
       receiver: product.value.email,
-      message_user_type: "USER",
+      message_user_type: 'USER',
       content_type: type,
     }),
   });
@@ -122,7 +127,7 @@ const sendSystemMessage = () => {
     body: JSON.stringify({
       chatroom_id: route.params.id,
       receiver: product.value.email,
-      message_user_type: "SYSTEM",
+      message_user_type: 'SYSTEM',
     }),
   });
 };
@@ -132,17 +137,17 @@ const handleChangeProductStatus = async (type) => {
   await instance.put(`/products/status/${product.value.product_id}`, {
     product_sales_status: 'SOLDOUT',
     email: store.user.email,
-  })
-  openReviewModal()
-  fetchData()
+  });
+  openReviewModal();
+  fetchData();
 };
 
 const openReviewModal = () => {
-  isReviewModalOpen.value = true
+  isReviewModalOpen.value = true;
 };
 
 const closeReviewModal = () => {
-  isReviewModalOpen.value = false
+  isReviewModalOpen.value = false;
 };
 
 // 새 메시지가 도착하면 스크롤을 가장 아래로 내림
@@ -172,16 +177,16 @@ const fetchData = async () => {
 // 방 떠나는 기능 메서드
 const handlerLeaveChatRoom = () => {
   // 임시 모달
-  if (!confirm("방을 떠나시겠습니까?")) return;
+  if (!confirm('방을 떠나시겠습니까?')) return;
   instance.delete(`/chat/${route.params.id}`);
-  router.push("/chat");
+  router.push('/chat');
   sendSystemMessage();
-  emit("upated-room-list");
+  emit('upated-room-list');
 };
 
 onMounted(() => {
-  fetchData()
-  connect()
+  fetchData();
+  connect();
 });
 
 onUnmounted(() => {
@@ -191,12 +196,12 @@ onUnmounted(() => {
 watch(
   () => route.params.id,
   async () => {
-    disconnect()
-    await fetchData()
-    connect()
-    setTimeout(()=>{
-        scrollToBottom()
-    },0)
+    disconnect();
+    await fetchData();
+    connect();
+    setTimeout(() => {
+      scrollToBottom();
+    }, 0);
   }
 );
 </script>
@@ -219,20 +224,20 @@ watch(
   font-size: 10rem;
 }
 
-.main{
+.main {
   min-height: 500px;
 }
 
 .completed::before {
-  content: "거래 완료";
+  content: '거래 완료';
   position: absolute;
   top: 46%;
   left: 50%;
   transform: translate(-50%, -50%) rotate(-15deg);
   font-size: 6rem;
   font-weight: bold;
-  color: rgba(255, 0, 0, 0.15); 
+  color: rgba(255, 0, 0, 0.15);
   white-space: nowrap;
-  z-index: 1; 
+  z-index: 1;
 }
 </style>
