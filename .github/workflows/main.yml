@@ -55,6 +55,6 @@ jobs:
     - name: Docker run
       run: |
         sudo docker stop hello-app1 && sudo docker rm hello-app1 
-        sudo docker run -d --name hello-app1 --restart always ${{ secrets.DOCKER_USERNAME }}/hello-world-vue:${{ env.VERSION }}
+        sudo docker run -d --name hello-app1 --restart always -p 80:5173 ${{ secrets.DOCKER_USERNAME }}/hello-world-vue:${{ env.VERSION }}
         #사용되지 않는 도커이미지를 삭제한다
         sudo docker image prune -af
