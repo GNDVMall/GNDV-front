@@ -1,16 +1,18 @@
-// axios.js
 import axios from "axios";
-import { store } from "@/store/store"; // Directly import the store
+import { store } from "@/store/store";
+
+axios.defaults.withCredentials = true;
 
 const getAuthHeaders = () => {
   return {
     Authorization: `Bearer ${store.accessToken}`,
-    "x-refresh-token": store.refreshToken,
+    "X-Refresh-Token": store.refreshToken,
+    "X-Requested-With": "XMLHttpRequest",
   };
 };
 
 const instance = axios.create({
-  baseURL: "http://43.202.103.222:8080/api/v2",
+  baseURL: "http://52.79.76.65:80/api/v2",
   timeout: 5000,
 });
 
@@ -27,6 +29,7 @@ instance.interceptors.request.use(
     return Promise.reject(error);
   }
 );
+
 instance.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -43,10 +46,9 @@ instance.interceptors.response.use(
 );
 
 const instanceMultipart = axios.create({
-  baseURL: "http://43.202.103.222:8080/api/v2",
+  baseURL: "http://52.79.76.65:80/api/v2",
   timeout: 5000,
   headers: {
-    "X-Requested-With": "XMLHttpRequest",
     "Content-Type": "multipart/form-data",
   },
 });

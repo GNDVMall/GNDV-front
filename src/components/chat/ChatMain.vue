@@ -72,7 +72,7 @@ const loading = ref(false);
 const scrollDiv = ref(null);
 const isReviewModalOpen = ref(false);
 
-stompClient.brokerURL = `ws://43.202.103.222:8080/gndv-websocket?token=${store.accessToken}`
+stompClient.brokerURL = `ws://52.79.76.65:80/gndv-websocket?token=${store.accessToken}`
 stompClient.onConnect = () => {
   stompClient.subscribe(`/topic/${route.params.id}`, async (message) => {
     // 받은 메시지
