@@ -33,6 +33,14 @@
           변경
         </button>
       </div>
+      <div class="flex items-center mb-2">
+        <button
+          class="p-2 bg-blue-500 text-white rounded"
+          @click="openSmsModal"
+        >
+          SMS 인증 요청
+        </button>
+      </div>
     </div>
     <div class="mb-6">
       <h2 class="text-xl font-semibold">나의 권한</h2>
@@ -53,6 +61,16 @@
       @close="closeModal"
       @updated="handleUpdate"
     />
+    <SmsModal
+      :isVisible="smsModalVisible"
+      @close="closeSmsModal"
+      @sendSms="sendSms"
+    />
+    <SmsConfirmModal
+      :isVisible="smsConfirmModalVisible"
+      @close="closeSmsConfirmModal"
+      @confirmSms="confirmSms"
+    />
   </div>
 </template>
 
@@ -61,6 +79,8 @@ import { ref, onMounted } from "vue";
 import { useStore } from "@/store/store";
 import { useRouter } from "vue-router";
 import LoginModal from "@/components/modal/LoginModal.vue";
+import SmsModal from "@/components/modal/SmsModal.vue";
+import SmsConfirmModal from "@/components/modal/SmsConfirmModal.vue";
 import { instance } from "@/utils/axios";
 import { useFetchData } from "@/utils/useFetchData";
 import LoadingSpinner from "@/components/common/Loader/LoadingSpinner.vue";
@@ -77,6 +97,9 @@ const modalVisible = ref(false);
 const currentField = ref(null);
 const currentValue = ref("");
 
+const smsModalVisible = ref(false);
+const smsConfirmModalVisible = ref(false);
+
 const openModal = (field) => {
   currentField.value = field;
   currentValue.value = {
@@ -92,6 +115,22 @@ const closeModal = () => {
   modalVisible.value = false;
 };
 
+const openSmsModal = () => {
+  smsModalVisible.value = true;
+};
+
+const closeSmsModal = () => {
+  smsModalVisible.value = false;
+};
+
+const openSmsConfirmModal = () => {
+  smsConfirmModalVisible.value = true;
+};
+
+const closeSmsConfirmModal = () => {
+  smsConfirmModalVisible.value = false;
+};
+
 const handleUpdate = ({ field, value }) => {
   if (field === "profileName") {
     email.value = value;
@@ -101,6 +140,27 @@ const handleUpdate = ({ field, value }) => {
     phoneNumber.value = value;
   } else if (field === "role") {
     role.value = value;
+  }
+};
+
+const sendSms = async (phone) => {
+  try {
+    await instance.post("/members/sms/send", { phone });
+    openSmsConfirmModal();
+  } catch (error) {
+    console.error("Failed to send SMS:", error);
+  }
+};
+
+const confirmSms = async (code) => {
+  try {
+    await instance.post("/members/sms/confirm", { code });
+    closeSmsConfirmModal();
+    alert("SMS 인증이 성공적으로 확인되었습니다."); // 인증 성공 메시지 표시
+    // 필요한 경우 사용자 권한 업데이트 등 추가 작업 수행
+  } catch (error) {
+    console.error("Failed to confirm SMS:", error);
+    alert("SMS 인증에 실패했습니다. 다시 시도해주세요."); // 인증 실패 메시지 표시
   }
 };
 
